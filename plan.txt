@@ -1,0 +1,50 @@
+Forum App
+---------------------
+Models:
+	User
+		Profile
+		PMs
+
+	Channel
+		Thread
+			Comments
+	
+
+User:
+name
+password
+remember_token ??
+isAdmin
+
+Channel:
+title
+slug
+timestamp
+threads <- hasMany
+
+Thread:
+title
+description
+body
+user_id <- foreign key belongsTO
+timestamp
+channel <- foreign key belongsTo
+
+Reply:
+user_id <- belongsTo
+text
+timestamp
+Thread <- belongsTo
+
+Private messages:
+from <- belongsTo User
+to <- belongsTo User
+timestamp
+message
+
+Profile:
+user_id <- belongsTo User
+name
+avatar
+isOnline
+
