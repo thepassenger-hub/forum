@@ -16,5 +16,7 @@ class ChannelsTableSeeder extends Seeder
             'name' => 'PHP',
             'slug' => 'php'
         ]);
+
+        factory(Channel::class, 10)->create();
     }
 }

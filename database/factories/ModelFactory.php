@@ -16,7 +16,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
-        'name' => $faker->name,
+        'username' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
@@ -38,6 +38,6 @@ $factory->define(App\Thread::class, function (Faker\Generator $faker) {
         'description' => $faker->text(100),
         'body' => $faker->text(200),
         'user_id' => 1,
-        'channel_id' => $faker->numberBetween(0, 10)
+        'channel_id' => $faker->numberBetween(1, 11)
     ];
 });

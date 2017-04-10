@@ -16,7 +16,7 @@ class User extends Authenticatable
     ];
 
     protected $hidden = [
-        'password', 'remember_token', 'isAdmin'
+        'password', 'remember_token', 'isAdmin', 'id'
     ];
 
     public function threads()

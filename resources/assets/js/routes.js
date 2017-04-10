@@ -15,8 +15,17 @@ let routes = [
     },
     {
         path: '/:channel',
-        component: require('./views/Login')
+        component: require('./views/Threads')
     },
+    {
+        path: '/:channel/new-thread',
+        component: require('./views/NewThread')
+    },
+    {
+        path: '/:channel/:thread',
+        component: require('./views/Thread')
+    }
+    
 ];
 
 export default new VueRouter({

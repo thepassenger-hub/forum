@@ -10,12 +10,12 @@ class ThreadsController extends Controller
 {
     public function index(Channel $channel)
     {
-        return $channel->threads()->get();
+        return $channel->threads()->with('creator')->get();
     }
 
     public function show($channel, Thread $thread )
     {
-        return $thread;
+        return $thread->toArray() + ['creator' => $thread->creator()->first()];
     }
 
     public function store(Channel $channel)
@@ -25,13 +25,16 @@ class ThreadsController extends Controller
                 'description' => 'required|min:2|max:50',
                 'body' => 'required|min:10'
             ]);
-
-        $channel->addThread([
-            'title' => request('title'),
-            'body' => request('body'),
-            'description' => request('description'),
-            'user_id' => auth()->id(),
-            'channel_id' => $channel->id
-        ]);
+        try {
+            $channel->addThread([
+                'title' => request('title'),
+                'body' => request('body'),
+                'description' => request('description'),
+                'user_id' => auth()->id(),
+                'channel_id' => $channel->id
+            ]);
+        } catch (Exception $e) {
+            return response( $e, 500);
+        }
     }
 }

@@ -11,6 +11,8 @@ class Thread extends Model
 {
     protected $guarded = [];
     
+    protected $hidden = ['user_id', 'channel_id'];
+
     public function channel()
     {
         return $this->belongsTo(Channel::class);
@@ -18,7 +20,7 @@ class Thread extends Model
 
     public function creator()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function replies()

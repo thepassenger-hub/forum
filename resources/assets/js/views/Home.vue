@@ -1,7 +1,7 @@
 <template>
     <section class="section">
             <h1 class="title">Choose a channel.</h1>
-            <channel @clicked="goToThreads(channel.slug)" v-for="channel in channels" :key="channel.name">{{channel.name}}</channel>
+            <channel v-for="channel in channels" :key="channel.name" @clicked="goToThreads(channel.slug)" >{{channel.name}}</channel>
     </section>
 </template>
 
