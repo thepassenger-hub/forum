@@ -1,7 +1,9 @@
 <template>
     <section class="section">
-            <h1 class="title">Choose a channel.</h1>
+        <div class="container">
+             <h1 class="title">Choose a channel.</h1>
             <channel v-for="channel in channels" :key="channel.name" @clicked="goToThreads(channel.slug)" >{{channel.name}}</channel>
+        </div>
     </section>
 </template>
 
@@ -20,9 +22,9 @@
 
                 axios.get('/channels')
                      .then(response => {
-                         response.data.forEach(channel => {
+                         if (response.data) response.data.forEach(channel => {
                              vm.channels.push(new Channel(channel));
-                         })
+                         });
                      })
                      .catch(error => console.log(error));
             },

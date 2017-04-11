@@ -15,14 +15,18 @@ class RepliesController extends Controller
         $this->middleware('auth');
     }
 
-    public function store($channel, Thread $thread)
+    public function store(Thread $thread)
     {
         $this->validate(request(), ['body' => 'required|min:1']);
 
-        $thread->addReply([
-                'body' => request('body'),
-                'user_id' => auth()->id(),
-                'thread_id' => $thread->id
-            ]);
+        try {
+            $thread->addReply([
+                    'body' => request('body'),
+                    'user_id' => auth()->id(),
+                    'thread_id' => $thread->id
+                ]);
+        } catch (Exception $e) {
+            return response( $e, 500);
+        }
     }
 }

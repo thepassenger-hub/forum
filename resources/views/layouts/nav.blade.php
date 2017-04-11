@@ -3,6 +3,9 @@
     <a class="nav-item">
       <p>Logo qua</p>
     </a>
+    <router-link class="nav-item is-tab" to='/' exact>
+      <p>Home</p>
+    </router-link>
   </div>
 
   <!-- This "nav-toggle" hamburger menu is only visible on mobile -->
@@ -15,21 +18,20 @@
 
   <!-- This "nav-menu" is hidden on mobile -->
   <!-- Add the modifier "is-active" to display it on mobile -->
-  <div class="nav-right nav-menu">
-    @if (Route::has('login'))
+  @if (Route::has('login'))
+      <div class="nav-right nav-menu">
         @if (Auth::check())
-              <router-link to='/' exact>
-                <a class="nav-item">Home</a>
-              </router-link>
+          <router-link class="nav-item" to='/logout' >
+            <p>Logout</p>
+          </router-link>
         @else
-              <router-link to='/login'>
-                <a class="nav-item">Login</a>
-              </router-link>
-              <router-link to='/register'>
-                <a class="nav-item">Register</a>
-              </router-link>
+          <router-link class="nav-item" to='/login'>
+            <p>Login</p>
+          </router-link>
+          <router-link class="nav-item" to='/register'>
+            <p>Register</p>
+          </router-link>
         @endif
-      @endif
-
-  </div>
+    </div>
+  @endif
 </nav>

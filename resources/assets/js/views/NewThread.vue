@@ -25,7 +25,7 @@
                     <button class="button is-primary" type="submit">Submit</button>
                 </p>
                 <p class="control">
-                    <button class="button is-link">Cancel</button>
+                    <button class="button is-link" @click="$router.back()">Cancel</button>
                 </p>
             </div>
         </form> 
@@ -34,10 +34,12 @@
 
 <script>
     import Form from '../models/Form';
+    import isLoggedMixin from '../mixins/IsLoggedMixin';
+
     export default {
         data(){
             return {
-                channel: this.$router.currentRoute.params.channel,
+                channel: this.$route.params.channel,
                 form: new Form({
                     title: '',
                     description: '',
@@ -45,11 +47,19 @@
                 })
             }
         },
+        mixins:[isLoggedMixin],
+        beforeRouteEnter: (to, from, next) => {
+            next(vm => {
+                vm.checkIfLogged()
+                    .then(response => response ? next() : next('/login'))                    
+                    .catch(error => next('/'+ vm.channel));
+            });
+      },
         methods: {
             sendPost(){
                 var vm = this;
                 this.form.post('/channels/'+this.channel+'/threads')
-                    .then(response => console.log(response))
+                    .then(response => vm.$router.back())
                     .catch(error => console.log(error));
             }
         }

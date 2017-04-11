@@ -32,7 +32,7 @@ channel <- foreign key belongsTo
 
 Reply:
 user_id <- belongsTo
-text
+body
 timestamp
 Thread <- belongsTo
 
@@ -47,4 +47,5 @@ user_id <- belongsTo User
 name
 avatar
 isOnline
+
 

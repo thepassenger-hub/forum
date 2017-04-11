@@ -19,7 +19,7 @@ let routes = [
     },
     {
         path: '/:channel/new-thread',
-        component: require('./views/NewThread')
+        component: require('./views/NewThread'),
     },
     {
         path: '/:channel/:thread',
@@ -29,5 +29,6 @@ let routes = [
 ];
 
 export default new VueRouter({
-    routes
+    routes,
+    linkActiveClass: 'is-active'
 });

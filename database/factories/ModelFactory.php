@@ -16,7 +16,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
-        'username' => $faker->name,
+        'username' => $faker->userName,
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
@@ -39,5 +39,14 @@ $factory->define(App\Thread::class, function (Faker\Generator $faker) {
         'body' => $faker->text(200),
         'user_id' => 1,
         'channel_id' => $faker->numberBetween(1, 11)
+    ];
+});
+
+$factory->define(App\Reply::class, function (Faker\Generator $faker) {
+
+    return [
+        'body' => $faker->text(100),
+        'user_id' => $faker->numberBetween(1,12),
+        'thread_id' => $faker->numberBetween(1, 52)
     ];
 });

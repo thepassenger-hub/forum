@@ -8,22 +8,32 @@
 
 <script>
     import Thread from '../models/Thread';
+    import isLoggedMixin from '../mixins/IsLoggedMixin';
+
     export default {
         data() {
             return {
                 threads: [],
                 isLogged: false,
+                channel: this.$route.params.channel
             }
         },
+
+        mixins:[isLoggedMixin],
+        
         created() {
             this.getThreads();
-            this.checkIfLogged();
+            this.checkIfLogged()
+                .then(response => this.isLogged = response)
+                .catch(error => {
+                    this.isLogged = false;
+                    console.log(error);
+                });
         },
         methods: {
             getThreads(){
                 var vm = this;
-                let channel = this.$router.currentRoute.params.channel;
-                axios.get('/channels/'+channel+'/threads')
+                axios.get('/channels/'+vm.channel+'/threads')
                      .then(response => {
                          response.data.forEach(thread => {
                              vm.threads.push(new Thread(thread));
@@ -33,26 +43,14 @@
             },
 
             goToThread(thread){
-                let channel = this.$router.currentRoute.params.channel;
-                this.$router.push({ path: '/'+channel+'/'+thread.id});
+                this.$router.push({ path: '/'+this.channel+'/'+thread.id});
             },
 
             createNewThread(){
-                let channel = this.$router.currentRoute.params.channel;
-                this.$router.push({path: '/' + channel +'/new-thread'});
-            },
-
-            checkIfLogged(){
-                var vm = this;
-                axios.get('/sessionStatus')
-                     .then(response => {
-                         this.isLogged = response.data.isLogged;
-                     })
-                     .catch(error => {
-                         this.isLogged = false;
-                         console.log(error);
-                     })
+                this.$router.push({path: '/' + this.channel +'/new-thread'});
             }
+
+            
         },
         components: {
             'thread': require('../components/Thread.vue')
