@@ -17,14 +17,8 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('/sessionStatus', function() {
-        return ['isLogged'=>Auth::check()];
+        return ['user' => Auth::user()];
     });
-
-Route::get('/test', function() {
-    session()->flush();
-    session()->regenerate();
-    return response(session()->all(), 200);
-});
 
 Route::get('/home', 'HomeController@index');
 

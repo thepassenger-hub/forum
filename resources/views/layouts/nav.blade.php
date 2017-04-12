@@ -19,13 +19,16 @@
   <!-- This "nav-menu" is hidden on mobile -->
   <!-- Add the modifier "is-active" to display it on mobile -->
   <div class="nav-right nav-menu">
-      <a v-if="isLogged" class="nav-item" @click="logout">
+      <a v-if="username" class="nav-item">
+        <p>@{{username}}</p>
+      </a>
+      <a v-if="username" class="nav-item" @click="logout">
         <p>Logout</p>
       </a>
-      <router-link v-if="! isLogged" class="nav-item" to='/login'>
+      <router-link v-if="! username" class="nav-item" to='/login'>
         <p>Login</p>
       </router-link>
-      <router-link v-if="! isLogged" class="nav-item" to='/register'>
+      <router-link v-if="! username" class="nav-item" to='/register'>
         <p>Register</p>
       </router-link>
   </div>

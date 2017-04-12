@@ -9,11 +9,13 @@ const app = new Vue({
     router,
     mixins:[isLoggedMixin],
     data: {
-        isLogged: false
+        username: false
     },
     created(){
         this.checkIfLogged()
-            .then(response => this.isLogged = response)                    
+            .then(response => {
+                    this.username = response ? response.username : false}
+                )                    
             .catch(error => console.log(error));
     },
 
@@ -22,7 +24,7 @@ const app = new Vue({
             axios.post('/logout')
                  .then(response => {
                      this.setNewCsrfToken(response.data);
-                     this.isLogged = false;
+                     this.username = false;
                  })
                  .catch(error => console.log(error));
         },

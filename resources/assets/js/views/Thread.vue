@@ -32,7 +32,7 @@
         created(){
             this.getThread();
             this.checkIfLogged()
-                .then(response => this.isLogged = response)
+                .then(response => this.isLogged = response ? response.username : false)
                 .catch(error => {
                     this.isLogged = false;
                     console.log(error);

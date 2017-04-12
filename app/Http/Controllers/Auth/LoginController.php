@@ -35,7 +35,7 @@ class LoginController extends Controller
 
         $this->clearLoginAttempts($request);
 
-        return response('OK', 200);
+        return response(['user' => auth()->user()], 200);
     }
 
     public function logout(Request $request)

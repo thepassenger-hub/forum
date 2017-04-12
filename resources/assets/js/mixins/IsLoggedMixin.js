@@ -5,7 +5,7 @@ var isLoggedMixin = {
         return new Promise((resolve, reject) => {
           axios.get('/sessionStatus')
              .then(response => {
-                resolve(response.data.isLogged);
+                resolve(response.data.user);
              })
              .catch(error => {
                 reject(error.response.data);

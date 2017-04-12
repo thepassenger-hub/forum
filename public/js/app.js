@@ -440,7 +440,7 @@ var isLoggedMixin = {
       var vm = this;
       return new Promise(function (resolve, reject) {
         axios.get('/sessionStatus').then(function (response) {
-          resolve(response.data.isLogged);
+          resolve(response.data.user);
         }).catch(function (error) {
           reject(error.response.data);
         });
@@ -3678,13 +3678,13 @@ var app = new Vue({
     router: __WEBPACK_IMPORTED_MODULE_1__routes__["a" /* default */],
     mixins: [__WEBPACK_IMPORTED_MODULE_2__mixins_IsLoggedMixin__["a" /* default */]],
     data: {
-        isLogged: false
+        username: false
     },
     created: function created() {
         var _this = this;
 
         this.checkIfLogged().then(function (response) {
-            return _this.isLogged = response;
+            _this.username = response ? response.username : false;
         }).catch(function (error) {
             return console.log(error);
         });
@@ -3697,7 +3697,7 @@ var app = new Vue({
 
             axios.post('/logout').then(function (response) {
                 _this2.setNewCsrfToken(response.data);
-                _this2.isLogged = false;
+                _this2.username = false;
             }).catch(function (error) {
                 return console.log(error);
             });
@@ -4810,24 +4810,87 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            form: new __WEBPACK_IMPORTED_MODULE_0__models_Form__["a" /* default */]({
+            login: new __WEBPACK_IMPORTED_MODULE_0__models_Form__["a" /* default */]({
                 password: '',
                 email: '',
                 remember: ''
+            }),
+            register: new __WEBPACK_IMPORTED_MODULE_0__models_Form__["a" /* default */]({
+                password: '',
+                email: '',
+                username: '',
+                password_confirmation: ''
             }),
             empty: ""
         };
     },
 
     methods: {
-        sendPost: function sendPost() {
+        postLoginForm: function postLoginForm() {
             var vm = this;
-            this.form.post('/login').then(function (response) {
+            this.login.post('/login').then(function (response) {
+                vm.$router.push('/');
+                vm.$root.username = response.user.username;
+            }).catch(function (error) {
+                return console.log(error);
+            });
+        },
+        postRegisterForm: function postRegisterForm() {
+            var vm = this;
+            if (this.register.password != this.register.password_confirmation) return;
+            this.register.post('/register').then(function (response) {
                 vm.$router.push('/');
                 vm.$root.isLogged = true;
             }).catch(function (error) {
@@ -4977,7 +5040,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         this.getThread();
         this.checkIfLogged().then(function (response) {
-            return _this.isLogged = response;
+            return _this.isLogged = response ? response.username : false;
         }).catch(function (error) {
             _this.isLogged = false;
             console.log(error);
@@ -5718,44 +5781,44 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "container"
   }, [_c('div', {
+    staticClass: " columns"
+  }, [_c('div', {
+    staticClass: "column is-half"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "field"
-  }, [_c('label', {
-    staticClass: "label"
-  }, [_vm._v("Email")]), _vm._v(" "), _c('p', {
+  }, [_c('p', {
     staticClass: "control"
   }, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.form.email),
-      expression: "form.email"
+      value: (_vm.login.email),
+      expression: "login.email"
     }],
     staticClass: "input",
     attrs: {
       "type": "email",
-      "placeholder": "Email input"
+      "placeholder": "Email"
     },
     domProps: {
-      "value": (_vm.form.email)
+      "value": (_vm.login.email)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.form.email = $event.target.value
+        _vm.login.email = $event.target.value
       }
     }
   })])]), _vm._v(" "), _c('div', {
     staticClass: "field"
-  }, [_c('label', {
-    staticClass: "label"
-  }, [_vm._v("Password")]), _vm._v(" "), _c('p', {
+  }, [_c('p', {
     staticClass: "control"
   }, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.form.password),
-      expression: "form.password"
+      value: (_vm.login.password),
+      expression: "login.password"
     }],
     staticClass: "input",
     attrs: {
@@ -5763,12 +5826,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "placeholder": "Password"
     },
     domProps: {
-      "value": (_vm.form.password)
+      "value": (_vm.login.password)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.form.password = $event.target.value
+        _vm.login.password = $event.target.value
       }
     }
   })])]), _vm._v(" "), _c('div', {
@@ -5781,50 +5844,177 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.form.remember),
-      expression: "form.remember"
+      value: (_vm.login.remember),
+      expression: "login.remember"
     }],
     attrs: {
       "type": "checkbox",
       "false-value": _vm.empty
     },
     domProps: {
-      "checked": Array.isArray(_vm.form.remember) ? _vm._i(_vm.form.remember, null) > -1 : (_vm.form.remember)
+      "checked": Array.isArray(_vm.login.remember) ? _vm._i(_vm.login.remember, null) > -1 : (_vm.login.remember)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.form.remember,
+        var $$a = _vm.login.remember,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (_vm.empty);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.form.remember = $$a.concat($$v))
+            $$i < 0 && (_vm.login.remember = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.form.remember = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.login.remember = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.form.remember = $$c
+          _vm.login.remember = $$c
         }
       }
     }
-  }), _vm._v("\n                    Remember me\n                ")])])]), _vm._v(" "), _c('div', {
+  }), _vm._v("\n                            Remember me\n                        ")])])]), _vm._v(" "), _c('div', {
     staticClass: "field is-grouped"
   }, [_c('p', {
     staticClass: "control"
   }, [_c('button', {
     staticClass: "button is-primary",
     on: {
-      "click": _vm.sendPost
+      "click": _vm.postLoginForm
     }
-  }, [_vm._v("Login")])]), _vm._v(" "), _vm._m(0)])])])
+  }, [_vm._v("Login")])]), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), _c('div', {
+    staticClass: "column is-half"
+  }, [_vm._m(2), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('p', {
+    staticClass: "control"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.register.username),
+      expression: "register.username"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "text",
+      "placeholder": "Username",
+      "required": ""
+    },
+    domProps: {
+      "value": (_vm.register.username)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.register.username = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('p', {
+    staticClass: "control"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.register.email),
+      expression: "register.email"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "email",
+      "placeholder": "Email",
+      "required": ""
+    },
+    domProps: {
+      "value": (_vm.register.email)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.register.email = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('p', {
+    staticClass: "control"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.register.password),
+      expression: "register.password"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "password",
+      "placeholder": "Password",
+      "required": ""
+    },
+    domProps: {
+      "value": (_vm.register.password)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.register.password = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('p', {
+    staticClass: "control"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.register.password_confirmation),
+      expression: "register.password_confirmation"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "password",
+      "placeholder": "Verify Password",
+      "required": ""
+    },
+    domProps: {
+      "value": (_vm.register.password_confirmation)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.register.password_confirmation = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "field is-grouped"
+  }, [_c('p', {
+    staticClass: "control"
+  }, [_c('button', {
+    staticClass: "button is-primary",
+    on: {
+      "click": _vm.postRegisterForm
+    }
+  }, [_vm._v("Register")])])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "field"
+  }, [_c('h1', {
+    staticClass: "title"
+  }, [_vm._v("Log In")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('p', {
     staticClass: "control"
   }, [_c('button', {
     staticClass: "button is-link"
-  }, [_vm._v("Forgot your passoword?")])])
+  }, [_vm._v("Forgot your password?")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "field"
+  }, [_c('h1', {
+    staticClass: "title"
+  }, [_vm._v("Register New Account")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
