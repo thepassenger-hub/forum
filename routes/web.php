@@ -20,6 +20,12 @@ Route::get('/sessionStatus', function() {
         return ['isLogged'=>Auth::check()];
     });
 
+Route::get('/test', function() {
+    session()->flush();
+    session()->regenerate();
+    return response(session()->all(), 200);
+});
+
 Route::get('/home', 'HomeController@index');
 
 Route::get('channels', 'ChannelsController@index');

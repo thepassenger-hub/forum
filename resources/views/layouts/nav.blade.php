@@ -18,20 +18,15 @@
 
   <!-- This "nav-menu" is hidden on mobile -->
   <!-- Add the modifier "is-active" to display it on mobile -->
-  @if (Route::has('login'))
-      <div class="nav-right nav-menu">
-        @if (Auth::check())
-          <router-link class="nav-item" to='/logout' >
-            <p>Logout</p>
-          </router-link>
-        @else
-          <router-link class="nav-item" to='/login'>
-            <p>Login</p>
-          </router-link>
-          <router-link class="nav-item" to='/register'>
-            <p>Register</p>
-          </router-link>
-        @endif
-    </div>
-  @endif
+  <div class="nav-right nav-menu">
+      <a v-if="isLogged" class="nav-item" @click="logout">
+        <p>Logout</p>
+      </a>
+      <router-link v-if="! isLogged" class="nav-item" to='/login'>
+        <p>Login</p>
+      </router-link>
+      <router-link v-if="! isLogged" class="nav-item" to='/register'>
+        <p>Register</p>
+      </router-link>
+  </div>
 </nav>

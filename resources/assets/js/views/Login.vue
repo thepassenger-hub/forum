@@ -12,7 +12,7 @@
             <div class="field">
                 <label class="label">Password</label>
                 <p class="control">
-                    <input class="input" type="password" placeholder="Email input" v-model="form.password">
+                    <input class="input" type="password" placeholder="Password" v-model="form.password">
                 </p>
                 <!--<p class="help is-danger">This email is invalid</p>-->
             </div>
@@ -20,7 +20,7 @@
             <div class="field">
                 <p class="control">
                     <label class="checkbox">
-                        <input type="checkbox" v-model="form.rememberMe">
+                        <input type="checkbox" v-model="form.remember" :false-value="empty" >
                         Remember me
                     </label>
                 </p>
@@ -46,8 +46,9 @@
                 form: new Form({
                     password: '',
                     email: '',
-                    rememberMe: false
-                })
+                    remember: ''
+                }),
+                empty: ""
             }
         },
         methods: {
@@ -55,7 +56,8 @@
                 var vm = this;
                 this.form.post('/login')
                     .then(response => {
-                        console.log(response)
+                        vm.$router.push('/');
+                        vm.$root.isLogged = true;
                     })
                     .catch(error => console.log(error));
             }
