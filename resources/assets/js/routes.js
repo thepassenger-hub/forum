@@ -10,10 +10,6 @@ let routes = [
         component: require('./views/SignIn')
     },
     {
-        path: '/register',
-        component: require('./views/Register')
-    },
-    {
         path: '/:channel',
         component: require('./views/Threads')
     },

@@ -1,5 +1,7 @@
 <template>
     <section class="section">
+        <breadcrumbs :path="path.breadcrumbs"></breadcrumbs>
+
         <form @submit.prevent="sendPost">
             <div class="field">
                 <label class="label">Titolo</label>
@@ -34,6 +36,8 @@
 
 <script>
     import Form from '../models/Form';
+    import Path from '../models/Path';
+
     import isLoggedMixin from '../mixins/IsLoggedMixin';
 
     export default {
@@ -44,7 +48,9 @@
                     title: '',
                     description: '',
                     body: ''
-                })
+                }),
+                path: new Path(this.$route.path)
+
             }
         },
         mixins:[isLoggedMixin],
@@ -62,6 +68,9 @@
                     .then(response => vm.$router.back())
                     .catch(error => console.log(error));
             }
-        }
+        },
+        components: {
+            'breadcrumbs': require('../components/Breadcrumbs.vue')
+        },
     }
 </script>

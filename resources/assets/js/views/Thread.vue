@@ -1,5 +1,6 @@
 <template>
     <section class="section" v-if="thread">
+        <breadcrumbs :path="path.breadcrumbs"></breadcrumbs>
         <div class="container is-fluid">
             <thread :key="thread.id">{{thread.title}} <p slot="body">{{thread.body}}</p></thread>
             <reply v-if="thread.replies" v-for="reply in thread.replies" :key="reply.id">
@@ -16,6 +17,7 @@
 <script>
     import ThreadWithReplies from '../models/ThreadWithReplies';
     import isLoggedMixin from '../mixins/IsLoggedMixin';
+    import Path from '../models/Path';
 
     export default {
         data(){
@@ -23,7 +25,8 @@
                 thread: null,
                 threadPath: this.$route.params.thread,
                 channel: this.$route.params.channel,
-                isLogged: false
+                isLogged: false,
+                path: new Path(this.$route.path)
             }
         },
 
@@ -52,7 +55,8 @@
         components: {
             'thread': require('../components/Thread.vue'),
             'reply': require('../components/Reply.vue'),
-            'newReply': require('../components/NewReply.vue')
+            'newReply': require('../components/NewReply.vue'),
+            'breadcrumbs': require('../components/Breadcrumbs.vue')
         }
     }
 </script>

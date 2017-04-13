@@ -1,5 +1,6 @@
 <template>
     <section class="section">
+        <breadcrumbs :path="path.breadcrumbs"></breadcrumbs>
         <h1 class="title">List of threads</h1>
         <button class="button" v-if="isLogged" @click="createNewThread">Create new Thread</button>
         <thread v-for="thread in threads" :key="thread.id" @clicked="goToThread(thread)">{{thread.title}}</thread>
@@ -8,6 +9,8 @@
 
 <script>
     import Thread from '../models/Thread';
+    import Path from '../models/Path';
+
     import isLoggedMixin from '../mixins/IsLoggedMixin';
 
     export default {
@@ -15,7 +18,9 @@
             return {
                 threads: [],
                 isLogged: false,
-                channel: this.$route.params.channel
+                channel: this.$route.params.channel,
+                path: new Path(this.$route.path)
+
             }
         },
 
@@ -53,7 +58,8 @@
             
         },
         components: {
-            'thread': require('../components/Thread.vue')
+            'thread': require('../components/Thread.vue'),
+            'breadcrumbs': require('../components/Breadcrumbs.vue')
         },
 
     }
