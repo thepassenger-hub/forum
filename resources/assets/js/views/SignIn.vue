@@ -1,7 +1,5 @@
 <template>
     <section class="section">
-        <breadcrumbs :path="path.breadcrumbs"></breadcrumbs>
-
         <div class="container">
             <div class=" columns">
         
@@ -89,8 +87,6 @@
 
 <script>
     import Form from '../models/Form';
-    import Path from '../models/Path';
-
     export default {
         data(){
             return {
@@ -105,10 +101,11 @@
                     username: '',
                     password_confirmation: ''
                 }),
-                empty: "",
-                path: new Path(this.$route.path)
-
+                empty: ""
             }
+        },
+        created() {
+            this.$root.path.update(this.$route.path);
         },
         methods: {
             postLoginForm(){
@@ -130,9 +127,6 @@
                     })
                     .catch(error => console.log(error));
             }
-        },
-        components: {
-            'breadcrumbs': require('../components/Breadcrumbs.vue')
-        },
+        }
     }
 </script>

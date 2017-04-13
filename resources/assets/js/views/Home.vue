@@ -1,6 +1,5 @@
 <template>
     <section class="section">
-        <breadcrumbs :path="path.breadcrumbs"></breadcrumbs>
         <div class="container">
              <h1 class="title">Choose a channel.</h1>
             <channel v-for="channel in channels" :key="channel.name" @clicked="goToThreads(channel.slug)" >{{channel.name}}</channel>
@@ -10,15 +9,15 @@
 
 <script>
     import Channel from '../models/Channel';
-    import Path from '../models/Path';
     export default {
         data() {
             return {
                 channels: [],
-                path: new Path(this.$route.path)
             }
         },
-
+        created(){
+            this.$root.path.subpath = this.$route.path;
+        },
         methods: {
             getChannels(){
                 var vm = this;
@@ -39,12 +38,11 @@
 
         components: {
             'channel': require('../components/Channel.vue'),
-            'breadcrumbs': require('../components/Breadcrumbs.vue')
-
         },
 
         created(){
             this.getChannels();
+            this.$root.path.update(this.$route.path);
         }
     }
 </script>

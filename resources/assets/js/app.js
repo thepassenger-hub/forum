@@ -3,13 +3,15 @@ import router from './routes';
 // Vue.component('createFile', require('./components/CreateFile.vue'));
 // Vue.component('channel', require('./components/Channel.vue'));
 import isLoggedMixin from './mixins/IsLoggedMixin';
+import Path from './models/Path';
 
 const app = new Vue({
     el: '#app',
     router,
     mixins:[isLoggedMixin],
     data: {
-        username: false
+        username: false,
+        path: new Path(),
     },
     created(){
         this.checkIfLogged()

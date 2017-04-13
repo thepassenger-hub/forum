@@ -1,13 +1,18 @@
 
 class Path {
-    constructor(subpath){
-        this.subpath = subpath;
+    constructor(){
+        this.subpath = '';
         // this.prettyName = this.prettify(uri);
         // this.subpaths = this.setSubPaths(uri);
         // this.prettySubNames = this.prettifySubNames(this.subpaths);
-        this.breadcrumbs = this.setBreadcrumbs(subpath);
+        this.breadcrumbs = this.setBreadcrumbs(this.subpath);
     }
 
+    update(newSubPath) {
+        this.subpath = newSubPath;
+        this.breadcrumbs = this.setBreadcrumbs(this.subpath);
+    }
+    
     setSubPaths(subpaths) {
         let subpath = subpaths.slice(-1)[0] === '' ? ['/'] : subpaths;
         let out = [];
