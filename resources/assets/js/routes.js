@@ -6,8 +6,8 @@ let routes = [
         component: require('./views/Home')
     },
     {
-        path: '/login',
-        component: require('./views/Login')
+        path: '/sign-in',
+        component: require('./views/SignIn')
     },
     {
         path: '/register',
