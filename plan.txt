@@ -46,6 +46,11 @@ Profile:
 user_id <- belongsTo User
 name
 avatar
+gender
+bio
+location
+numPosts
+registered
 isOnline
 
 

@@ -21,10 +21,16 @@ Route::get('/sessionStatus', function() {
     });
 
 Route::get('/home', 'HomeController@index');
-
+// \Event::listen('Illuminate\Database\Events\QueryExecuted', function ($query) {
+//     var_dump($query->sql);
+//     // var_dump($query->bindings);
+//     // var_dump($query->time);
+// });
 Route::get('channels', 'ChannelsController@index');
 Route::get('channels/{channel}/threads', 'ThreadsController@index');
 Route::get('channels/{channel}/{thread}', 'ThreadsController@show');
+Route::get('profile', 'ProfileController@index');
+Route::post('profile', 'ProfileController@store');
 Route::post('threads/{thread}/replies', 'RepliesController@store')->middleware('auth');
 Route::post('channels/{channel}/threads', 'ThreadsController@store')->middleware('auth');
 Route::post('channels/{channel}/{thread}/replies', 'RepliesController@store');

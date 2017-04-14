@@ -10,6 +10,10 @@ let routes = [
         component: require('./views/SignIn')
     },
     {
+        path: '/profile',
+        component: require('./views/Profile'),
+    },
+    {
         path: '/:channel',
         component: require('./views/Threads')
     },

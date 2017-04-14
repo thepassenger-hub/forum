@@ -19,9 +19,9 @@
   <!-- This "nav-menu" is hidden on mobile -->
   <!-- Add the modifier "is-active" to display it on mobile -->
   <div class="nav-right nav-menu">
-      <a v-if="username" class="nav-item">
+      <router-link v-if="username" class="nav-item" to='/profile'>
         <p>@{{username}}</p>
-      </a>
+      </router-link>
       <a v-if="username" class="nav-item" @click="logout">
         <p>Logout</p>
       </a>

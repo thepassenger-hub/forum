@@ -1,0 +1,56 @@
+<template>
+    <section class="section">
+        <div class="tabs is-centered is-boxed">
+            <ul>
+                <li :class="{ 'is-active': tabs[0].isActive }">
+                    <a  @click="selectTab(tabs[0].name)">{{ tabs[0].name }}</a>
+                </li>
+                <li :class="{ 'is-active': tabs[1].isActive }">
+                    <a  @click="selectTab(tabs[1].name)">{{ tabs[1].name }}</a>
+                </li>
+                <li :class="{ 'is-active': tabs[2].isActive }">
+                    <a  @click="selectTab(tabs[2].name)">{{ tabs[2].name }}</a>
+                </li>
+            </ul>
+        </div>
+        <view-profile v-if="tabs[0].isActive" :profile="profile"></view-profile>
+        <edit-profile v-if="tabs[1].isActive" :profile="profile"></edit-profile>
+        
+    </section>
+</template>
+
+<script>
+    export default {
+        data() {
+            return {
+                tabs: [
+                        {name: 'View', isActive: true},
+                        {name: 'Edit', isActive: false},
+                        {name: 'Messages', isActive: false}
+                    ],
+                profile: {}
+            }
+        },
+        created() {
+            this.$root.path.update(this.$route.path);
+            this.getProfile();
+        },
+        methods: {
+            getProfile() {
+                axios.get('/profile')
+                     .then(response => this.profile = response.data)
+                     .catch(error => console.log(error.response.data))
+            },
+            selectTab(tabName) {
+                this.tabs.forEach(tab => {
+                    tab.isActive = tab.name === tabName ? true : false;
+                });
+            }
+            
+        },
+        components: {
+            'viewProfile': require('../components/ViewProfile'),
+            'editProfile': require('../components/EditProfile')
+        }
+    }
+</script>
