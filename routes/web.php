@@ -30,6 +30,7 @@ Route::get('channels', 'ChannelsController@index');
 Route::get('channels/{channel}/threads', 'ThreadsController@index');
 Route::get('channels/{channel}/{thread}', 'ThreadsController@show');
 Route::get('profile', 'ProfileController@index');
+Route::get('profile/replies', 'RepliesController@index');
 Route::post('profile', 'ProfileController@store');
 Route::post('profile/avatar', 'ProfileController@uploadAvatar');
 

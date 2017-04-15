@@ -2,10 +2,11 @@
     <div class="container" v-if="form">
         <div class="field">
             <figure class="image is-128x128">
-                <img :src="form.avatar">
+                <img :src="this.imageSrc || this.form.avatar">
             </figure>
-            <p class="control">
-                <input type="file" class="input" @change="newAvatar">
+            <p class="control" id="add-new-avatar-wrapper">
+                Choose
+                <input type="file" class="input" id="add-new-avatar" @change="newAvatar">
             </p>
             <p class="control">
                 <button type="button" class="button is-default" @click="postAvatar">Upload Avatar</button>
@@ -55,7 +56,7 @@
 </template>
 
 <script>
-    import Form from '../models/Form';
+    import Form from '../../models/Form';
 
     export default {
         props: ['profile'],
@@ -68,7 +69,8 @@
                     location: this.profile.location,
                     avatar: this.profile.avatar
                 }),
-                avatar: null
+                avatar: null,
+                imageSrc: null
             }
         },
 
@@ -83,9 +85,19 @@
                 this.form = new Form(this.form.originalData);
             },
 
-            newAvatar($event) {
-                let files = $event.target.files;
+            newAvatar(event) {
+                let files = event.target.files;
                 if (files.length) this.avatar = files[0];
+                var file = event.target.files[0];
+
+                var reader = new FileReader();
+                var vm = this;
+
+                reader.onload = function(e) {
+                    vm.imageSrc = e.target.result;
+                }
+
+                reader.readAsDataURL(file);
             },
 
             postAvatar(){

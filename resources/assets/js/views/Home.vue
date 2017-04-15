@@ -2,7 +2,10 @@
     <section class="section">
         <div class="container">
              <h1 class="title">Choose a channel.</h1>
-            <channel v-for="channel in channels" :key="channel.name" @clicked="goToThreads(channel.slug)" >{{channel.name}}</channel>
+            <channel v-for="channel in channels" :key="channel.name" @clicked="goToThreads(channel.slug)" >
+                <h1 slot="name">{{channel.name}}</h1>
+                <p slot="description">{{channel.description}}</p>
+            </channel>
         </div>
     </section>
 </template>

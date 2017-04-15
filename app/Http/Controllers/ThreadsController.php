@@ -13,9 +13,9 @@ class ThreadsController extends Controller
         return $channel->threads()->with('creator')->get();
     }
 
-    public function show($channel, $thread )
+    public function show($channel, Thread $thread )
     {   
-        return Thread::where('id', $thread)->with('replies.creator', 'creator')->first();
+        return $thread->load('replies.creator', 'creator');
     }
 
     public function store(Channel $channel)

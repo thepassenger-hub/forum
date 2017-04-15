@@ -20,6 +20,8 @@
                 <router-link v-for="route in path.breadcrumbs" tag="li" :to="route.path" :key="route"><a>@{{route.name}}</a></router-link>
             </ul>
             <router-view></router-view>
+
+            @include('layouts.footer')
         </div>
 
         <script src="js/app.js"></script>

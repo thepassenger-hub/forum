@@ -27,7 +27,8 @@ $factory->define(App\Channel::class, function (Faker\Generator $faker) {
 
     return [
         'name' => $faker->text(50),
-        'slug' => $faker->slug(3),
+        'description' => $faker->text(200),        
+        'slug' => $faker->slug(3)
     ];
 });
 
@@ -46,7 +47,7 @@ $factory->define(App\Reply::class, function (Faker\Generator $faker) {
 
     return [
         'body' => $faker->text(100),
-        'user_id' => $faker->numberBetween(1,12),
-        'thread_id' => $faker->numberBetween(1, 52)
+        'user_id' => $faker->numberBetween(1,11),
+        'thread_id' => $faker->numberBetween(1, 51)
     ];
 });

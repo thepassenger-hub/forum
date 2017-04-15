@@ -14,6 +14,7 @@ class ChannelsTableSeeder extends Seeder
     {
         Channel::create([
             'name' => 'PHP',
+            'description' => 'Qui si discute del linguaggio di programmazione PHP',
             'slug' => 'php'
         ]);
 

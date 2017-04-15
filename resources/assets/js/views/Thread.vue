@@ -45,6 +45,7 @@
                 
                 axios.get('/channels/'+this.channel+'/'+this.threadPath)
                      .then(response => {
+                            console.log(response.data);
                             if (response.data) vm.thread = new ThreadWithReplies(response.data);
                      })
                      .catch(error => console.log(error));

@@ -15,6 +15,11 @@ class RepliesController extends Controller
         $this->middleware('auth');
     }
 
+    public function index()
+    {
+        return request()->user()->replies()->with('thread')->get();
+    }
+
     public function store(Thread $thread)
     {
         $this->validate(request(), ['body' => 'required|min:1']);

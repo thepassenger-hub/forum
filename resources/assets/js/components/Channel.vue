@@ -8,10 +8,8 @@
             </figure>
             <div class="media-content">
                 <div class="content">
-                    <h1><slot></slot></h1>
-                    <p>
-                        Descrizione canale qua.
-                    </p>
+                    <slot name="name"></slot>
+                    <slot name="description"></slot>
                 </div>
             </div>
         </article>

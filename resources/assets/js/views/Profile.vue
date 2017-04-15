@@ -15,6 +15,8 @@
         </div>
         <view-profile v-if="tabs[0].isActive" :profile="profile"></view-profile>
         <edit-profile v-if="tabs[1].isActive" :profile="profile" @changesSaved="changesSaved"></edit-profile>
+        <activity v-if="tabs[2].isActive" :profile="profile"></activity>
+        
         
     </section>
 </template>
@@ -26,7 +28,7 @@
                 tabs: [
                         {name: 'View', isActive: true},
                         {name: 'Edit', isActive: false},
-                        {name: 'Messages', isActive: false}
+                        {name: 'Activity', isActive: false}
                     ],
                 profile: {}
             }
@@ -54,8 +56,9 @@
             
         },
         components: {
-            'viewProfile': require('../components/ViewProfile'),
-            'editProfile': require('../components/EditProfile')
+            'viewProfile': require('../components/Profile/ViewProfile'),
+            'editProfile': require('../components/Profile/EditProfile'),
+            'activity': require('../components/Profile/Activity')            
         }
     }
 </script>
