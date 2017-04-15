@@ -2,10 +2,13 @@
     <div class="container" v-if="form">
         <div class="field">
             <figure class="image is-128x128">
-                <img src="http://bulma.io/images/placeholders/128x128.png">
+                <img :src="form.avatar">
             </figure>
             <p class="control">
                 <input type="file" class="input" @change="newAvatar">
+            </p>
+            <p class="control">
+                <button type="button" class="button is-default" @click="postAvatar">Upload Avatar</button>
             </p>
         </div>
         <div class="field">
@@ -63,14 +66,15 @@
                     gender: this.profile.gender,
                     bio: this.profile.bio,
                     location: this.profile.location,
-                    avatar: null
-                })
+                    avatar: this.profile.avatar
+                }),
+                avatar: null
             }
         },
 
         methods: {
             submitChanges() {
-                this.form.post('/url')
+                this.form.post('/profile')
                     .then(response => this.$emit('changesSaved'))
                     .catch(error => console.log(error));
             },
@@ -81,7 +85,15 @@
 
             newAvatar($event) {
                 let files = $event.target.files;
-                if (files.length) this.form.avatar = files[0];
+                if (files.length) this.avatar = files[0];
+            },
+
+            postAvatar(){
+                let data = new FormData()
+                data.set('avatar', this.avatar)
+                axios.post('/profile/avatar', data)
+                    .then(response => console.log(response))
+                    .catch(error => console.log(error));
             }
 
         }

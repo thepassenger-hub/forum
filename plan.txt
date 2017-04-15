@@ -42,6 +42,7 @@ to <- belongsTo User
 timestamp
 message
 
+//http://demos.buddyboss.com/boss/members/john/profile/edit/group/1/
 Profile:
 user_id <- belongsTo User
 name

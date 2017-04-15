@@ -7,6 +7,8 @@ use \App\User;
 
 class Profile extends Model
 {
+    protected $fillable = ['name', 'gender', 'bio', 'location', 'avatar'];
+    
     public function user()
     {
         return $this->belongsTo(User::class);

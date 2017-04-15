@@ -1,7 +1,8 @@
 <template>
     <div class="container">
-        <div class="avatar">
-        </div>
+        <figure class="image is-128x128">
+                <img :src="profile.avatar">
+        </figure>
         <h4 class="title is-4" ><span>Name:</span>
             <span v-if="profile.name" class="title is-4">{{profile.name}}</span>
             <span v-else> Not set Yet!</span>

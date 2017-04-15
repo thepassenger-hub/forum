@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \App\Profile;
 
 class ProfileController extends Controller
 {
@@ -18,8 +19,24 @@ class ProfileController extends Controller
 
     public function store()
     {
-        // $this->validate(request(), [
+        $this->validate(request(), [
+            'name' => 'max: 30',
+            'gender' => 'required|max: 1',
+            'bio' => 'max: 300',
+            'location' => 'max:30'
+        ]);
+        
+        auth()->user()->profile()->update(request()->all());
+    }
 
-        // ])
+    public function uploadAvatar()
+    {
+        $this->validate(request(), [
+            'avatar' => 'nullable|image'
+        ]);
+        $path = request()->file('avatar')->store('public/avatars');
+        $path = str_replace('public/', 'storage/', $path);
+        auth()->user()->profile()->update(['avatar' => $path]);
+
     }
 }

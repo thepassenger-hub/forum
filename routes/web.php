@@ -31,6 +31,8 @@ Route::get('channels/{channel}/threads', 'ThreadsController@index');
 Route::get('channels/{channel}/{thread}', 'ThreadsController@show');
 Route::get('profile', 'ProfileController@index');
 Route::post('profile', 'ProfileController@store');
+Route::post('profile/avatar', 'ProfileController@uploadAvatar');
+
 Route::post('threads/{thread}/replies', 'RepliesController@store')->middleware('auth');
 Route::post('channels/{channel}/threads', 'ThreadsController@store')->middleware('auth');
 Route::post('channels/{channel}/{thread}/replies', 'RepliesController@store');

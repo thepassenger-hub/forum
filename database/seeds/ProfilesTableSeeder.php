@@ -12,13 +12,12 @@ class ProfilesTableSeeder extends Seeder
      */
     public function run()
     {
-        Profile::create([
+        Profile::where('user_id', 1) -> update([
             'name' => 'Admin',
             'user_id' => 1,
             'location' => 'Treviso',
             'gender' => 'm',
             'bio' => 'Dummy admin account to test settings',
-            'avatar' => '/path/to/avatar.png'
         ]);
     }
 }

@@ -14,7 +14,7 @@
             </ul>
         </div>
         <view-profile v-if="tabs[0].isActive" :profile="profile"></view-profile>
-        <edit-profile v-if="tabs[1].isActive" :profile="profile"></edit-profile>
+        <edit-profile v-if="tabs[1].isActive" :profile="profile" @changesSaved="changesSaved"></edit-profile>
         
     </section>
 </template>
@@ -45,6 +45,11 @@
                 this.tabs.forEach(tab => {
                     tab.isActive = tab.name === tabName ? true : false;
                 });
+            },
+
+            changesSaved() {
+                this.getProfile();
+                this.selectTab(this.tabs[0].name);
             }
             
         },
