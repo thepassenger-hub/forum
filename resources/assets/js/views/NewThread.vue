@@ -1,5 +1,5 @@
 <template>
-    <section class="section">
+    <div class="column is-9">
         <form @submit.prevent="sendPost">
             <div class="field">
                 <label class="label">Titolo</label>
@@ -29,7 +29,7 @@
                 </p>
             </div>
         </form> 
-    </section>        
+    </div>        
 </template>
 
 <script>

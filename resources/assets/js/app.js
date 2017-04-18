@@ -3,22 +3,27 @@ import router from './routes';
 // Vue.component('createFile', require('./components/CreateFile.vue'));
 // Vue.component('channel', require('./components/Channel.vue'));
 import isLoggedMixin from './mixins/IsLoggedMixin';
+import getChannelsMixin from './mixins/GetChannelsMixin';
+
 import Path from './models/Path';
 
 const app = new Vue({
     el: '#app',
     router,
-    mixins:[isLoggedMixin],
+    mixins:[isLoggedMixin, getChannelsMixin],
     data: {
         username: false,
         path: new Path(),
+        channels: []
     },
     created(){
         this.checkIfLogged()
             .then(response => {
-                    this.username = response ? response.username : false}
-                )                    
+                    this.username = response ? response.username : false
+                })                    
             .catch(error => console.log(error));
+
+        this.getChannels();
     },
 
     methods: {

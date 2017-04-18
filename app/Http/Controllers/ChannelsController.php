@@ -9,7 +9,7 @@ class ChannelsController extends Controller
 {
     public function index()
     {
-        return Channel::all();
+        return Channel::with('threads')->get();
     }
 
     public function show(Channel $channel)

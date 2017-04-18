@@ -14,8 +14,10 @@ class ThreadsTableSeeder extends Seeder
      */
     public function run()
     {
+        $title = 'Learn PHP in 3 steps.';
         Thread::create([
-            'title' => 'Learn PHP in 3 steps.',
+            'title' => $title,
+            'slug' => str_slug($title, '-'),
             'description' => '3 Steps to learn the ins and outs of PHP the programming language.',
             'body' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'user_id' => User::first()->id,

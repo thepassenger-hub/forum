@@ -13,6 +13,11 @@ class Thread extends Model
     
     protected $hidden = ['user_id', 'channel_id'];
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+    
     public function channel()
     {
         return $this->belongsTo(Channel::class);

@@ -1,9 +1,9 @@
 <template>
-    <section class="section">
+    <div class="column is-9">
         <h1 class="title">List of threads</h1>
-        <button class="button" v-if="isLogged" @click="createNewThread">Create new Thread</button>
+        <button class="button" v-if="isLogged && $root.username" @click="createNewThread">Create new Thread</button>
         <thread v-for="thread in threads" :key="thread.id" @clicked="goToThread(thread)">{{thread.title}}</thread>
-    </section>
+    </div>
 </template>
 
 <script>
@@ -19,7 +19,15 @@
 
             }
         },
-
+        watch: {
+            '$route': function(){
+                this.channel = this.$route.params.channel;
+                this.threads = [];
+                this.getThreads();
+                this.$root.path.update(this.$route.path);
+                
+            }
+        },
         mixins:[isLoggedMixin],
         
         created() {
@@ -45,12 +53,13 @@
             },
 
             goToThread(thread){
-                this.$router.push({ path: '/'+this.channel+'/'+thread.id});
+                this.$router.push({ path: '/'+this.channel+'/'+thread.slug});
             },
 
             createNewThread(){
                 this.$router.push({path: '/' + this.channel +'/new-thread'});
-            }
+            },
+            
 
             
         },

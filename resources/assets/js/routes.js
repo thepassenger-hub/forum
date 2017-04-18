@@ -15,7 +15,8 @@ let routes = [
     },
     {
         path: '/:channel',
-        component: require('./views/Threads')
+        component: require('./views/Threads'),
+        name: 'channel'
     },
     {
         path: '/:channel/new-thread',

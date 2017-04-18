@@ -1,5 +1,5 @@
 <template>
-    <section class="section">
+    <div class="column is-9">
         <div class="tabs is-centered is-boxed">
             <ul>
                 <li :class="{ 'is-active': tabs[0].isActive }">
@@ -18,7 +18,7 @@
         <activity v-if="tabs[2].isActive" :profile="profile"></activity>
         
         
-    </section>
+    </div>
 </template>
 
 <script>

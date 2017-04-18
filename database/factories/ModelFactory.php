@@ -24,18 +24,21 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Channel::class, function (Faker\Generator $faker) {
-
+    $name = $faker->text(50);
     return [
-        'name' => $faker->text(50),
+        'name' => $name,
         'description' => $faker->text(200),        
-        'slug' => $faker->slug(3)
+        'slug' => str_slug($name, '-')
     ];
 });
 
 $factory->define(App\Thread::class, function (Faker\Generator $faker) {
 
+    $title = $faker->text(50);
+
     return [
-        'title' => $faker->text(50),
+        'title' => $title,
+        'slug' => str_slug($title, '-'),        
         'description' => $faker->text(100),
         'body' => $faker->text(200),
         'user_id' => 1,

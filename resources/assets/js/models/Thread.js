@@ -9,6 +9,7 @@ class Thread {
         this.createdAt = data.created_at;
         this.updatedAt = data.updated_at;
         this.creator = data.creator.username;
+        this.slug = data.slug;
     }
 };
 

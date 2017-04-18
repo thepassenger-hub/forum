@@ -8,10 +8,19 @@ use \App\Thread;
 
 class ThreadsController extends Controller
 {
-    public function index(Channel $channel)
+
+    public function index()
     {
-        return $channel->threads()->with('creator')->get();
+        return Thread::with('creator', 'channel')->withCount('replies')
+                        ->join('replies', 'threads.id', '=', 'thread_id')
+                        ->orderBy('replies.id', 'DESC')
+                        ->get();
+
     }
+    // public function index(Channel $channel)
+    // {
+    //     return $channel->threads()->with('creator')->get();
+    // }
 
     public function show($channel, Thread $thread )
     {   
@@ -28,6 +37,7 @@ class ThreadsController extends Controller
         try {
             $channel->addThread([
                 'title' => request('title'),
+                'slug' => makeSlugFromTitle(request('title')),
                 'body' => request('body'),
                 'description' => request('description'),
                 'user_id' => auth()->id(),

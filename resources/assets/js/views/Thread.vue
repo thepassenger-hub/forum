@@ -1,16 +1,14 @@
 <template>
-    <section class="section" v-if="thread">
-        <div class="container is-fluid">
-            <thread :key="thread.id">{{thread.title}} <p slot="body">{{thread.body}}</p></thread>
-            <reply v-if="thread.replies" v-for="reply in thread.replies" :key="reply.id">
-                    <p slot="username"><strong>{{reply.creator}}</strong></p>
-                    <p slot="body">{{reply.body}}</p>
-            </reply>
-            <!--<button  class="button is-primary" @click="showNewReply = true">Add reply</button>-->
-            <hr>
-            <new-reply v-if="isLogged" :thread="threadPath" @posted="getThread"></new-reply>
-        </div>
-    </section>
+    <div class="column is-9" v-if="thread">
+        <thread :key="thread.id">{{thread.title}} <p slot="body">{{thread.body}}</p></thread>
+        <reply v-if="thread.replies" v-for="reply in thread.replies" :key="reply.id">
+                <p slot="username"><strong>{{reply.creator}}</strong></p>
+                <p slot="body">{{reply.body}}</p>
+        </reply>
+        <!--<button  class="button is-primary" @click="showNewReply = true">Add reply</button>-->
+        <hr>
+        <new-reply v-if="isLogged && $root.username" :thread="threadPath" @posted="getThread"></new-reply>
+    </div>
 </template>
 
 <script>

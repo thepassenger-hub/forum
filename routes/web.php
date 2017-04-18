@@ -27,16 +27,17 @@ Route::get('/home', 'HomeController@index');
 //     // var_dump($query->time);
 // });
 Route::get('channels', 'ChannelsController@index');
-Route::get('channels/{channel}/threads', 'ThreadsController@index');
+Route::get('threads', 'ThreadsController@index');
+// Route::get('channels/{channel}/threads', 'ThreadsController@index');
 Route::get('channels/{channel}/{thread}', 'ThreadsController@show');
 Route::get('profile', 'ProfileController@index');
 Route::get('profile/replies', 'RepliesController@index');
-Route::post('profile', 'ProfileController@store');
-Route::post('profile/avatar', 'ProfileController@uploadAvatar');
+Route::post('profile', 'ProfileController@store')->middleware('auth');
+Route::post('profile/avatar', 'ProfileController@uploadAvatar')->middleware('auth');
 
 Route::post('threads/{thread}/replies', 'RepliesController@store')->middleware('auth');
 Route::post('channels/{channel}/threads', 'ThreadsController@store')->middleware('auth');
-Route::post('channels/{channel}/{thread}/replies', 'RepliesController@store');
+Route::post('channels/{channel}/{thread}/replies', 'RepliesController@store')->middleware('auth');
 
 
 
