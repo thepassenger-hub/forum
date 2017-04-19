@@ -9,17 +9,27 @@
             <div class="media-content">
                 <div class="content">
                     <h1><slot></slot></h1>
-                    <p>
+                    <div class="meta">
+                        <slot name="channel"></slot>
+                        <span>{{thread.updated_at}}</span>
+                        by
+                        <router-link :to="thread.creator">{{thread.creator.username}}</router-link>
+                    </div>
+                    <div class="body">
                         <slot name="body"></slot>
-                    </p>
+                    </div>
                 </div>
+                
             </div>
+            <div class="reply-count">
+                    {{thread.replies_count}}
+                </div>
         </article>
     </div>
 </template>
 
 <script>
     export default {
-
+        props: ['thread']
     }
 </script>

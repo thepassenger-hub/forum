@@ -5,16 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \App\Channel;
 use \App\Thread;
+use \App\Filters\ThreadFilters;
 
 class ThreadsController extends Controller
 {
 
-    public function index()
+    public function index(Channel $channel, ThreadFilters $filters)
     {
-        return Thread::with('creator', 'channel')->withCount('replies')
-                        ->join('replies', 'threads.id', '=', 'thread_id')
-                        ->orderBy('replies.id', 'DESC')
-                        ->get();
+       
+        return $this->getThreads($channel, $filters);
 
     }
     // public function index(Channel $channel)
@@ -46,5 +45,25 @@ class ThreadsController extends Controller
         } catch (Exception $e) {
             return response( $e, 500);
         }
+    }
+
+    /**
+     * Fetch all relevant threads.
+     *
+     * @param Channel       $channel
+     * @param ThreadFilters $filters
+     * @return mixed
+     */
+    protected function getThreads(Channel $channel, ThreadFilters $filters)
+    {
+        // select * from threads join replies on replies.thread_id=threads.id group by threads.id  order by replies.created_at 
+        $threads = Thread::with('creator', 'channel')->withCount('replies')
+                        ->join('replies', 'replies.thread_id', '=', 'threads.id')
+                        ->groupBy('threads.id')
+                        ->orderByRaw('Max(replies.id) desc');
+        if ($channel->exists) {
+            $threads->where('channel_id', $channel->id);
+        }
+        return $threads->get();
     }
 }

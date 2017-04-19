@@ -28,7 +28,7 @@ Route::get('/home', 'HomeController@index');
 // });
 Route::get('channels', 'ChannelsController@index');
 Route::get('threads', 'ThreadsController@index');
-// Route::get('channels/{channel}/threads', 'ThreadsController@index');
+Route::get('channels/{channel}/threads', 'ThreadsController@index');
 Route::get('channels/{channel}/{thread}', 'ThreadsController@show');
 Route::get('profile', 'ProfileController@index');
 Route::get('profile/replies', 'RepliesController@index');

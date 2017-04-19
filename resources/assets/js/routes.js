@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 let routes = [
     {
         path: '/',
-        component: require('./views/Home')
+        component: require('./views/Homev2')
     },
     {
         path: '/sign-in',

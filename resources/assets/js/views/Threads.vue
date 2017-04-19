@@ -2,7 +2,10 @@
     <div class="column is-9">
         <h1 class="title">List of threads</h1>
         <button class="button" v-if="isLogged && $root.username" @click="createNewThread">Create new Thread</button>
-        <thread v-for="thread in threads" :key="thread.id" @clicked="goToThread(thread)">{{thread.title}}</thread>
+        <thread v-for="thread in threads" :key="thread.id" @clicked="goToThread(thread)" :thread="thread">
+            {{thread.title}} 
+            <p slot="body">{{thread.body}}</p>
+        </thread>
     </div>
 </template>
 
