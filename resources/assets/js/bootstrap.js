@@ -18,6 +18,8 @@
  */
 import VueRouter from 'vue-router';
 window.Vue = require('vue');
+import VuePaginate from 'vue-paginate'
+Vue.use(VuePaginate)
 
 Vue.use(VueRouter);
 /**

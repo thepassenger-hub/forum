@@ -16,6 +16,7 @@
     "jquery": "^3.1.1",
     "laravel-mix": "0.*",
     "vue": "^2.1.10",
+    "vue-paginate": "^3.4.0",
     "vue-router": "^2.4.0"
   }
 }

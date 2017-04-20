@@ -17,7 +17,7 @@ class RepliesController extends Controller
 
     public function index()
     {
-        return request()->user()->replies()->with('thread')->get();
+        return request()->user()->replies()->with('thread')->latest()->get();
     }
 
     public function store(Thread $thread)
