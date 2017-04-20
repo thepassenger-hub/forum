@@ -4700,6 +4700,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+var VueScrollTo = __webpack_require__(88);
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['threads', 'perPage', 'current'],
     data: function data() {
@@ -4749,6 +4750,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.endEllipsis = true;
                 this.endPages = this.pageTabs.slice(-1);
             }
+        },
+        changePage: function changePage(page) {
+            this.$emit('pageClicked', page);
+            VueScrollTo.scrollTo('.column.is-9');
         }
     }
 });
@@ -6648,7 +6653,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }],
       on: {
         "click": function($event) {
-          _vm.$emit('pageClicked', page)
+          _vm.changePage(page)
         }
       }
     }, [_c('a', {
@@ -6661,15 +6666,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "pagination-list"
   }, [_vm._l((_vm.startPages), function(page) {
     return _c('li', {
-      directives: [{
-        name: "scroll-to",
-        rawName: "v-scroll-to",
-        value: ('.column.is-9'),
-        expression: "'.column.is-9'"
-      }],
       on: {
         "click": function($event) {
-          _vm.$emit('pageClicked', page)
+          _vm.changePage(page)
         }
       }
     }, [_c('a', {
@@ -6679,30 +6678,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_vm._v(_vm._s(page))])])
   }), _vm._v(" "), (_vm.startEllipsis) ? _c('li', {
-    directives: [{
-      name: "scroll-to",
-      rawName: "v-scroll-to",
-      value: ('.column.is-9'),
-      expression: "'.column.is-9'"
-    }],
     on: {
       "click": function($event) {
-        _vm.$emit('pageClicked', _vm.middlePages[0] !== undefined ? _vm.middlePages[0] - 1 : _vm.endPages[0] - 1)
+        _vm.changePage(_vm.middlePages[0] !== undefined ? _vm.middlePages[0] - 1 : _vm.endPages[0] - 1)
       }
     }
   }, [_c('a', {
     staticClass: "pagination-link"
   }, [_vm._v("...")])]) : _vm._e(), _vm._v(" "), _vm._l((_vm.middlePages), function(page) {
     return _c('li', {
-      directives: [{
-        name: "scroll-to",
-        rawName: "v-scroll-to",
-        value: ('.column.is-9'),
-        expression: "'.column.is-9'"
-      }],
       on: {
         "click": function($event) {
-          _vm.$emit('pageClicked', page)
+          _vm.changePage(page)
         }
       }
     }, [_c('a', {
@@ -6712,31 +6699,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_vm._v(_vm._s(page))])])
   }), _vm._v(" "), (_vm.endEllipsis) ? _c('li', {
-    directives: [{
-      name: "scroll-to",
-      rawName: "v-scroll-to",
-      value: ('.column.is-9'),
-      expression: "'.column.is-9'"
-    }],
     on: {
       "click": function($event) {
-        _vm.$emit('pageClicked',
-          _vm.middlePages.slice(-1)[0] !== undefined ? _vm.middlePages.slice(-1)[0] + 1 : _vm.startPages.slice(-1)[0] + 1)
+        _vm.changePage(_vm.middlePages.slice(-1)[0] !== undefined ? _vm.middlePages.slice(-1)[0] + 1 : _vm.startPages.slice(-1)[0] + 1)
       }
     }
   }, [_c('a', {
     staticClass: "pagination-link"
   }, [_vm._v("...")])]) : _vm._e(), _vm._v(" "), _vm._l((_vm.endPages), function(page) {
     return _c('li', {
-      directives: [{
-        name: "scroll-to",
-        rawName: "v-scroll-to",
-        value: ('.column.is-9'),
-        expression: "'.column.is-9'"
-      }],
       on: {
         "click": function($event) {
-          _vm.$emit('pageClicked', page)
+          _vm.changePage(page)
         }
       }
     }, [_c('a', {
