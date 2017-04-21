@@ -3,12 +3,10 @@
         <h1 class="title">List of threads</h1>
         <button class="button" v-if="isLogged && $root.username" @click="createNewThread">Create new Thread</button>
         <thread v-for="thread in threads.slice(0+10*(currentPage-1), 10*currentPage)" :key="thread.id" @clicked="goToThread(thread)" :thread="thread">
-            {{thread.title}} 
-            <p slot="body">{{thread.body}}</p>
+            <a>{{thread.title}}</a>
+            <p slot="body">{{thread.body | truncate(200)}}</p>
         </thread>
         <paginate-links :current="currentPage" :perPage="perPage" :threads="threads"
-            @prev="currentPage--" 
-            @next="currentPage++" 
             @pageClicked="currentPage = $event" >
         </paginate-links>
     </div>

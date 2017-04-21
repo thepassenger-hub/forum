@@ -39,7 +39,7 @@ $factory->define(App\Thread::class, function (Faker\Generator $faker) {
     return [
         'title' => $title,
         'slug' => str_slug($title, '-'),        
-        'body' => $faker->text(200),
+        'body' => $faker->text(1000),
         'user_id' => 1,
         'channel_id' => $faker->numberBetween(1, 11)
     ];

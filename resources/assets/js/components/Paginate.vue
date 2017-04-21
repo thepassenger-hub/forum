@@ -1,9 +1,11 @@
 <template>
     <nav class="pagination" v-if="threads">
-        <a class="pagination-previous" :class="{'is-disabled': this.current == 1}" @click="$emit('prev')">Previous</a>
-        <a class="pagination-next" :class="{'is-disabled': this.current == this.pageTabs.slice(-1)[0]}" @click="$emit('next')">Next page</a>
+        <a class="pagination-previous" :class="{'is-disabled': this.current == 1}" 
+            @click="changePage(current - 1)">Previous</a>
+        <a class="pagination-next" :class="{'is-disabled': this.current == this.pageTabs.slice(-1)[0]}"
+            @click="changePage(current + 1)">Next page</a>
         <ul class="pagination-list" v-if="pageTabs.length <= 9">
-            <li v-for="page in pageTabs" v-scroll-to="'.column.is-9'" @click="changePage(page)" >
+            <li v-for="page in pageTabs" @click="changePage(page)" >
                 <a class="pagination-link" :class="{'is-current': current === page}">{{page}}</a>
             </li>
         </ul>

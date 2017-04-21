@@ -1,5 +1,5 @@
 <template>
-    <div @click="$emit('clicked')" class="box">
+    <div class="thread">
         <article class="media">
             <figure class="media-left">
                 <p class="image is-64x64">
@@ -8,7 +8,7 @@
             </figure>
             <div class="media-content">
                 <div class="content">
-                    <h1><slot></slot></h1>
+                    <h4 @click="$emit('clicked')"><slot></slot></h4>
                     <div class="meta">
                         <slot name="channel"></slot>
                         <span>{{thread.updated_at}}</span>

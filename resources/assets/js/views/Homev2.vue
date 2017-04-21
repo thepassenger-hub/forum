@@ -2,13 +2,11 @@
     <div class="column is-9">
         <thread v-for="thread in threads.slice(0+10*(currentPage-1), 10*currentPage)" :thread="thread" :key="thread.name"
             @clicked="goToThread(thread.channel.slug + '/'+thread.slug)" >
-                {{thread.title}}
+                <a>{{thread.title}}</a>
                 <router-link slot="channel" :to="thread.channel.slug">{{thread.channel.name}}</router-link>
-                <p slot="body"> {{thread.body}}</p>
+                <p slot="body"> {{thread.body | truncate(200)}}</p>
         </thread>
         <paginate-links :current="currentPage" :perPage="perPage" :threads="threads"
-            @prev="currentPage--" 
-            @next="currentPage++" 
             @pageClicked="currentPage = $event" >
         </paginate-links>
     </div>

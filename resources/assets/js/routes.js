@@ -29,7 +29,14 @@ let routes = [
     
 ];
 
-export default new VueRouter({
+const router = new VueRouter({
     routes,
-    linkActiveClass: 'is-active',
+    linkActiveClass: 'is-active'
 });
+
+router.beforeEach((to, from, next) => {
+    VueScrollTo.scrollTo('.column.is-9');    
+    next();
+    
+})
+export default router;

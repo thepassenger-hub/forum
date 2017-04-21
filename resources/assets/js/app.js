@@ -7,6 +7,10 @@ import getChannelsMixin from './mixins/GetChannelsMixin';
 
 import Path from './models/Path';
 
+Vue.filter('truncate', function (text, value) {
+    if (text.length <= value) return text;
+    return text.substring(0, value) + '...';
+})
 const app = new Vue({
     el: '#app',
     router,
