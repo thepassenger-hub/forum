@@ -9,7 +9,7 @@ class ThreadFilters extends Filters
      *
      * @var array
      */
-    protected $filters = ['by', 'popular'];
+    protected $filters = ['by', 'popular', 'contributed_to'];
     /**
      * Filter the query by a given username.
      *
@@ -18,18 +18,36 @@ class ThreadFilters extends Filters
      */
     protected function by($username)
     {
-        $user = User::where('name', $username)->firstOrFail();
+        $user = User::where('username', $username)->firstOrFail();
         return $this->builder->where('user_id', $user->id);
     }
     /**
      * Filter the query according to most popular threads.
      *
-     * @return $this
+     * @param string $timeFrame
+     * @return Builder
      */
-    protected function popular()
+    protected function popular($timeFrame)
+    {   
+        $builder = $this->builder;        
+        $builder->getQuery()->orders = [];
+        if ($timeFrame === 'month') $builder->whereMonth('created_at', \Carbon\Carbon::now()->month);
+        return $builder->orderBy('replies_count', 'desc');
+    }
+
+    /**
+    * Filter the query to show threads where I replied.
+    *
+    * @return Builder
+    */
+    protected function contributed_to()
     {
-        $this->builder->getQuery()->orders = [];
-        return $this->builder->orderBy('replies_count', 'desc');
+        $user = auth()->user();
+        $builder = $this->builder;                
+        if ($user) $builder->whereHas('replies', function($query) use ($user){
+                                $query->where('user_id', $user->id);
+                            });
+        return $builder;
     }
     
 }

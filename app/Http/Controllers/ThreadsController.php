@@ -52,15 +52,17 @@ class ThreadsController extends Controller
      */
     protected function getThreads(Channel $channel, ThreadFilters $filters)
     {
-        // select * from threads join replies on replies.thread_id=threads.id group by threads.id  order by replies.created_at 
         $threads = Thread::with('creator', 'channel')->withCount('replies')
-                        ->orderBy('last_reply', 'desc');
-                        // ->join('replies', 'replies.thread_id', '=', 'threads.id')
-                        // ->groupBy('threads.id')
-                        // ->orderByRaw('Max(replies.id) desc');
+                         ->orderBy('last_reply', 'desc')->filter($filters);
+
         if ($channel->exists) {
             $threads->where('channel_id', $channel->id);
         }
         return $threads->get();
+    }
+
+    public function test(Channel $channel, ThreadFilters $filters)
+    {
+        return $this->getThreads($channel, $filters);
     }
 }

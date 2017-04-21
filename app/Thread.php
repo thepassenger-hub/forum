@@ -5,9 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Filters\ThreadFilters;
-// use \App\Channel;
-// use \App\User;
-// use \App\Reply;
+
 
 class Thread extends Model
 {
