@@ -24,7 +24,7 @@ let routes = [
         beforeEnter: (to, from, next) => {
             this.a.app.checkIfLogged()
                 .then(response => response ? next() : next('/sign-in'))                    
-                .catch(error => next('/'+ vm.channel));
+                .catch(error => next('/'));
         }
     },
     {

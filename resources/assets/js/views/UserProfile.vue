@@ -36,6 +36,13 @@
             let username = this.$route.params.username;
             this.getProfile(username);
         },
+        watch: {
+            '$route': function(){
+                this.$root.path.update(this.$route.path);
+                let username = this.$route.params.username;
+                this.getProfile(username);
+            }
+        },
         methods: {
             getProfile(username) {
                 axios.get('/profile/user/' + username)

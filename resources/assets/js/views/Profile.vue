@@ -40,13 +40,6 @@
             this.$root.path.update(this.$route.path);
             this.getProfile();
         },
-        // beforeRouteEnter: (to, from, next) => {
-        //     next(vm => {
-        //         vm.checkIfLogged()
-        //             .then(response => response ? next() : next('/sign-in'))                    
-        //             .catch(error => next('/'+ vm.channel));
-        //     });
-        // },
         methods: {
             getProfile() {
                 axios.get('/profile')

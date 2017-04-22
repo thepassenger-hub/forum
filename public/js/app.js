@@ -5629,13 +5629,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.getProfile();
     },
 
-    // beforeRouteEnter: (to, from, next) => {
-    //     next(vm => {
-    //         vm.checkIfLogged()
-    //             .then(response => response ? next() : next('/sign-in'))                    
-    //             .catch(error => next('/'+ vm.channel));
-    //     });
-    // },
     methods: {
         getProfile: function getProfile() {
             var _this = this;
@@ -6290,7 +6283,7 @@ var routes = [{
         _this.a.app.checkIfLogged().then(function (response) {
             return response ? next() : next('/sign-in');
         }).catch(function (error) {
-            return next('/' + vm.channel);
+            return next('/');
         });
     }
 }, {
@@ -17274,6 +17267,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.getProfile(username);
     },
 
+    watch: {
+        '$route': function $route() {
+            this.$root.path.update(this.$route.path);
+            var username = this.$route.params.username;
+            this.getProfile(username);
+        }
+    },
     methods: {
         getProfile: function getProfile(username) {
             var _this = this;
