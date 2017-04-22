@@ -6,7 +6,7 @@
             <a>{{thread.title}}</a>
             <p slot="body">{{thread.body | truncate(200)}}</p>
         </thread>
-        <paginate-links :current="currentPage" :perPage="perPage" :threads="threads"
+        <paginate-links v-show="threads.length > perPage" :current="currentPage" :perPage="perPage" :threads="threads"
             @pageClicked="currentPage = $event" >
         </paginate-links>
     </div>

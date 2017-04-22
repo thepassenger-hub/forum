@@ -58,3 +58,13 @@ ul.breadcrumb li a:hover{
   padding: 1.25rem;
   border-bottom: 1px solid #f1f0f0;
 }
+
+.thread .body p {
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+li.is-active a {
+  font-weight: bold;
+  color: $primary;
+}

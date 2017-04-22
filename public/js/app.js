@@ -6943,6 +6943,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       slot: "body"
     }, [_vm._v(_vm._s(_vm._f("truncate")(thread.body, 200)))])])
   }), _vm._v(" "), _c('paginate-links', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.threads.length > _vm.perPage),
+      expression: "threads.length > perPage"
+    }],
     attrs: {
       "current": _vm.currentPage,
       "perPage": _vm.perPage,
@@ -7138,6 +7144,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       slot: "body"
     }, [_vm._v(" " + _vm._s(_vm._f("truncate")(thread.body, 200)))])], 1)
   }), _vm._v(" "), _c('paginate-links', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.threads.length > _vm.perPage),
+      expression: "threads.length > perPage"
+    }],
     attrs: {
       "current": _vm.currentPage,
       "perPage": _vm.perPage,
