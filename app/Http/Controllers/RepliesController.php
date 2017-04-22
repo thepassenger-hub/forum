@@ -4,20 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\Thread;
+use \App\User;
 
 class RepliesController extends Controller
 {
     /**
      * Create a new RepliesController instance.
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
-    public function index()
+    public function index(User $user)
     {
-        return request()->user()->replies()->with('thread')->latest()->get();
+        return $user->replies()->with('thread')->latest()->get();
     }
 
     public function store(Thread $thread)

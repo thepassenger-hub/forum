@@ -52,7 +52,7 @@
         beforeRouteEnter: (to, from, next) => {
             next(vm => {
                 vm.checkIfLogged()
-                    .then(response => response ? next() : next('/login'))                    
+                    .then(response => response ? next() : next('/sign-in'))                    
                     .catch(error => next('/'+ vm.channel));
             });
         },

@@ -18,7 +18,7 @@
             @include ('layouts.hero')
 
             <ul class="breadcrumb" v-if="path">
-                <router-link v-for="route in path.breadcrumbs" tag="li" :to="route.path" :key="route"><a>@{{route.name}}</a></router-link>
+                <router-link v-for="route in path.breadcrumbs" tag="li" :to="route.path" :key="route" exact><a>@{{route.name}}</a></router-link>
             </ul>
             <section class="section">
                 <div class="container">

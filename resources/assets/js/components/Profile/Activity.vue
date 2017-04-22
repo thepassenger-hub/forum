@@ -23,7 +23,7 @@
 
         methods: {
             getReplies(){
-                axios.get('/profile/replies')
+                axios.get('/replies/' + this.profile.user.username)
                      .then(response => this.replies = response.data)
                      .catch(error => console.log(error.response.data))
             }

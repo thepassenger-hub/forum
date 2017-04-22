@@ -25,6 +25,11 @@ class User extends Authenticatable
         'created' => UserCreated::class,
     ];
 
+    public function getRouteKeyName()
+    {
+        return 'username';
+    }
+
     public function threads()
     {
         return $this->hasMany(Thread::class);

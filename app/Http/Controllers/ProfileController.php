@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\Profile;
+use \App\User;
 
 class ProfileController extends Controller
 {
@@ -29,6 +30,15 @@ class ProfileController extends Controller
         auth()->user()->profile()->update(request()->all());
     }
 
+    public function show(User $user)
+    {
+        return $user->profile()->with([
+                'user' => function($query){
+                            $query->withCount(['replies', 'threads']);
+                        }
+                ])->first();
+    }
+    
     public function uploadAvatar()
     {
         $this->validate(request(), [

@@ -5166,7 +5166,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         getReplies: function getReplies() {
             var _this = this;
 
-            axios.get('/profile/replies').then(function (response) {
+            axios.get('/replies/' + this.profile.user.username).then(function (response) {
                 return _this.replies = response.data;
             }).catch(function (error) {
                 return console.log(error.response.data);
@@ -5560,7 +5560,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
         next(function (vm) {
             vm.checkIfLogged().then(function (response) {
-                return response ? next() : next('/login');
+                return response ? next() : next('/sign-in');
             }).catch(function (error) {
                 return next('/' + vm.channel);
             });
@@ -5588,6 +5588,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_IsLoggedMixin__ = __webpack_require__(2);
 //
 //
 //
@@ -5611,6 +5612,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -5619,11 +5622,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             profile: {}
         };
     },
+
+    mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_IsLoggedMixin__["a" /* default */]],
     created: function created() {
         this.$root.path.update(this.$route.path);
         this.getProfile();
     },
 
+    // beforeRouteEnter: (to, from, next) => {
+    //     next(vm => {
+    //         vm.checkIfLogged()
+    //             .then(response => response ? next() : next('/sign-in'))                    
+    //             .catch(error => next('/'+ vm.channel));
+    //     });
+    // },
     methods: {
         getProfile: function getProfile() {
             var _this = this;
@@ -5844,7 +5856,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var vm = this;
 
             axios.get('/channels/' + this.channel + '/' + this.threadPath).then(function (response) {
-                console.log(response.data);
                 if (response.data) vm.thread = new __WEBPACK_IMPORTED_MODULE_0__models_ThreadWithReplies__["a" /* default */](response.data);
             }).catch(function (error) {
                 return console.log(error);
@@ -6252,6 +6263,8 @@ var ThreadWithReplies = function (_Thread) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(15);
+var _this = this;
+
 
 
 var routes = [{
@@ -6265,7 +6278,24 @@ var routes = [{
     component: __webpack_require__(65)
 }, {
     path: '/profile',
-    component: __webpack_require__(64)
+    component: __webpack_require__(64),
+    beforeUpdate: function beforeUpdate(to, from, next) {
+        _this.a.app.checkIfLogged().then(function (response) {
+            return response ? next() : next('/sign-in');
+        }).catch(function (error) {
+            return next('/' + vm.channel);
+        });
+    },
+    beforeEnter: function beforeEnter(to, from, next) {
+        _this.a.app.checkIfLogged().then(function (response) {
+            return response ? next() : next('/sign-in');
+        }).catch(function (error) {
+            return next('/' + vm.channel);
+        });
+    }
+}, {
+    path: '/profile/user/:username',
+    component: __webpack_require__(87)
 }, {
     path: '/:channel',
     component: __webpack_require__(67),
@@ -17162,6 +17192,156 @@ module.exports = g;
 __webpack_require__(17);
 module.exports = __webpack_require__(18);
 
+
+/***/ }),
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(88),
+  /* template */
+  __webpack_require__(89),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/giulio/Desktop/Projects/laravel/forum/resources/assets/js/views/UserProfile.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] UserProfile.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-a38eb026", Component.options)
+  } else {
+    hotAPI.reload("data-v-a38eb026", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 88 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_IsLoggedMixin__ = __webpack_require__(2);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            tabs: [{ name: 'View', isActive: true }, { name: 'Activity', isActive: false }],
+            profile: {}
+        };
+    },
+
+    mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_IsLoggedMixin__["a" /* default */]],
+    created: function created() {
+        this.$root.path.update(this.$route.path);
+        var username = this.$route.params.username;
+        this.getProfile(username);
+    },
+
+    methods: {
+        getProfile: function getProfile(username) {
+            var _this = this;
+
+            axios.get('/profile/user/' + username).then(function (response) {
+                return _this.profile = response.data;
+            }).catch(function (error) {
+                return console.log(error.response.data);
+            });
+        },
+        selectTab: function selectTab(tabName) {
+            this.tabs.forEach(function (tab) {
+                tab.isActive = tab.name === tabName ? true : false;
+            });
+        }
+    },
+    components: {
+        'viewProfile': __webpack_require__(60),
+        'activity': __webpack_require__(58)
+    }
+});
+
+/***/ }),
+/* 89 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "column is-9"
+  }, [_c('div', {
+    staticClass: "tabs is-centered is-boxed"
+  }, [_c('ul', [_c('li', {
+    class: {
+      'is-active': _vm.tabs[0].isActive
+    }
+  }, [_c('a', {
+    on: {
+      "click": function($event) {
+        _vm.selectTab(_vm.tabs[0].name)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.tabs[0].name))])]), _vm._v(" "), _c('li', {
+    class: {
+      'is-active': _vm.tabs[1].isActive
+    }
+  }, [_c('a', {
+    on: {
+      "click": function($event) {
+        _vm.selectTab(_vm.tabs[1].name)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.tabs[1].name))])])])]), _vm._v(" "), (_vm.tabs[0].isActive) ? _c('view-profile', {
+    attrs: {
+      "profile": _vm.profile
+    }
+  }) : _vm._e(), _vm._v(" "), (_vm.tabs[1].isActive) ? _c('activity', {
+    attrs: {
+      "profile": _vm.profile
+    }
+  }) : _vm._e()], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-a38eb026", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
