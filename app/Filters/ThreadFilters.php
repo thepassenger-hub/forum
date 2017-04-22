@@ -9,7 +9,7 @@ class ThreadFilters extends Filters
      *
      * @var array
      */
-    protected $filters = ['by', 'popular', 'contributed_to'];
+    protected $filters = ['by', 'popular', 'trending', 'contributed_to'];
     /**
      * Filter the query by a given username.
      *
@@ -27,12 +27,23 @@ class ThreadFilters extends Filters
      * @param string $timeFrame
      * @return Builder
      */
-    protected function popular($timeFrame)
+    protected function popular()
     {   
-        $builder = $this->builder;        
-        $builder->getQuery()->orders = [];
-        if ($timeFrame === 'month') $builder->whereMonth('created_at', \Carbon\Carbon::now()->month);
-        return $builder->orderBy('replies_count', 'desc');
+        $this->builder->getQuery()->orders = [];
+        return $this->builder->orderBy('replies_count', 'desc');
+    }
+
+    /**
+     * Filter the query according to most popular last week.
+     *
+     * @return Builder
+     */
+    protected function trending()
+    {       
+        $this->builder->getQuery()->orders = [];
+        return  $this->builder
+                ->whereMonth('created_at', \Carbon\Carbon::now()->month)
+                ->orderBy('replies_count', 'desc');
     }
 
     /**
@@ -49,5 +60,6 @@ class ThreadFilters extends Filters
                             });
         return $builder;
     }
+
     
 }

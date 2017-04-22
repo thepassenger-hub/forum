@@ -6,6 +6,10 @@ let routes = [
         component: require('./views/Homev2')
     },
     {
+        path: '/threads',
+        component: require('./views/Homev2')
+    },
+    {
         path: '/sign-in',
         component: require('./views/SignIn')
     },

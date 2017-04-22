@@ -28,17 +28,28 @@
             this.$root.path.update(this.$route.path);
             
         },
+        watch: {
+            '$route': function(){
+                this.threads = [];
+                this.currentPage = 1,
+                this.getLatestThreads();
+                this.$root.path.update(this.$route.path);
+            }
+        },
         methods: {
             goToThread(threadPath){
-                this.$router.push({ path: '/'+threadPath});
+                this.$router.push({ path: '/' + threadPath});
             },
 
             getLatestThreads(){
-                axios.get('/threads')
-                     .then(response => {
-                         response.data.forEach(thread => this.threads.push(new Thread(thread)));
-                     })
-                     .catch(error => console.log(error.response.data));
+                var vm = this;
+                axios.get('/threads', {
+                        params: vm.$route.query
+                    })
+                    .then(response => {
+                        response.data.forEach(thread => this.threads.push(new Thread(thread)));
+                    })
+                    .catch(error => console.log(error.response.data));
             }
         },
 

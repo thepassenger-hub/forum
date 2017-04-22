@@ -5464,6 +5464,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.$root.path.update(this.$route.path);
     },
 
+    watch: {
+        '$route': function $route() {
+            this.threads = [];
+            this.currentPage = 1, this.getLatestThreads();
+            this.$root.path.update(this.$route.path);
+        }
+    },
     methods: {
         goToThread: function goToThread(threadPath) {
             this.$router.push({ path: '/' + threadPath });
@@ -5471,7 +5478,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         getLatestThreads: function getLatestThreads() {
             var _this = this;
 
-            axios.get('/threads').then(function (response) {
+            var vm = this;
+            axios.get('/threads', {
+                params: vm.$route.query
+            }).then(function (response) {
                 response.data.forEach(function (thread) {
                     return _this.threads.push(new __WEBPACK_IMPORTED_MODULE_0__models_Thread__["a" /* default */](thread));
                 });
@@ -6246,6 +6256,9 @@ var ThreadWithReplies = function (_Thread) {
 
 var routes = [{
     path: '/',
+    component: __webpack_require__(62)
+}, {
+    path: '/threads',
     component: __webpack_require__(62)
 }, {
     path: '/sign-in',
