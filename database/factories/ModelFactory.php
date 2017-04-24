@@ -40,9 +40,10 @@ $factory->define(App\Thread::class, function (Faker\Generator $faker) {
         'title' => $title,
         'slug' => str_slug($title, '-'),        
         'body' => $faker->text(1000),
-        'user_id' => 1,
+        'user_id' => $faker->numberBetween(1,11),
         'channel_id' => $faker->numberBetween(1, 11)
     ];
+
 });
 
 $factory->define(App\Reply::class, function (Faker\Generator $faker) {

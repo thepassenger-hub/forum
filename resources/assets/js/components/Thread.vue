@@ -13,7 +13,7 @@
                         <slot name="channel"></slot>
                         <span>{{thread.updated_at}}</span>
                         by
-                        <router-link :to="thread.creator">{{thread.creator.username}}</router-link>
+                        <router-link :to="'/@'+thread.creator.username">{{thread.creator.username}}</router-link>
                     </div>
                     <div class="body">
                         <slot name="body"></slot>

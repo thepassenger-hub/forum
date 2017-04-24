@@ -24,7 +24,6 @@ class ThreadFilters extends Filters
     /**
      * Filter the query according to most popular threads.
      *
-     * @param string $timeFrame
      * @return Builder
      */
     protected function popular()

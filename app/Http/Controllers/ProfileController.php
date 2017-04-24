@@ -8,15 +8,6 @@ use \App\User;
 
 class ProfileController extends Controller
 {
-    public function index()
-    {
-        $out = auth()->user()->profile()->with([
-                'user' => function($query){
-                            $query->withCount(['replies', 'threads']);
-                        }
-                ])->first();
-        return $out;
-    }
 
     public function store()
     {

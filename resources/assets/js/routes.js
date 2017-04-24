@@ -14,22 +14,8 @@ let routes = [
         component: require('./views/SignIn')
     },
     {
-        path: '/profile',
-        component: require('./views/Profile'),
-        beforeUpdate: (to, from, next) => {
-            this.a.app.checkIfLogged()
-                .then(response => response ? next() : next('/sign-in'))                    
-                .catch(error => next('/'+ vm.channel));
-        },
-        beforeEnter: (to, from, next) => {
-            this.a.app.checkIfLogged()
-                .then(response => response ? next() : next('/sign-in'))                    
-                .catch(error => next('/'));
-        }
-    },
-    {
-        path: '/profile/user/:username',
-        component: require('./views/UserProfile')
+        path: '/@:username',
+        component: require('./views/Profile')
     },
     {
         path: '/:channel',

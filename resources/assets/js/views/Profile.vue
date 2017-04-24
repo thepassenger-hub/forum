@@ -5,7 +5,7 @@
                 <li :class="{ 'is-active': tabs[0].isActive }">
                     <a  @click="selectTab(tabs[0].name)">{{ tabs[0].name }}</a>
                 </li>
-                <li :class="{ 'is-active': tabs[1].isActive }">
+                <li v-if="this.$root.username === (this.profile ? this.profile.user.username : '')" :class="{ 'is-active': tabs[1].isActive }">
                     <a  @click="selectTab(tabs[1].name)">{{ tabs[1].name }}</a>
                 </li>
                 <li :class="{ 'is-active': tabs[2].isActive }">
@@ -32,7 +32,13 @@
                         {name: 'Edit', isActive: false},
                         {name: 'Activity', isActive: false}
                     ],
-                profile: {}
+                profile: false
+            }
+        },
+        watch: {
+            '$route': function() {
+                this.getProfile();
+                this.$root.path.update(this.$route.path);
             }
         },
         mixins:[isLoggedMixin],
@@ -42,7 +48,7 @@
         },
         methods: {
             getProfile() {
-                axios.get('/profile')
+                axios.get('/profile/'+this.$route.params.username)
                      .then(response => this.profile = response.data)
                      .catch(error => console.log(error.response.data))
             },

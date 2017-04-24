@@ -73,7 +73,6 @@
                 imageSrc: null
             }
         },
-
         methods: {
             submitChanges() {
                 this.form.post('/profile')

@@ -38,7 +38,7 @@ class RegisterController extends Controller
 
         $this->guard()->login($user);
 
-        return response('Ok', 200);
+        return response(['user' => auth()->user()], 200);
     }
 
     /**
