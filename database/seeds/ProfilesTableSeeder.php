@@ -16,8 +16,7 @@ class ProfilesTableSeeder extends Seeder
             'name' => 'Admin',
             'user_id' => 1,
             'location' => 'Treviso',
-            'gender' => 'm',
-            'bio' => 'Dummy admin account to test settings',
+            'bio' => 'Dummy admin account to test settings'
         ]);
     }
 }

@@ -23,7 +23,7 @@ class ThreadsTableSeeder extends Seeder
             'channel_id' => Channel::first()->id
         ]);
 
-        factory(Thread::class, 50)->create();
+        factory(Thread::class, 500)->create();
 
     }
 }

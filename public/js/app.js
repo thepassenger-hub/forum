@@ -5176,7 +5176,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-var VueScrollTo = __webpack_require__(19);
+// var VueScrollTo = require('vue-scrollto');
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['posts', 'perPage', 'current'],
     data: function data() {
@@ -5234,7 +5234,6 @@ var VueScrollTo = __webpack_require__(19);
         },
         changePage: function changePage(page) {
             this.$emit('pageClicked', page);
-            VueScrollTo.scrollTo('.column.is-9');
         }
     }
 });
@@ -5334,19 +5333,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -5356,7 +5342,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             form: new __WEBPACK_IMPORTED_MODULE_0__models_Form__["a" /* default */]({
                 name: this.profile.name,
-                gender: this.profile.gender,
                 bio: this.profile.bio,
                 location: this.profile.location,
                 avatar: this.profile.avatar
@@ -5412,10 +5397,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
 //
 //
 //
@@ -5559,6 +5540,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+var VueScrollTo = __webpack_require__(19);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -5935,6 +5918,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+var VueScrollTo = __webpack_require__(19);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -6012,6 +5996,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+var VueScrollTo = __webpack_require__(19);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -6958,7 +6943,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "pageClicked": function($event) {
-        _vm.currentPage = $event
+        _vm.currentPage = $event;
+        this.VueScrollTo.scrollTo('.column.is-9');
       }
     }
   }) : _vm._e(), _vm._v(" "), _c('h1', {
@@ -6990,7 +6976,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "pageClicked": function($event) {
-        _vm.currentPage = $event
+        _vm.currentPage = $event;
+        this.VueScrollTo.scrollTo('.column.is-9');
       }
     }
   }) : _vm._e()], 2)
@@ -7142,7 +7129,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "pageClicked": function($event) {
-        _vm.currentPage = $event
+        _vm.currentPage = $event;
+        this.VueScrollTo.scrollTo('.replies');
       }
     }
   }) : _vm._e(), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.isLogged && _vm.$root.username) ? _c('new-reply', {
@@ -7177,7 +7165,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "pageClicked": function($event) {
-        _vm.currentPage = $event
+        _vm.currentPage = $event;
+        this.VueScrollTo.scrollTo('.column.is-9');
       }
     }
   }) : _vm._e(), _vm._v(" "), _vm._l((_vm.threads.slice(0 + 10 * (_vm.currentPage - 1), 10 * _vm.currentPage)), function(thread) {
@@ -7207,7 +7196,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "pageClicked": function($event) {
-        _vm.currentPage = $event
+        _vm.currentPage = $event;
+        this.VueScrollTo.scrollTo('.column.is-9');
       }
     }
   }) : _vm._e()], 2)
@@ -7238,10 +7228,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('span', [_vm._v("Name:")]), _vm._v(" "), (_vm.profile.name) ? _c('span', {
     staticClass: "title is-4"
   }, [_vm._v(_vm._s(_vm.profile.name))]) : _c('span', [_vm._v(" Not set Yet!")])]), _vm._v(" "), _c('h4', {
-    staticClass: "title is-4"
-  }, [_c('span', [_vm._v("Gender:")]), _vm._v(" "), (_vm.profile.gender) ? _c('span', {
-    staticClass: "title is-4"
-  }, [_vm._v(_vm._s(_vm._f("gender")(_vm.profile.gender)))]) : _c('span', [_vm._v(" Not set Yet!")])]), _vm._v(" "), _c('h4', {
     staticClass: "title is-4"
   }, [_c('span', [_vm._v("About me:")]), _vm._v(" "), (_vm.profile.bio) ? _c('span', {
     staticClass: "title is-4"
@@ -7455,7 +7441,7 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('article', {
-    staticClass: "media"
+    staticClass: "media replies"
   }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "media-content"
   }, [_c('div', {
@@ -7628,54 +7614,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   })])]), _vm._v(" "), _c('div', {
-    staticClass: "field"
-  }, [_c('label', {
-    staticClass: "label"
-  }, [_vm._v("Gender")]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('label', {
-    staticClass: "radio"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.form.gender),
-      expression: "form.gender"
-    }],
-    attrs: {
-      "type": "radio",
-      "value": "m"
-    },
-    domProps: {
-      "checked": _vm._q(_vm.form.gender, "m")
-    },
-    on: {
-      "__c": function($event) {
-        _vm.form.gender = "m"
-      }
-    }
-  }), _vm._v("\n                Male\n            ")]), _vm._v(" "), _c('label', {
-    staticClass: "radio"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.form.gender),
-      expression: "form.gender"
-    }],
-    attrs: {
-      "type": "radio",
-      "value": "f"
-    },
-    domProps: {
-      "checked": _vm._q(_vm.form.gender, "f")
-    },
-    on: {
-      "__c": function($event) {
-        _vm.form.gender = "f"
-      }
-    }
-  }), _vm._v("\n                Female\n            ")])])]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('label', {
     staticClass: "label"

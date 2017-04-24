@@ -1,7 +1,7 @@
 <template>
     <div class="column is-9">
         <paginate v-if="threads.length > perPage" :current="currentPage" :perPage="perPage" :posts="threads"
-            @pageClicked="currentPage = $event" >
+            @pageClicked="currentPage = $event; this.VueScrollTo.scrollTo('.column.is-9');" >
         </paginate>
         <h1 class="title">List of threads</h1>
         <button class="button" v-if="isLogged && $root.username" @click="createNewThread">Create new Thread</button>
@@ -10,7 +10,7 @@
             <p slot="body">{{thread.body | truncate(200)}}</p>
         </thread>
         <paginate v-if="threads.length > perPage" :current="currentPage" :perPage="perPage" :posts="threads"
-            @pageClicked="currentPage = $event" >
+            @pageClicked="currentPage = $event; this.VueScrollTo.scrollTo('.column.is-9');" >
         </paginate>
     </div>
 </template>
@@ -18,6 +18,7 @@
 <script>
     import Thread from '../models/Thread';
     import isLoggedMixin from '../mixins/IsLoggedMixin';
+    var VueScrollTo = require('vue-scrollto');
 
     export default {
         data() {

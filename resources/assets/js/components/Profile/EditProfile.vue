@@ -20,19 +20,6 @@
         </div>
 
         <div class="field">
-            <label class="label">Gender</label>
-            <p class="control">
-                <label class="radio">
-                    <input type="radio" value="m" v-model="form.gender">
-                    Male
-                </label>
-                <label class="radio">
-                    <input type="radio" value="f" v-model="form.gender">
-                    Female
-                </label>
-            </p>
-        </div>
-        <div class="field">
             <label class="label">About me</label>
             <p class="control">
                 <textarea class="textarea" placeholder="About me" v-model="form.bio"></textarea>
@@ -64,7 +51,6 @@
             return {
                 form: new Form({
                     name: this.profile.name,
-                    gender: this.profile.gender,
                     bio: this.profile.bio,
                     location: this.profile.location,
                     avatar: this.profile.avatar

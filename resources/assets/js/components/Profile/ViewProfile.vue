@@ -7,10 +7,6 @@
             <span v-if="profile.name" class="title is-4">{{profile.name}}</span>
             <span v-else> Not set Yet!</span>
         </h4>
-        <h4 class="title is-4" ><span>Gender:</span>
-            <span v-if="profile.gender" class="title is-4">{{profile.gender | gender}}</span>
-            <span v-else> Not set Yet!</span>
-        </h4>
         <h4 class="title is-4" ><span>About me:</span>
             <span v-if="profile.bio" class="title is-4">{{profile.bio}}</span>
             <span v-else> Not set Yet!</span>

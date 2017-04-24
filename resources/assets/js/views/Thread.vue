@@ -6,7 +6,7 @@
             <p slot="body">{{reply.body}}</p>
         </reply>
         <paginate v-if="thread.replies.length > perPage" :current="currentPage" :perPage="perPage" :posts="thread.replies"
-            @pageClicked="currentPage = $event" >
+            @pageClicked="currentPage = $event; this.VueScrollTo.scrollTo('.replies');">
         </paginate>
         <!--<button  class="button is-primary" @click="showNewReply = true">Add reply</button>-->
         <hr>
@@ -17,6 +17,7 @@
 <script>
     import ThreadWithReplies from '../models/ThreadWithReplies';
     import isLoggedMixin from '../mixins/IsLoggedMixin';
+    var VueScrollTo = require('vue-scrollto');
 
     export default {
         data(){

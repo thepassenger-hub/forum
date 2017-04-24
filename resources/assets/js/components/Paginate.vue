@@ -33,7 +33,7 @@
 </template>
 
 <script>
-    var VueScrollTo = require('vue-scrollto');
+    // var VueScrollTo = require('vue-scrollto');
     export default {
         props: ['posts', 'perPage', 'current'],
         data() {
@@ -92,7 +92,6 @@
 
             changePage(page) {
                 this.$emit('pageClicked', page); 
-                VueScrollTo.scrollTo('.column.is-9');
             }
 
         }
