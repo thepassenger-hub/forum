@@ -1,14 +1,17 @@
 <template>
     <div class="column is-9">
+        <paginate v-if="threads.length > perPage" :current="currentPage" :perPage="perPage" :posts="threads"
+            @pageClicked="currentPage = $event" >
+        </paginate>
         <h1 class="title">List of threads</h1>
         <button class="button" v-if="isLogged && $root.username" @click="createNewThread">Create new Thread</button>
         <thread v-for="thread in threads.slice(0+10*(currentPage-1), 10*currentPage)" :key="thread.id" @clicked="goToThread(thread)" :thread="thread">
             <a>{{thread.title}}</a>
             <p slot="body">{{thread.body | truncate(200)}}</p>
         </thread>
-        <paginate-links v-show="threads.length > perPage" :current="currentPage" :perPage="perPage" :threads="threads"
+        <paginate v-if="threads.length > perPage" :current="currentPage" :perPage="perPage" :posts="threads"
             @pageClicked="currentPage = $event" >
-        </paginate-links>
+        </paginate>
     </div>
 </template>
 
@@ -74,7 +77,7 @@
         },
         components: {
             'thread': require('../components/Thread.vue'),
-            'paginateLinks': require('../components/Paginate.vue')
+            'paginate': require('../components/Paginate.vue')
         },
 
     }

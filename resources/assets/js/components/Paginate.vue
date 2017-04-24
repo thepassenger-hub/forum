@@ -1,5 +1,5 @@
 <template>
-    <nav class="pagination" v-if="threads">
+    <nav class="pagination" v-if="posts">
         <a class="pagination-previous" :class="{'is-disabled': this.current == 1}" 
             @click="changePage(current - 1)">Previous</a>
         <a class="pagination-next" :class="{'is-disabled': this.current == this.pageTabs.slice(-1)[0]}"
@@ -35,7 +35,7 @@
 <script>
     var VueScrollTo = require('vue-scrollto');
     export default {
-        props: ['threads', 'perPage', 'current'],
+        props: ['posts', 'perPage', 'current'],
         data() {
             return {
                 pageTabs: [],
@@ -46,8 +46,11 @@
                 endPages: []
             }
         },
+        created() {
+            this.getPageTabs();
+        },
         watch: {
-            threads(){
+            posts(){
                 this.getPageTabs();
             },
             current(){
@@ -56,7 +59,9 @@
         },
         methods: {
             getPageTabs() {
-                let numOfPages = Math.ceil(this.threads.length / this.perPage);
+                console.log('qua');
+                
+                let numOfPages = Math.ceil(this.posts.length / this.perPage);
                 this.pageTabs = Array(numOfPages).fill().map((e,i)=>i+1); // From n pages creates [1,2,...,n] 
                 this.setPageTabs();
             },

@@ -36,7 +36,7 @@
             }
         },
         watch: {
-            '$route': function() {
+            $route() {
                 this.getProfile();
                 this.$root.path.update(this.$route.path);
             }

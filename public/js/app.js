@@ -5178,7 +5178,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var VueScrollTo = __webpack_require__(19);
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['threads', 'perPage', 'current'],
+    props: ['posts', 'perPage', 'current'],
     data: function data() {
         return {
             pageTabs: [],
@@ -5189,9 +5189,12 @@ var VueScrollTo = __webpack_require__(19);
             endPages: []
         };
     },
+    created: function created() {
+        this.getPageTabs();
+    },
 
     watch: {
-        threads: function threads() {
+        posts: function posts() {
             this.getPageTabs();
         },
         current: function current() {
@@ -5200,7 +5203,9 @@ var VueScrollTo = __webpack_require__(19);
     },
     methods: {
         getPageTabs: function getPageTabs() {
-            var numOfPages = Math.ceil(this.threads.length / this.perPage);
+            console.log('qua');
+
+            var numOfPages = Math.ceil(this.posts.length / this.perPage);
             this.pageTabs = Array(numOfPages).fill().map(function (e, i) {
                 return i + 1;
             }); // From n pages creates [1,2,...,n] 
@@ -5550,6 +5555,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5594,7 +5602,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     components: {
         'thread': __webpack_require__(7),
-        'paginateLinks': __webpack_require__(14)
+        'paginate': __webpack_require__(14)
     }
 });
 
@@ -5725,7 +5733,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     watch: {
-        '$route': function $route() {
+        $route: function $route() {
             this.getProfile();
             this.$root.path.update(this.$route.path);
         }
@@ -5921,6 +5929,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -5931,7 +5942,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             thread: null,
             threadPath: this.$route.params.thread,
             channel: this.$route.params.channel,
-            isLogged: false
+            isLogged: false,
+            currentPage: 1,
+            perPage: 10
         };
     },
 
@@ -5965,7 +5978,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     components: {
         'thread': __webpack_require__(7),
         'reply': __webpack_require__(63),
-        'newReply': __webpack_require__(61)
+        'newReply': __webpack_require__(61),
+        'paginate': __webpack_require__(14)
+
     }
 });
 
@@ -5977,6 +5992,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Thread__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_IsLoggedMixin__ = __webpack_require__(2);
+//
+//
+//
 //
 //
 //
@@ -6050,7 +6068,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     components: {
         'thread': __webpack_require__(7),
-        'paginateLinks': __webpack_require__(14)
+        'paginate': __webpack_require__(14)
     }
 
 });
@@ -6932,7 +6950,18 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "column is-9"
-  }, [_c('h1', {
+  }, [(_vm.threads.length > _vm.perPage) ? _c('paginate', {
+    attrs: {
+      "current": _vm.currentPage,
+      "perPage": _vm.perPage,
+      "posts": _vm.threads
+    },
+    on: {
+      "pageClicked": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  }) : _vm._e(), _vm._v(" "), _c('h1', {
     staticClass: "title"
   }, [_vm._v("List of threads")]), _vm._v(" "), (_vm.isLogged && _vm.$root.username) ? _c('button', {
     staticClass: "button",
@@ -6953,24 +6982,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('a', [_vm._v(_vm._s(thread.title))]), _vm._v(" "), _c('p', {
       slot: "body"
     }, [_vm._v(_vm._s(_vm._f("truncate")(thread.body, 200)))])])
-  }), _vm._v(" "), _c('paginate-links', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.threads.length > _vm.perPage),
-      expression: "threads.length > perPage"
-    }],
+  }), _vm._v(" "), (_vm.threads.length > _vm.perPage) ? _c('paginate', {
     attrs: {
       "current": _vm.currentPage,
       "perPage": _vm.perPage,
-      "threads": _vm.threads
+      "posts": _vm.threads
     },
     on: {
       "pageClicked": function($event) {
         _vm.currentPage = $event
       }
     }
-  })], 2)
+  }) : _vm._e()], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -6985,7 +7008,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return (_vm.threads) ? _c('nav', {
+  return (_vm.posts) ? _c('nav', {
     staticClass: "pagination"
   }, [_c('a', {
     staticClass: "pagination-previous",
@@ -7103,15 +7126,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v(_vm._s(_vm.thread.title) + " "), _c('p', {
     slot: "body"
-  }, [_vm._v(_vm._s(_vm.thread.body))])]), _vm._v(" "), _vm._l((_vm.thread.replies), function(reply) {
+  }, [_vm._v(_vm._s(_vm.thread.body))])]), _vm._v(" "), _vm._l((_vm.thread.replies.slice(0 + 10 * (_vm.currentPage - 1), 10 * _vm.currentPage)), function(reply) {
     return (_vm.thread.replies) ? _c('reply', {
       key: reply.id
     }, [_c('p', {
       slot: "username"
     }, [_c('strong', [_vm._v(_vm._s(reply.creator))])]), _vm._v(" "), _c('p', {
       slot: "body"
-    }, [_vm._v(_vm._s(_vm._f("truncate")(reply.body, 50)))])]) : _vm._e()
-  }), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.isLogged && _vm.$root.username) ? _c('new-reply', {
+    }, [_vm._v(_vm._s(reply.body))])]) : _vm._e()
+  }), _vm._v(" "), (_vm.thread.replies.length > _vm.perPage) ? _c('paginate', {
+    attrs: {
+      "current": _vm.currentPage,
+      "perPage": _vm.perPage,
+      "posts": _vm.thread.replies
+    },
+    on: {
+      "pageClicked": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  }) : _vm._e(), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.isLogged && _vm.$root.username) ? _c('new-reply', {
     attrs: {
       "thread": _vm.threadPath
     },
@@ -7135,7 +7169,18 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "column is-9"
-  }, [_vm._l((_vm.threads.slice(0 + 10 * (_vm.currentPage - 1), 10 * _vm.currentPage)), function(thread) {
+  }, [(_vm.threads.length > _vm.perPage) ? _c('paginate', {
+    attrs: {
+      "current": _vm.currentPage,
+      "perPage": _vm.perPage,
+      "posts": _vm.threads
+    },
+    on: {
+      "pageClicked": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  }) : _vm._e(), _vm._v(" "), _vm._l((_vm.threads.slice(0 + 10 * (_vm.currentPage - 1), 10 * _vm.currentPage)), function(thread) {
     return _c('thread', {
       key: thread.name,
       attrs: {
@@ -7154,24 +7199,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_vm._v(_vm._s(thread.channel.name))]), _vm._v(" "), _c('p', {
       slot: "body"
     }, [_vm._v(" " + _vm._s(_vm._f("truncate")(thread.body, 200)))])], 1)
-  }), _vm._v(" "), _c('paginate-links', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.threads.length > _vm.perPage),
-      expression: "threads.length > perPage"
-    }],
+  }), _vm._v(" "), (_vm.threads.length > _vm.perPage) ? _c('paginate', {
     attrs: {
       "current": _vm.currentPage,
       "perPage": _vm.perPage,
-      "threads": _vm.threads
+      "posts": _vm.threads
     },
     on: {
       "pageClicked": function($event) {
         _vm.currentPage = $event
       }
     }
-  })], 2)
+  }) : _vm._e()], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
