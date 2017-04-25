@@ -3,27 +3,25 @@
         <article class="media">
             <figure class="media-left">
                 <p class="image is-64x64">
-                <img src="http://bulma.io/images/placeholders/128x128.png">
+                    <img :src="thread.creator.profile.avatar">
                 </p>
             </figure>
             <div class="media-content">
                 <div class="content">
-                    <h4 @click="$emit('clicked')"><slot></slot></h4>
-                    <div class="meta">
-                        <slot name="channel"></slot>
-                        <span>{{thread.updated_at}}</span>
-                        by
+                    <p class="title is-4 thread-title" @click="$emit('clicked')"><slot></slot></p>
+                    <slot name="channel"></slot>
+                    <span class="thread-created-at">{{thread.updated_at | fromNow}}</span>
+                    by
+                    <strong>
                         <router-link :to="'/@'+thread.creator.username">{{thread.creator.username}}</router-link>
-                    </div>
-                    <div class="body">
-                        <slot name="body"></slot>
-                    </div>
+                    </strong>
+                    <slot name="body"></slot>
                 </div>
-                
             </div>
-            <div class="reply-count">
-                    {{thread.replies_count}}
-                </div>
+            
+            <div class="reply-count replies-count">
+                {{thread.replies_count}}
+            </div>
         </article>
     </div>
 </template>

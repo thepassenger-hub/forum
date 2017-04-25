@@ -1,16 +1,20 @@
 <template>
-    <div class="container" v-if="form">
-        <div class="field">
-            <figure class="image is-128x128">
-                <img :src="this.imageSrc || this.form.avatar">
-            </figure>
-            <p class="control" id="add-new-avatar-wrapper">
-                Choose
-                <input type="file" class="input" id="add-new-avatar" @change="newAvatar">
-            </p>
-            <p class="control">
-                <button type="button" class="button is-default" @click="postAvatar">Upload Avatar</button>
-            </p>
+    <div v-if="form">
+        <div class="columns">
+            <div class="column is-9">
+                <article class="media">
+                    <figure class="image is-128x128">
+                        <img :src="this.imageSrc || this.form.avatar">
+                    </figure>
+                    <div class="media-content">
+                        <div class="content" id="profile-username">
+                            <label class="button is-primary" id="add-new-avatar-label" for="add-new-avatar">Browse...</label>
+                            <input type="file" class="input" id="add-new-avatar" @change="newAvatar">
+                            <button type="button" id="submit-avatar" class="button is-default" @click="postAvatar">Upload Avatar</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
         </div>
         <div class="field">
             <label class="label">Name</label>
@@ -38,6 +42,10 @@
             <p class="control">
                 <button class="button is-link" @click="resetFields">Reset</button>
             </p>
+        </div>
+        <hr>
+        <div>
+            CHANGE PASSWORD HERE
         </div>
     </div>
 </template>

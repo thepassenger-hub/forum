@@ -52,7 +52,7 @@ class ThreadsController extends Controller
      */
     protected function getThreads(Channel $channel, ThreadFilters $filters)
     {
-        $threads = Thread::with('creator', 'channel')->withCount('replies')
+        $threads = Thread::with('creator.profile', 'channel')->withCount('replies')
                          ->orderBy('last_reply', 'desc')->filter($filters);
 
         if ($channel->exists) {

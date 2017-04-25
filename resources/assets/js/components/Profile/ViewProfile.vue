@@ -77,11 +77,6 @@
                 return replies;
             }
             
-        },
-        filters: {
-            fromNow(date){
-                return moment(date).fromNow();
-            }
-        }
+        }        
     }
 </script>

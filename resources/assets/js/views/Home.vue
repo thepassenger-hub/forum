@@ -1,37 +1,66 @@
 <template>
     <div class="column is-9">
-        <h1 class="title">Choose a channel.</h1>
-        <channel v-for="channel in channels" :key="channel.name" @clicked="goToThreads(channel.slug)" >
-            <h1 slot="name">{{channel.name}}</h1>
-            <p slot="description">{{channel.description}}</p>
-        </channel>
+        <paginate v-if="threads.length > perPage" :current="currentPage" :perPage="perPage" :posts="threads"
+            @pageClicked="currentPage = $event; this.VueScrollTo.scrollTo('.column.is-9');" >
+        </paginate>
+        <thread v-for="thread in threads.slice(0+10*(currentPage-1), 10*currentPage)" :thread="thread" :key="thread.name"
+            @clicked="goToThread(thread.channel.slug + '/'+thread.slug)" >
+                <a>{{thread.title}}</a>
+                <router-link slot="channel" :to="thread.channel.slug">{{thread.channel.name}}</router-link>
+                <p class="thread-body" slot="body"> {{thread.body | truncate(200)}}</p>
+        </thread>
+        <paginate v-if="threads.length > perPage" :current="currentPage" :perPage="perPage" :posts="threads"
+            @pageClicked="currentPage = $event; this.VueScrollTo.scrollTo('.column.is-9');" >
+        </paginate>
     </div>
 </template>
 
 <script>
-    import getChannelsMixin from '../mixins/GetChannelsMixin';
+    import Thread from '../models/Thread';
+    var VueScrollTo = require('vue-scrollto');
 
     export default {
 
-        mixins:[getChannelsMixin],
         data() {
             return {
-                channels: [],
+                threads: [],
+                currentPage: 1,
+                perPage: 10
             }
         },
         created(){
-            this.getChannels();            
+            this.getLatestThreads();            
             this.$root.path.update(this.$route.path);
             
         },
+        watch: {
+            '$route': function(){
+                this.threads = [];
+                this.currentPage = 1,
+                this.getLatestThreads();
+                this.$root.path.update(this.$route.path);
+            }
+        },
         methods: {
-            goToThreads(channelPath){
-                this.$router.push({ path: '/'+channelPath});
+            goToThread(threadPath){
+                this.$router.push({ path: '/' + threadPath});
+            },
+
+            getLatestThreads(){
+                var vm = this;
+                axios.get('/threads', {
+                        params: vm.$route.query
+                    })
+                    .then(response => {
+                        response.data.forEach(thread => this.threads.push(new Thread(thread)));
+                    })
+                    .catch(error => console.log(error.response.data));
             }
         },
 
         components: {
-            'channel': require('../components/Channel.vue'),
+            'thread': require('../components/Thread.vue'),
+            'paginate': require('../components/Paginate.vue')
         }
     }
 </script>

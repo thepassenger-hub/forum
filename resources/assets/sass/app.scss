@@ -29,6 +29,7 @@ ul.breadcrumb li a:hover{
 
 #add-new-avatar-wrapper {
   overflow: hidden;
+  
   // position: relative;
   background: #eee;
   border-radius: 1px;
@@ -41,9 +42,16 @@ ul.breadcrumb li a:hover{
   // transition: 0.4s background;
 }
 
-#add-new-avatar {
-    cursor: inherit;
+#add-new-avatar-label {
+  width: 100px;
+  cursor: pointer;
   display: block;
+  margin-left: 20px;
+  margin-top: 10px;  
+}
+
+#add-new-avatar {
+  display: none;
   // font-size: 999px;
   // min-height: 100%;
   opacity: 0;
@@ -54,6 +62,11 @@ ul.breadcrumb li a:hover{
   cursor: pointer;
 }
 
+#submit-avatar {
+  display: block;
+  margin-top: 10px;
+  margin-left: 20px;
+}
 .thread {
   padding: 1.25rem;
   border-bottom: 1px solid #f1f0f0;
@@ -93,4 +106,36 @@ li.is-active a {
 #profile-username p {
   margin-left: 20px;
   font-weight: bold;
+}
+
+.pagination {
+  margin-bottom: 10px;
+}
+
+.thread-title {
+  margin-bottom: 0px !important;
+}
+
+.thread-created-at {
+  margin-left: 10px;
+  color: dark-grey;
+  font-weight: bold;
+}
+
+.thread-body {
+  margin-top: 10px;
+}
+
+.replies-count {
+  font-weight: bold;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.thread .media-content {
+  padding-right: 50px;
+}
+
+.pagination:last-of-type {
+  margin-top: 20px;
 }

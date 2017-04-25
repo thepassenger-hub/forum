@@ -11,6 +11,11 @@ Vue.filter('truncate', function (text, value) {
     if (text.length <= value) return text;
     return text.substring(0, value) + '...';
 })
+
+Vue.filter('fromNow', function(date){
+    return moment(date).fromNow();
+});
+
 const app = new Vue({
     el: '#app',
     router,
