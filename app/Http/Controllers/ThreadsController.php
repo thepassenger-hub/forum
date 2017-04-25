@@ -19,7 +19,7 @@ class ThreadsController extends Controller
 
     public function show($channel, Thread $thread )
     {   
-        return $thread->load('replies.creator', 'creator');
+        return $thread->load('replies.creator', 'creator.profile');
     }
 
     public function store(Channel $channel)

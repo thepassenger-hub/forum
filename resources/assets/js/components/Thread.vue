@@ -6,7 +6,7 @@
                     <img :src="thread.creator.profile.avatar">
                 </p>
             </figure>
-            <div class="media-content">
+            <div class="media-content" :class="{'thread-if-reply-counter': thread.replies_count !== undefined}">
                 <div class="content">
                     <p class="title is-4 thread-title" @click="$emit('clicked')"><slot></slot></p>
                     <slot name="channel"></slot>

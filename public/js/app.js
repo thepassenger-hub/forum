@@ -23040,7 +23040,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "src": _vm.thread.creator.profile.avatar
     }
   })])]), _vm._v(" "), _c('div', {
-    staticClass: "media-content"
+    staticClass: "media-content",
+    class: {
+      'thread-if-reply-counter': _vm.thread.replies_count !== undefined
+    }
   }, [_c('div', {
     staticClass: "content"
   }, [_c('p', {

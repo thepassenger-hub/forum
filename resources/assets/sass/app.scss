@@ -132,10 +132,14 @@ li.is-active a {
   margin-bottom: auto;
 }
 
-.thread .media-content {
+.thread-if-reply-counter {
   padding-right: 50px;
 }
 
 .pagination:last-of-type {
   margin-top: 20px;
+}
+
+.filter-icons {
+  margin-right: 5px;
 }
