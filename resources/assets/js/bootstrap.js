@@ -7,6 +7,17 @@ var VueScrollTo = require('vue-scrollto');
 Vue.use(VueScrollTo)
 
 
+window.moment = require('moment');
+moment.updateLocale('en', {
+    relativeTime : {
+        m:  "1 minute",
+        h:  "1 hour",
+        d:  "1 day",
+        M:  "1 month",
+        y:  "1 year",
+    }
+});
+
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the

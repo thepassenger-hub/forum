@@ -68,3 +68,29 @@ li.is-active a {
   font-weight: bold;
   color: $primary;
 }
+
+/****** View Profile Page *******/
+.container.view-profile {
+  font-size: 14px;
+}
+
+// .profile-header {
+//   min-height: 128px;
+// }
+
+
+.image.is-128x128 {
+  // float: left;
+  // margin-right: 20px;
+}
+.image.is-128x128 img{
+  border-radius: 128px;
+}
+
+#profile-username p:first-child {
+  margin-top: 20px;
+}
+#profile-username p {
+  margin-left: 20px;
+  font-weight: bold;
+}

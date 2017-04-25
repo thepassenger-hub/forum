@@ -3,7 +3,7 @@
         <thread :thread="thread" :key="thread.id">{{thread.title}} <p slot="body">{{thread.body}}</p></thread>
         <reply v-if="thread.replies" v-for="reply in thread.replies.slice(0+10*(currentPage-1), 10*currentPage)" :key="reply.id">
             <p slot="username"><strong>{{reply.creator}}</strong></p>
-            <p slot="body">{{reply.body}}</p>
+            <p slot="body" v-for="line in reply.body.split('\n')">{{line}}</p>
         </reply>
         <paginate v-if="thread.replies.length > perPage" :current="currentPage" :perPage="perPage" :posts="thread.replies"
             @pageClicked="currentPage = $event; this.VueScrollTo.scrollTo('.replies');">

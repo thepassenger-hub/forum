@@ -13,7 +13,6 @@ class ProfileController extends Controller
     {
         $this->validate(request(), [
             'name' => 'max: 30',
-            'gender' => 'required|max: 1',
             'bio' => 'max: 300',
             'location' => 'max:30'
         ]);
@@ -26,8 +25,9 @@ class ProfileController extends Controller
         return $user->profile()->with([
                 'user' => function($query){
                             $query->withCount(['replies', 'threads']);
+                            $query->with('replies.thread.channel');
                         }
-                ])->first();
+                ])->first();                 
     }
     
     public function uploadAvatar()

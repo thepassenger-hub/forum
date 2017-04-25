@@ -8,15 +8,10 @@
                 <li v-if="this.$root.username === (this.profile ? this.profile.user.username : '')" :class="{ 'is-active': tabs[1].isActive }">
                     <a  @click="selectTab(tabs[1].name)">{{ tabs[1].name }}</a>
                 </li>
-                <li :class="{ 'is-active': tabs[2].isActive }">
-                    <a  @click="selectTab(tabs[2].name)">{{ tabs[2].name }}</a>
-                </li>
             </ul>
         </div>
         <view-profile v-if="tabs[0].isActive" :profile="profile"></view-profile>
         <edit-profile v-if="tabs[1].isActive" :profile="profile" @changesSaved="changesSaved"></edit-profile>
-        <activity v-if="tabs[2].isActive" :profile="profile"></activity>
-        
         
     </div>
 </template>
@@ -29,8 +24,7 @@
             return {
                 tabs: [
                         {name: 'View', isActive: true},
-                        {name: 'Edit', isActive: false},
-                        {name: 'Activity', isActive: false}
+                        {name: 'Edit', isActive: false}
                     ],
                 profile: false
             }
@@ -66,8 +60,7 @@
         },
         components: {
             'viewProfile': require('../components/Profile/ViewProfile'),
-            'editProfile': require('../components/Profile/EditProfile'),
-            'activity': require('../components/Profile/Activity')            
+            'editProfile': require('../components/Profile/EditProfile')
         }
     }
 </script>
