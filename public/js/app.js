@@ -5340,12 +5340,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['profile'],
     computed: {
         registered: function registered() {
             return this.profile.created_at;
+        },
+        repliesByMonth: function repliesByMonth() {
+            var replies = {};
+            this.profile.user.replies.forEach(function (reply) {
+                var time = moment(reply.created_at).format('D MMM YYYY');
+                replies.hasOwnProperty(time) ? replies[time].push(reply) : replies[time] = [reply];
+            });
+            return replies;
         }
     },
     filters: {
@@ -7205,20 +7222,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "level-item"
   }, [_c('h4', [_c('strong', [_vm._v(_vm._s(_vm.profile.user.replies_count))]), _vm._v(" replies posted")])])]) : _vm._e(), _vm._v(" "), _c('hr'), _vm._v(" "), _c('h5', {
     staticClass: "title is-5"
-  }, [_vm._v(_vm._s(_vm.profile.bio))]), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.profile.user) ? _c('div', {
-    staticClass: "container"
-  }, _vm._l((_vm.profile.user.replies), function(reply) {
-    return _c('div', [(reply.thread) ? _c('p', {
-      staticClass: "color-text-lightest mb-1"
-    }, [_vm._v("\n                Reply on\n                "), _c('router-link', {
-      attrs: {
-        "to": '/' + reply.thread.channel.slug + '/' + reply.thread.slug
-      }
-    }, [_vm._v("\n                    " + _vm._s(reply.thread.title) + "\n                ")]), _vm._v(" | " + _vm._s(_vm._f("fromNow")(reply.created_at)) + "\n            ")], 1) : _vm._e(), _vm._v(" "), _c('div', {
-      staticClass: "content"
-    }, _vm._l((reply.body.split('\n')), function(line) {
-      return _c('p', [_vm._v(_vm._s(line))])
-    }))])
+  }, [_vm._v(_vm._s(_vm.profile.bio))]), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.profile.user) ? _c('div', _vm._l((_vm.repliesByMonth), function(replies, day) {
+    return _c('div', {
+      staticClass: "columns"
+    }, [_c('div', {
+      staticClass: "column is-10"
+    }, _vm._l((replies), function(reply) {
+      return _c('div', [(reply.thread) ? _c('p', {
+        staticClass: "color-text-lightest mb-1"
+      }, [_vm._v("\n                        Reply on\n                        "), _c('strong', [_c('router-link', {
+        attrs: {
+          "to": '/' + reply.thread.channel.slug + '/' + reply.thread.slug
+        }
+      }, [_vm._v("\n                            " + _vm._s(reply.thread.title) + "\n                        ")])], 1), _vm._v(" | "), _c('strong', [_vm._v(_vm._s(_vm._f("fromNow")(reply.created_at)))])]) : _vm._e(), _vm._v(" "), _c('br'), _vm._v(" "), _c('div', {
+        staticClass: "content"
+      }, _vm._l((reply.body.split('\n')), function(line) {
+        return _c('p', [_vm._v(_vm._s(line))])
+      })), _vm._v(" "), _c('hr')])
+    })), _vm._v(" "), _c('div', {
+      staticClass: "column is-2"
+    }, [_vm._v("\n                " + _vm._s(day) + "\n            ")])])
   })) : _vm._e()])
 },staticRenderFns: []}
 module.exports.render._withStripped = true

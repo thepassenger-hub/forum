@@ -36,16 +36,25 @@
         <hr>
         <h5 class="title is-5">{{profile.bio}}</h5>
         <hr>
-        <div class="container" v-if="profile.user">
-            <div v-for="reply in profile.user.replies">
-                <p v-if="reply.thread" class="color-text-lightest mb-1">
-                    Reply on
-                    <router-link :to="'/' + reply.thread.channel.slug + '/' + reply.thread.slug">
-                        {{reply.thread.title}}
-                    </router-link> | {{reply.created_at | fromNow}}
-                </p>
-                <div class="content">
-                    <p v-for="line in reply.body.split('\n')">{{line}}</p>
+        <div v-if="profile.user">
+            <div class="columns" v-for="(replies, day) in repliesByMonth">
+                <div class="column is-10">
+                    <div v-for="reply in replies">
+                        <p v-if="reply.thread" class="color-text-lightest mb-1">
+                            Reply on
+                            <strong><router-link :to="'/' + reply.thread.channel.slug + '/' + reply.thread.slug">
+                                {{reply.thread.title}}
+                            </router-link></strong> | <strong>{{reply.created_at | fromNow}}</strong>
+                        </p>
+                        <br>
+                        <div class="content">
+                            <p v-for="line in reply.body.split('\n')">{{line}}</p>
+                        </div>
+                        <hr>    
+                    </div>
+                </div>
+                <div class="column is-2">
+                    {{day}}
                 </div>
             </div>
         </div>
@@ -58,7 +67,16 @@
         computed: {
             registered(){
                 return this.profile.created_at;
+            },
+            repliesByMonth() {
+                let replies = {};
+                this.profile.user.replies.forEach(reply => {
+                    let time = moment(reply.created_at).format('D MMM YYYY');
+                    replies.hasOwnProperty(time) ? replies[time].push(reply) : replies[time] = [reply];
+                });
+                return replies;
             }
+            
         },
         filters: {
             fromNow(date){
