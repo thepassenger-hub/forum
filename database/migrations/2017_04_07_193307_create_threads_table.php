@@ -20,7 +20,7 @@ class CreateThreadsTable extends Migration
             $table->text('body');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('channel_id');
-            $table->timestamp('last_reply')->default(\Carbon\Carbon::now()->format('Y-m-d H:i:s'));
+            $table->timestamp('last_reply')->nullable();
             $table->timestamps();
         });
 

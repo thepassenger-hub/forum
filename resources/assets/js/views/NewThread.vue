@@ -7,11 +7,14 @@
                     <input v-model="form.title" class="input" type="text" placeholder="Text input" name="title" required>
                 </p>
             </div>
-
             <div class="field">
-                <label class="label">Descrizione</label>
-                <p class="control">
-                    <input v-model="form.description" class="input" type="text" placeholder="Text input" name="description" required>
+                <label class="label">Pick a channel</label>
+                  <p class="control">
+                    <span class="select">
+                    <select v-model="channel" required>
+                        <option v-for="channel in $root.channels" :value="channel.slug">{{channel.name}}</option>
+                    </select>
+                    </span>
                 </p>
             </div>
             <div class="field">
@@ -39,7 +42,7 @@
     export default {
         data(){
             return {
-                channel: this.$route.params.channel,
+                channel: null,
                 form: new Form({
                     title: '',
                     description: '',
@@ -53,7 +56,7 @@
             next(vm => {
                 vm.checkIfLogged()
                     .then(response => response ? next() : next('/sign-in'))                    
-                    .catch(error => next('/'+ vm.channel));
+                    .catch(error => next('/'));
             });
         },
         created(){

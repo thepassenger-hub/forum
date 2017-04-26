@@ -10,7 +10,7 @@
                 <div class="content">
                     <p class="title is-4 thread-title" @click="$emit('clicked')"><slot></slot></p>
                     <slot name="channel"></slot>
-                    <span class="thread-created-at">{{thread.updated_at | fromNow}}</span>
+                    <span class="created-at">{{thread.updated_at | fromNow}}</span>
                     by
                     <strong>
                         <router-link :to="'/@'+thread.creator.username">{{thread.creator.username}}</router-link>

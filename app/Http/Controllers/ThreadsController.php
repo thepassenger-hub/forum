@@ -19,14 +19,13 @@ class ThreadsController extends Controller
 
     public function show($channel, Thread $thread )
     {   
-        return $thread->load('replies.creator', 'creator.profile');
+        return $thread->load('replies.creator.profile', 'creator.profile');
     }
 
     public function store(Channel $channel)
     {
         $this -> validate(request(), [
                 'title' => 'required|max:50|min:2',
-                'description' => 'required|min:2|max:50',
                 'body' => 'required|min:10'
             ]);
         try {
@@ -34,9 +33,9 @@ class ThreadsController extends Controller
                 'title' => request('title'),
                 'slug' => makeSlugFromTitle(request('title')),
                 'body' => request('body'),
-                'description' => request('description'),
                 'user_id' => auth()->id(),
-                'channel_id' => $channel->id
+                'channel_id' => $channel->id,
+                'last_reply' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')
             ]);
         } catch (Exception $e) {
             return response( $e, 500);

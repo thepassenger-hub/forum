@@ -10,6 +10,10 @@ let routes = [
         component: require('./views/Home')
     },
     {
+        path: '/new-thread',
+        component: require('./views/NewThread'),
+    },
+    {
         path: '/sign-in',
         component: require('./views/SignIn')
     },
@@ -21,10 +25,6 @@ let routes = [
         path: '/:channel',
         component: require('./views/Threads'),
         name: 'channel'
-    },
-    {
-        path: '/:channel/new-thread',
-        component: require('./views/NewThread'),
     },
     {
         path: '/:channel/:thread',

@@ -5,7 +5,7 @@ class Reply {
         this.body = data.body;
         this.createdAt = data.created_at;
         this.updatedAt = data.updated_at;
-        this.creator = data.creator.username;
+        this.creator = data.creator;
     }
 }
 

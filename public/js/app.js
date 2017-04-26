@@ -6112,7 +6112,7 @@ var Reply = function Reply(data) {
     this.body = data.body;
     this.createdAt = data.created_at;
     this.updatedAt = data.updated_at;
-    this.creator = data.creator.username;
+    this.creator = data.creator;
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (Reply);
@@ -19676,6 +19676,7 @@ var app = new Vue({
     mixins: [__WEBPACK_IMPORTED_MODULE_2__mixins_IsLoggedMixin__["a" /* default */], __WEBPACK_IMPORTED_MODULE_3__mixins_GetChannelsMixin__["a" /* default */]],
     data: {
         username: false,
+        user: false,
         path: new __WEBPACK_IMPORTED_MODULE_4__models_Path__["a" /* default */](),
         channels: []
     },
@@ -19684,6 +19685,7 @@ var app = new Vue({
 
         this.checkIfLogged().then(function (response) {
             _this.username = response ? response.username : false;
+            _this.user = response ? response : false;
         }).catch(function (error) {
             return console.log(error);
         });
@@ -20853,10 +20855,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             reader.readAsDataURL(file);
         },
         postAvatar: function postAvatar() {
+            var _this2 = this;
+
             var data = new FormData();
             data.set('avatar', this.avatar);
             axios.post('/profile/avatar', data).then(function (response) {
-                return console.log(response);
+                return _this2.$emit('changesSaved');
             }).catch(function (error) {
                 return console.log(error);
             });
@@ -20988,8 +20992,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['reply']
+});
 
 /***/ }),
 /* 159 */
@@ -21146,6 +21153,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -21153,7 +21163,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            channel: this.$route.params.channel,
+            channel: null,
             form: new __WEBPACK_IMPORTED_MODULE_0__models_Form__["a" /* default */]({
                 title: '',
                 description: '',
@@ -21169,7 +21179,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             vm.checkIfLogged().then(function (response) {
                 return response ? next() : next('/sign-in');
             }).catch(function (error) {
-                return next('/' + vm.channel);
+                return next('/');
             });
         });
     },
@@ -21424,6 +21434,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -21485,7 +21498,6 @@ var VueScrollTo = __webpack_require__(6);
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Thread__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_IsLoggedMixin__ = __webpack_require__(3);
-//
 //
 //
 //
@@ -21895,6 +21907,9 @@ var routes = [{
     path: '/threads',
     component: __webpack_require__(132)
 }, {
+    path: '/new-thread',
+    component: __webpack_require__(178)
+}, {
     path: '/sign-in',
     component: __webpack_require__(180)
 }, {
@@ -21904,9 +21919,6 @@ var routes = [{
     path: '/:channel',
     component: __webpack_require__(182),
     name: 'channel'
-}, {
-    path: '/:channel/new-thread',
-    component: __webpack_require__(178)
 }, {
     path: '/:channel/:thread',
     component: __webpack_require__(181)
@@ -22753,12 +22765,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }) : _vm._e(), _vm._v(" "), _c('h1', {
     staticClass: "title"
-  }, [_vm._v("List of threads")]), _vm._v(" "), (_vm.isLogged && _vm.$root.username) ? _c('button', {
-    staticClass: "button",
-    on: {
-      "click": _vm.createNewThread
-    }
-  }, [_vm._v("Create new Thread")]) : _vm._e(), _vm._v(" "), _vm._l((_vm.threads.slice(0 + 10 * (_vm.currentPage - 1), 10 * _vm.currentPage)), function(thread) {
+  }, [_vm._v("List of threads")]), _vm._v(" "), _vm._l((_vm.threads.slice(0 + 10 * (_vm.currentPage - 1), 10 * _vm.currentPage)), function(thread) {
     return _c('thread', {
       key: thread.id,
       attrs: {
@@ -22916,14 +22923,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "thread": _vm.thread
     }
   }, [_vm._v(_vm._s(_vm.thread.title) + " "), _c('p', {
+    staticClass: "thread-body",
     slot: "body"
   }, [_vm._v(_vm._s(_vm.thread.body))])]), _vm._v(" "), _vm._l((_vm.thread.replies.slice(0 + 10 * (_vm.currentPage - 1), 10 * _vm.currentPage)), function(reply) {
     return (_vm.thread.replies) ? _c('reply', {
-      key: reply.id
+      key: reply.id,
+      attrs: {
+        "reply": reply
+      }
     }, [_c('p', {
+      staticClass: "reply-creator",
       slot: "username"
-    }, [_c('strong', [_vm._v(_vm._s(reply.creator))])]), _vm._v(" "), _vm._l((reply.body.split('\n')), function(line) {
+    }, [_c('router-link', {
+      attrs: {
+        "to": '/@' + reply.creator.username
+      }
+    }, [_vm._v(_vm._s(reply.creator.username))])], 1), _vm._v(" "), _vm._l((reply.body.split('\n')), function(line) {
       return _c('p', {
+        staticClass: "reply-body",
         slot: "body"
       }, [_vm._v(_vm._s(line))])
     })], 2) : _vm._e()
@@ -23136,32 +23153,38 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "field"
   }, [_c('label', {
     staticClass: "label"
-  }, [_vm._v("Descrizione")]), _vm._v(" "), _c('p', {
+  }, [_vm._v("Pick a channel")]), _vm._v(" "), _c('p', {
     staticClass: "control"
-  }, [_c('input', {
+  }, [_c('span', {
+    staticClass: "select"
+  }, [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.form.description),
-      expression: "form.description"
+      value: (_vm.channel),
+      expression: "channel"
     }],
-    staticClass: "input",
     attrs: {
-      "type": "text",
-      "placeholder": "Text input",
-      "name": "description",
       "required": ""
     },
-    domProps: {
-      "value": (_vm.form.description)
-    },
     on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.form.description = $event.target.value
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.channel = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
       }
     }
-  })])]), _vm._v(" "), _c('div', {
+  }, _vm._l((_vm.$root.channels), function(channel) {
+    return _c('option', {
+      domProps: {
+        "value": channel.slug
+      }
+    }, [_vm._v(_vm._s(channel.name))])
+  }))])])]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('label', {
     staticClass: "label"
@@ -23250,7 +23273,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._t("default")], 2), _vm._v(" "), _vm._t("channel"), _vm._v(" "), _c('span', {
-    staticClass: "thread-created-at"
+    staticClass: "created-at"
   }, [_vm._v(_vm._s(_vm._f("fromNow")(_vm.thread.updated_at)))]), _vm._v("\n                by\n                "), _c('strong', [_c('router-link', {
     attrs: {
       "to": '/@' + _vm.thread.creator.username
@@ -23274,23 +23297,23 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('article', {
     staticClass: "media replies"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
-    staticClass: "media-content"
-  }, [_c('div', {
-    staticClass: "content"
-  }, [_vm._t("username"), _vm._v(" "), _vm._t("body"), _vm._v(" "), _vm._m(1), _vm._v(" "), _c('p')], 2)])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('figure', {
+  }, [_c('figure', {
     staticClass: "media-left"
   }, [_c('p', {
     staticClass: "image is-64x64"
   }, [_c('img', {
     attrs: {
-      "src": "http://bulma.io/images/placeholders/128x128.png"
+      "src": _vm.reply.creator.profile.avatar
     }
-  })])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('small', [_c('a', [_vm._v("Like")]), _vm._v(" · "), _c('a', [_vm._v("Reply")]), _vm._v(" · 3 hrs")])
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "media-content"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_vm._t("username"), _vm._v(" "), _c('span', {
+    staticClass: "created-at"
+  }, [_vm._v(_vm._s(_vm._f("fromNow")(_vm.reply.createdAt)))]), _vm._v(" "), _vm._t("body"), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('p')], 2)])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('small', [_c('a', [_vm._v("Reply")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {

@@ -120,7 +120,7 @@
                 let data = new FormData()
                 data.set('avatar', this.avatar)
                 axios.post('/profile/avatar', data)
-                    .then(response => console.log(response))
+                    .then(response => this.$emit('changesSaved'))
                     .catch(error => console.log(error));
             },
 

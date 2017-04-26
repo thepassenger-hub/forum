@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('/sessionStatus', function() {
-        return ['user' => Auth::user()];
+        return ['user' => Auth::user() ? Auth::user()->load('profile') : null];
     });
 
 Route::get('/home', 'HomeController@index');

@@ -4,7 +4,6 @@
             @pageClicked="currentPage = $event; this.VueScrollTo.scrollTo('.column.is-9');" >
         </paginate>
         <h1 class="title">List of threads</h1>
-        <button class="button" v-if="isLogged && $root.username" @click="createNewThread">Create new Thread</button>
         <thread v-for="thread in threads.slice(0+10*(currentPage-1), 10*currentPage)" :key="thread.id" @clicked="goToThread(thread)" :thread="thread">
             <a>{{thread.title}}</a>
             <p slot="body">{{thread.body | truncate(200)}}</p>

@@ -20,6 +20,9 @@
   <!-- Add the modifier "is-active" to display it on mobile -->
   <div class="nav-right nav-menu">
       <router-link v-if="username" class="nav-item" :to="'/@'+username">
+        <p class="image is-64x64" id="nav-avatar">
+            <img :src="user.profile.avatar">
+        </p>
         <p>@{{username}}</p>
       </router-link>
       <a v-if="username" class="nav-item" @click="logout">

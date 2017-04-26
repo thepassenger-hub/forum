@@ -41,7 +41,8 @@ $factory->define(App\Thread::class, function (Faker\Generator $faker) {
         'slug' => str_slug($title, '-'),        
         'body' => $faker->text(1000),
         'user_id' => $faker->numberBetween(1,11),
-        'channel_id' => $faker->numberBetween(1, 11)
+        'channel_id' => $faker->numberBetween(1, 11),
+        'last_reply' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')
     ];
 
 });

@@ -22,13 +22,15 @@ const app = new Vue({
     mixins:[isLoggedMixin, getChannelsMixin],
     data: {
         username: false,
+        user: false,
         path: new Path(),
         channels: []
     },
     created(){
         this.checkIfLogged()
             .then(response => {
-                    this.username = response ? response.username : false
+                    this.username = response ? response.username : false;
+                    this.user = response ? response : false;
                 })                    
             .catch(error => console.log(error));
 

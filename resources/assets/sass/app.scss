@@ -22,6 +22,14 @@ ul.breadcrumb li a:hover{
   text-decoration: underline;
 }
 
+#nav-avatar {
+  margin-right: 10px;
+}
+
+#nav-avatar img {
+  border-radius: 64px;
+  max-height: 100% !important;
+}
 
 #profile-name-input {
   max-width: 20%;
@@ -67,11 +75,22 @@ ul.breadcrumb li a:hover{
   margin-top: 10px;
   margin-left: 20px;
 }
-.thread {
+
+.replies {
+  padding: 1.25rem 1.25rem 1.25rem 3.25rem;
+}
+
+.thread{
   padding: 1.25rem;
   border-bottom: 1px solid #f1f0f0;
 }
 
+.reply-creator {
+  margin-bottom: 0 !important;  
+}
+.reply-creator a {
+  font-weight: bold;
+}
 .thread .body p {
   word-wrap: break-word;
   word-break: break-word;
@@ -116,14 +135,19 @@ li.is-active a {
   margin-bottom: 0px !important;
 }
 
-.thread-created-at {
+.created-at {
   margin-left: 10px;
   color: dark-grey;
   font-weight: bold;
 }
 
-.thread-body {
+.thread-body,
+.reply-body {
   margin-top: 10px;
+}
+
+.reply-body {
+  margin-bottom: 0 !important;
 }
 
 .replies-count {
