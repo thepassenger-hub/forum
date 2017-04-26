@@ -49,4 +49,10 @@ class User extends Authenticatable
     {
         Profile::create(['user_id' => $user_id]);
     }
+
+    public function updatePassword($password)
+    {
+        $this->password = bcrypt($password);
+        return $this->save();
+    }
 }

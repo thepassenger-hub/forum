@@ -44,8 +44,26 @@
             </p>
         </div>
         <hr>
-        <div>
-            CHANGE PASSWORD HERE
+        <div class="field">
+            <label class="label">Change your password</label>
+        </div>
+        <div class="field">
+            <input type="password" class="input" v-model="passwordForm.oldPassword" placeholder="Current password.">
+        </div>
+        <div class="field">
+            <input type="password" class="input" v-model="passwordForm.password" placeholder="New password. Min 6 Chars.">
+        </div>
+        <div class="field">
+            <input type="password" class="input" v-model="passwordForm.password_confirmation" placeholder="Confirm new password.">
+        </div>
+        <div class="field is-grouped">
+            <p class="control">
+                <button class="button is-danger" @click="changePassword">Change Password</button>
+            </p>
+            <p class="control">
+                <button class="button is-link" 
+                    @click="passwordForm.reset()">Reset</button>
+            </p>
         </div>
     </div>
 </template>
@@ -62,6 +80,11 @@
                     bio: this.profile.bio,
                     location: this.profile.location,
                     avatar: this.profile.avatar
+                }),
+                passwordForm: new Form({
+                    oldPassword: null,
+                    password: null,
+                    password_confirmation: null
                 }),
                 avatar: null,
                 imageSrc: null
@@ -98,6 +121,12 @@
                 data.set('avatar', this.avatar)
                 axios.post('/profile/avatar', data)
                     .then(response => console.log(response))
+                    .catch(error => console.log(error));
+            },
+
+            changePassword(){
+                this.passwordForm.post('/user/password')
+                    .then(response => console.log('ok'))
                     .catch(error => console.log(error));
             }
 

@@ -27,6 +27,9 @@ class CreateProfile
      */
     public function handle(UserCreated $event)
     {
-        Profile::create(['user_id' => $event->user_id]);
+        Profile::create([
+            'user_id' => $event->user_id,
+            'location' => 'The Internet',
+            'bio' => 'A new User who didn\'t change his bio yet!']);
     }
 }

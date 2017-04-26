@@ -1,24 +1,21 @@
 <template>
     <div class="column is-9">
-        <div class="tabs is-centered is-boxed">
+        <div class="tabs is-centered is-boxed" v-if="isMyProfile">
             <ul>
                 <li :class="{ 'is-active': tabs[0].isActive }">
                     <a  @click="selectTab(tabs[0].name)">{{ tabs[0].name }}</a>
                 </li>
-                <li v-if="this.$root.username === (this.profile ? this.profile.user.username : '')" :class="{ 'is-active': tabs[1].isActive }">
+                <li :class="{ 'is-active': tabs[1].isActive }">
                     <a  @click="selectTab(tabs[1].name)">{{ tabs[1].name }}</a>
                 </li>
             </ul>
         </div>
-        <view-profile v-if="tabs[0].isActive" :profile="profile"></view-profile>
-        <edit-profile v-if="tabs[1].isActive" :profile="profile" @changesSaved="changesSaved"></edit-profile>
-        
+        <view-profile v-if="tabs[0].isActive || !isMyProfile" :profile="profile"></view-profile>
+        <edit-profile v-if="tabs[1].isActive && isMyProfile" :profile="profile" @changesSaved="changesSaved"></edit-profile>
     </div>
 </template>
 
 <script>
-    import isLoggedMixin from '../mixins/IsLoggedMixin';
-
     export default {
         data() {
             return {
@@ -35,7 +32,6 @@
                 this.$root.path.update(this.$route.path);
             }
         },
-        mixins:[isLoggedMixin],
         created() {
             this.$root.path.update(this.$route.path);
             this.getProfile();
@@ -57,6 +53,11 @@
                 this.selectTab(this.tabs[0].name);
             }
             
+        },
+        computed: {
+            isMyProfile() {
+                return this.$root.username === (this.profile ? this.profile.user.username : '')
+            }
         },
         components: {
             'viewProfile': require('../components/Profile/ViewProfile'),

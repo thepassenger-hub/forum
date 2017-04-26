@@ -39,6 +39,7 @@ Route::post('profile/avatar', 'ProfileController@uploadAvatar')->middleware('aut
 Route::post('threads/{thread}/replies', 'RepliesController@store')->middleware('auth');
 Route::post('channels/{channel}/threads', 'ThreadsController@store')->middleware('auth');
 Route::post('channels/{channel}/{thread}/replies', 'RepliesController@store')->middleware('auth');
+Route::post('user/password', 'UsersController@update')->middleware('auth');
 
 
 

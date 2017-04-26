@@ -17198,7 +17198,40 @@ return zhTw;
 
 
 /***/ }),
-/* 132 */,
+/* 132 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(160),
+  /* template */
+  __webpack_require__(188),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/giulio/Desktop/Projects/laravel/forum/resources/assets/js/views/Home.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Home.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-46186240", Component.options)
+  } else {
+    hotAPI.reload("data-v-46186240", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
 /* 133 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -20751,6 +20784,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -20763,6 +20814,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 bio: this.profile.bio,
                 location: this.profile.location,
                 avatar: this.profile.avatar
+            }),
+            passwordForm: new __WEBPACK_IMPORTED_MODULE_0__models_Form__["a" /* default */]({
+                oldPassword: null,
+                password: null,
+                password_confirmation: null
             }),
             avatar: null,
             imageSrc: null
@@ -20801,6 +20857,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             data.set('avatar', this.avatar);
             axios.post('/profile/avatar', data).then(function (response) {
                 return console.log(response);
+            }).catch(function (error) {
+                return console.log(error);
+            });
+        },
+        changePassword: function changePassword() {
+            this.passwordForm.post('/user/password').then(function (response) {
+                return console.log('ok');
             }).catch(function (error) {
                 return console.log(error);
             });
@@ -20968,7 +21031,80 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 160 */,
+/* 160 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Thread__ = __webpack_require__(8);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+var VueScrollTo = __webpack_require__(6);
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            threads: [],
+            currentPage: 1,
+            perPage: 10
+        };
+    },
+    created: function created() {
+        this.getLatestThreads();
+        this.$root.path.update(this.$route.path);
+    },
+
+    watch: {
+        '$route': function $route() {
+            this.threads = [];
+            this.currentPage = 1, this.getLatestThreads();
+            this.$root.path.update(this.$route.path);
+        }
+    },
+    methods: {
+        goToThread: function goToThread(threadPath) {
+            this.$router.push({ path: '/' + threadPath });
+        },
+        getLatestThreads: function getLatestThreads() {
+            var _this = this;
+
+            var vm = this;
+            axios.get('/threads', {
+                params: vm.$route.query
+            }).then(function (response) {
+                response.data.forEach(function (thread) {
+                    return _this.threads.push(new __WEBPACK_IMPORTED_MODULE_0__models_Thread__["a" /* default */](thread));
+                });
+            }).catch(function (error) {
+                return console.log(error.response.data);
+            });
+        }
+    },
+
+    components: {
+        'thread': __webpack_require__(10),
+        'paginate': __webpack_require__(9)
+    }
+});
+
+/***/ }),
 /* 161 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -21059,7 +21195,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_IsLoggedMixin__ = __webpack_require__(3);
 //
 //
 //
@@ -21077,9 +21212,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -21095,7 +21227,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$root.path.update(this.$route.path);
         }
     },
-    mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_IsLoggedMixin__["a" /* default */]],
     created: function created() {
         this.$root.path.update(this.$route.path);
         this.getProfile();
@@ -21119,6 +21250,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         changesSaved: function changesSaved() {
             this.getProfile();
             this.selectTab(this.tabs[0].name);
+        }
+    },
+    computed: {
+        isMyProfile: function isMyProfile() {
+            return this.$root.username === (this.profile ? this.profile.user.username : '');
         }
     },
     components: {
@@ -21754,10 +21890,10 @@ var ThreadWithReplies = function (_Thread) {
 
 var routes = [{
     path: '/',
-    component: __webpack_require__(202)
+    component: __webpack_require__(132)
 }, {
     path: '/threads',
-    component: __webpack_require__(202)
+    component: __webpack_require__(132)
 }, {
     path: '/sign-in',
     component: __webpack_require__(180)
@@ -22115,7 +22251,7 @@ var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(157),
   /* template */
-  __webpack_require__(188),
+  __webpack_require__(187),
   /* scopeId */
   null,
   /* cssModules */
@@ -22821,8 +22957,7 @@ if (false) {
 }
 
 /***/ }),
-/* 187 */,
-/* 188 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -22890,6 +23025,67 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-393cf785", module.exports)
+  }
+}
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "column is-9"
+  }, [(_vm.threads.length > _vm.perPage) ? _c('paginate', {
+    attrs: {
+      "current": _vm.currentPage,
+      "perPage": _vm.perPage,
+      "posts": _vm.threads
+    },
+    on: {
+      "pageClicked": function($event) {
+        _vm.currentPage = $event;
+        this.VueScrollTo.scrollTo('.column.is-9');
+      }
+    }
+  }) : _vm._e(), _vm._v(" "), _vm._l((_vm.threads.slice(0 + 10 * (_vm.currentPage - 1), 10 * _vm.currentPage)), function(thread) {
+    return _c('thread', {
+      key: thread.name,
+      attrs: {
+        "thread": thread
+      },
+      on: {
+        "clicked": function($event) {
+          _vm.goToThread(thread.channel.slug + '/' + thread.slug)
+        }
+      }
+    }, [_c('a', [_vm._v(_vm._s(thread.title))]), _vm._v(" "), _c('router-link', {
+      attrs: {
+        "to": thread.channel.slug
+      },
+      slot: "channel"
+    }, [_vm._v(_vm._s(thread.channel.name))]), _vm._v(" "), _c('p', {
+      staticClass: "thread-body",
+      slot: "body"
+    }, [_vm._v(" " + _vm._s(_vm._f("truncate")(thread.body, 200)))])], 1)
+  }), _vm._v(" "), (_vm.threads.length > _vm.perPage) ? _c('paginate', {
+    attrs: {
+      "current": _vm.currentPage,
+      "perPage": _vm.perPage,
+      "posts": _vm.threads
+    },
+    on: {
+      "pageClicked": function($event) {
+        _vm.currentPage = $event;
+        this.VueScrollTo.scrollTo('.column.is-9');
+      }
+    }
+  }) : _vm._e()], 2)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-46186240", module.exports)
   }
 }
 
@@ -23328,8 +23524,101 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.resetFields
     }
-  }, [_vm._v("Reset")])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', [_vm._v("\n        CHANGE PASSWORD HERE\n    ")])]) : _vm._e()
-},staticRenderFns: []}
+  }, [_vm._v("Reset")])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.passwordForm.oldPassword),
+      expression: "passwordForm.oldPassword"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "password",
+      "placeholder": "Current password."
+    },
+    domProps: {
+      "value": (_vm.passwordForm.oldPassword)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.passwordForm.oldPassword = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.passwordForm.password),
+      expression: "passwordForm.password"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "password",
+      "placeholder": "New password. Min 6 Chars."
+    },
+    domProps: {
+      "value": (_vm.passwordForm.password)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.passwordForm.password = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.passwordForm.password_confirmation),
+      expression: "passwordForm.password_confirmation"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "password",
+      "placeholder": "Confirm new password."
+    },
+    domProps: {
+      "value": (_vm.passwordForm.password_confirmation)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.passwordForm.password_confirmation = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "field is-grouped"
+  }, [_c('p', {
+    staticClass: "control"
+  }, [_c('button', {
+    staticClass: "button is-danger",
+    on: {
+      "click": _vm.changePassword
+    }
+  }, [_vm._v("Change Password")])]), _vm._v(" "), _c('p', {
+    staticClass: "control"
+  }, [_c('button', {
+    staticClass: "button is-link",
+    on: {
+      "click": function($event) {
+        _vm.passwordForm.reset()
+      }
+    }
+  }, [_vm._v("Reset")])])])]) : _vm._e()
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "field"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Change your password")])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -23345,7 +23634,7 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "column is-9"
-  }, [_c('div', {
+  }, [(_vm.isMyProfile) ? _c('div', {
     staticClass: "tabs is-centered is-boxed"
   }, [_c('ul', [_c('li', {
     class: {
@@ -23357,7 +23646,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.selectTab(_vm.tabs[0].name)
       }
     }
-  }, [_vm._v(_vm._s(_vm.tabs[0].name))])]), _vm._v(" "), (this.$root.username === (this.profile ? this.profile.user.username : '')) ? _c('li', {
+  }, [_vm._v(_vm._s(_vm.tabs[0].name))])]), _vm._v(" "), _c('li', {
     class: {
       'is-active': _vm.tabs[1].isActive
     }
@@ -23367,11 +23656,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.selectTab(_vm.tabs[1].name)
       }
     }
-  }, [_vm._v(_vm._s(_vm.tabs[1].name))])]) : _vm._e()])]), _vm._v(" "), (_vm.tabs[0].isActive) ? _c('view-profile', {
+  }, [_vm._v(_vm._s(_vm.tabs[1].name))])])])]) : _vm._e(), _vm._v(" "), (_vm.tabs[0].isActive || !_vm.isMyProfile) ? _c('view-profile', {
     attrs: {
       "profile": _vm.profile
     }
-  }) : _vm._e(), _vm._v(" "), (_vm.tabs[1].isActive) ? _c('edit-profile', {
+  }) : _vm._e(), _vm._v(" "), (_vm.tabs[1].isActive && _vm.isMyProfile) ? _c('edit-profile', {
     attrs: {
       "profile": _vm.profile
     },
@@ -32778,178 +33067,6 @@ module.exports = function(module) {
 __webpack_require__(134);
 module.exports = __webpack_require__(135);
 
-
-/***/ }),
-/* 199 */,
-/* 200 */,
-/* 201 */,
-/* 202 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(203),
-  /* template */
-  __webpack_require__(204),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/giulio/Desktop/Projects/laravel/forum/resources/assets/js/views/Home.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Home.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-46186240", Component.options)
-  } else {
-    hotAPI.reload("data-v-46186240", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 203 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Thread__ = __webpack_require__(8);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-var VueScrollTo = __webpack_require__(6);
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            threads: [],
-            currentPage: 1,
-            perPage: 10
-        };
-    },
-    created: function created() {
-        this.getLatestThreads();
-        this.$root.path.update(this.$route.path);
-    },
-
-    watch: {
-        '$route': function $route() {
-            this.threads = [];
-            this.currentPage = 1, this.getLatestThreads();
-            this.$root.path.update(this.$route.path);
-        }
-    },
-    methods: {
-        goToThread: function goToThread(threadPath) {
-            this.$router.push({ path: '/' + threadPath });
-        },
-        getLatestThreads: function getLatestThreads() {
-            var _this = this;
-
-            var vm = this;
-            axios.get('/threads', {
-                params: vm.$route.query
-            }).then(function (response) {
-                response.data.forEach(function (thread) {
-                    return _this.threads.push(new __WEBPACK_IMPORTED_MODULE_0__models_Thread__["a" /* default */](thread));
-                });
-            }).catch(function (error) {
-                return console.log(error.response.data);
-            });
-        }
-    },
-
-    components: {
-        'thread': __webpack_require__(10),
-        'paginate': __webpack_require__(9)
-    }
-});
-
-/***/ }),
-/* 204 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "column is-9"
-  }, [(_vm.threads.length > _vm.perPage) ? _c('paginate', {
-    attrs: {
-      "current": _vm.currentPage,
-      "perPage": _vm.perPage,
-      "posts": _vm.threads
-    },
-    on: {
-      "pageClicked": function($event) {
-        _vm.currentPage = $event;
-        this.VueScrollTo.scrollTo('.column.is-9');
-      }
-    }
-  }) : _vm._e(), _vm._v(" "), _vm._l((_vm.threads.slice(0 + 10 * (_vm.currentPage - 1), 10 * _vm.currentPage)), function(thread) {
-    return _c('thread', {
-      key: thread.name,
-      attrs: {
-        "thread": thread
-      },
-      on: {
-        "clicked": function($event) {
-          _vm.goToThread(thread.channel.slug + '/' + thread.slug)
-        }
-      }
-    }, [_c('a', [_vm._v(_vm._s(thread.title))]), _vm._v(" "), _c('router-link', {
-      attrs: {
-        "to": thread.channel.slug
-      },
-      slot: "channel"
-    }, [_vm._v(_vm._s(thread.channel.name))]), _vm._v(" "), _c('p', {
-      staticClass: "thread-body",
-      slot: "body"
-    }, [_vm._v(" " + _vm._s(_vm._f("truncate")(thread.body, 200)))])], 1)
-  }), _vm._v(" "), (_vm.threads.length > _vm.perPage) ? _c('paginate', {
-    attrs: {
-      "current": _vm.currentPage,
-      "perPage": _vm.perPage,
-      "posts": _vm.threads
-    },
-    on: {
-      "pageClicked": function($event) {
-        _vm.currentPage = $event;
-        this.VueScrollTo.scrollTo('.column.is-9');
-      }
-    }
-  }) : _vm._e()], 2)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-46186240", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);
