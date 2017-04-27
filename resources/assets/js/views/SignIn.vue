@@ -33,13 +33,12 @@
                         <button class="button is-primary" @click="postLoginForm">Login</button>
                     </p>
                     <p class="control">
-                        <button class="button is-link">Forgot your password?</button>
+                        <button class="button is-link" @click="forgotPassword = true">Forgot your password?</button>
                     </p>
                 </div>
+
+
             </div>
-
-
-
 
             <div class="column is-half">
                 <div class="field">
@@ -78,12 +77,41 @@
                     </p>
                 </div>
             </div>
+            
         </div>
+        <transition name="fade">
+            <div v-if="forgotPassword">
+                <div class="field">
+                    <h4 class="title is-4">Reset Password</h4>
+                </div>
+                <div class="field">
+                    <p class="control">
+                        <input type="email" class="input" placeholder="Email address" v-model="reset.email">
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="control">
+                        <button class="button is-primary" @click="resetPassword">Send Password reset link</button>
+                    </p>
+                </div>
+
+
+            </div>
+
+        </transition>
+        <transition name="fade">
+            <success v-if="successMessage" :successMessage="successMessage" @close="successMessage = false"></success>
+        </transition>
+        <transition name="fade">
+            <error v-if="errorMessage" :errorMessage="errorMessage" @close="errorMessage = false"></error>
+        </transition>
     </div>
 </template>
 
 <script>
     import Form from '../models/Form';
+    import showNotificationsMixin from '../mixins/showNotificationsMixin';
+
     export default {
         data(){
             return {
@@ -98,9 +126,17 @@
                     username: '',
                     password_confirmation: ''
                 }),
-                empty: ""
+                reset: new Form({
+                    email: ''
+                }),
+                empty: "",
+                forgotPassword: false,
+                errorMessage: false,
+                successMessage: false
+                
             }
         },
+        mixins: [showNotificationsMixin],
         created() {
             this.$root.path.update(this.$route.path);
         },
@@ -112,7 +148,7 @@
                         vm.$root.username = response.user.username;
                         vm.$router.back();
                     })
-                    .catch(error => console.log(error));
+                    .catch(error => this.showError(error));
             },
             postRegisterForm(){
                 var vm = this;
@@ -122,8 +158,22 @@
                         vm.$root.username = response.user.username;
                         vm.$router.push('/');
                     })
-                    .catch(error => console.log(error));
+                    .catch(error => this.showError(error));
+            },
+            resetPassword() {
+                this.reset.post('/password/email')
+                    .then(response => {
+                        console.log(response);
+                        this.showSuccess(response);   
+                        this.reset.reset();          
+                    })
+                    .catch(error => this.showError(error));
             }
+        },
+        components: {
+            'error': require('../components/Error.vue'),
+            'success': require('../components/Success.vue')
         }
+        
     }
 </script>

@@ -6,6 +6,10 @@ let routes = [
         component: require('./views/Home')
     },
     {
+        path: '/reset-password/:token',
+        component: require('./views/ResetPassword')
+    },
+    {
         path: '/threads',
         component: require('./views/Home')
     },
@@ -30,6 +34,7 @@ let routes = [
         path: '/:channel/:thread',
         component: require('./views/Thread')
     }
+    
     
 ];
 

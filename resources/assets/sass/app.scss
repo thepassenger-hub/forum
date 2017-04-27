@@ -167,3 +167,12 @@ li.is-active a {
 .filter-icons {
   margin-right: 5px;
 }
+
+
+/****** Transitions *******/
+.fade-enter-active, .fade-leave-active {
+  transition: transform .5s ease;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  transform: scale(0.01);
+}
