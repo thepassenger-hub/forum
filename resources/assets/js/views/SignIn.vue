@@ -145,7 +145,7 @@
                 var vm = this;
                 this.login.post('/login')
                     .then(response => {
-                        vm.$root.username = response.user.username;
+                        vm.$root.user = response.user;
                         vm.$router.back();
                     })
                     .catch(error => this.showError(error));
@@ -155,7 +155,7 @@
                 if (this.register.password != this.register.password_confirmation) return;
                 this.register.post('/register')
                     .then(response => {
-                        vm.$root.username = response.user.username;
+                        vm.$root.user = response.user;
                         vm.$router.push('/');
                     })
                     .catch(error => this.showError(error));

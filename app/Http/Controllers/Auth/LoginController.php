@@ -35,7 +35,7 @@ class LoginController extends Controller
 
         $this->clearLoginAttempts($request);
 
-        return response(['user' => auth()->user()], 200);
+        return response(['user' => auth()->user()->load('profile')], 200);
     }
 
     public function logout(Request $request)

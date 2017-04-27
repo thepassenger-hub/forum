@@ -47,7 +47,9 @@ class ResetPasswordController extends Controller
      */
     protected function sendResetResponse($response)
     {
-        return response(trans($response), 200);
+        return response([
+            'message' => trans($response), 
+            'user' => auth()->user()->load('profile')], 200);
     }
 
     /**

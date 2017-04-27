@@ -3,8 +3,13 @@ import VueRouter from 'vue-router';
 let routes = [
     {
         path: '/',
-        component: require('./views/Home')
+        component: require('./views/Home'),
+        name: 'home'
     },
+    // {
+    //     path: '/reset-password/:token',
+    //     component: require('./views/ResetPassword')
+    // },
     {
         path: '/reset-password/:token',
         component: require('./views/ResetPassword')

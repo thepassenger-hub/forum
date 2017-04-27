@@ -21,8 +21,8 @@ const app = new Vue({
     router,
     mixins:[isLoggedMixin, getChannelsMixin],
     data: {
-        username: false,
         user: false,
+        // username: false,
         path: new Path(),
         channels: []
     },
@@ -42,7 +42,7 @@ const app = new Vue({
             axios.post('/logout')
                  .then(response => {
                      this.setNewCsrfToken(response.data);
-                     this.username = false;
+                     this.user = false;
                  })
                  .catch(error => console.log(error));
         },
@@ -50,6 +50,11 @@ const app = new Vue({
             document.querySelector('meta[name=csrf-token]').content = newToken;
             window.Laravel = { csrfToken: document.querySelector('meta[name=csrf-token]').content };
             window.axios.defaults.headers.common['X-CSRF-TOKEN'] = window.Laravel.csrfToken;
+        }
+    },
+    computed: {
+        username() {
+            return this.user ? this.user.username : false;
         }
     }
 
