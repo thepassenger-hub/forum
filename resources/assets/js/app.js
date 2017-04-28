@@ -25,7 +25,8 @@ const app = new Vue({
         // username: false,
         path: new Path(),
         channels: [],
-        searchQuery: ''
+        searchQuery: '',
+        showNavbar: false
     },
     created(){
         this.checkIfLogged()

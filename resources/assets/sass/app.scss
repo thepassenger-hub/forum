@@ -246,3 +246,28 @@ li.is-active a {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
+
+@media (max-width: 768px) {
+  #mobile-nav {
+    position: absolute;
+    width: 100%;
+  }
+  #mobile-nav .nav-menu {
+    display: block;
+    box-shadow: none;
+    top: 0;
+  }
+
+  #mobile-nav .field.has-addons {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  #mobile-nav .field.has-addons .control:first-child {
+    width: 100%;
+  }
+
+  .pagination-link {
+    min-width: 2em;
+  }
+}

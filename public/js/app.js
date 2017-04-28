@@ -4600,7 +4600,7 @@ module.exports = function normalizeComponent (
 "use strict";
 
 
-var bind = __webpack_require__(15);
+var bind = __webpack_require__(16);
 
 /*global toString:true*/
 
@@ -5089,6 +5089,32 @@ var Form = function () {
 
 /***/ }),
 /* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var showNotificationsMixin = {
+    methods: {
+        showError: function showError(error) {
+            var vm = this;
+            this.errorMessage = error;
+            // setTimeout(function(){
+            //     vm.errorMessage = false;
+            // }, 10000);
+        },
+        showSuccess: function showSuccess(message) {
+            var vm = this;
+            this.successMessage = message;
+            // setTimeout(function(){
+            //     vm.successMessage = false;
+            // }, 10000);
+        }
+    }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (showNotificationsMixin);
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -5274,368 +5300,41 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-(function (global, factory) {
-	 true ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global['vue-scrollto'] = factory());
-}(this, (function () { 'use strict';
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(157),
+  /* template */
+  __webpack_require__(203),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/giulio/Desktop/Projects/laravel/forum/resources/assets/js/components/Error.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Error.vue: functional components are not supported with templates, they should use render functions.")}
 
-/**
- * https://github.com/gre/bezier-easing
- * BezierEasing - use bezier curve for transition easing function
- * by Gaëtan Renaudeau 2014 - 2015 – MIT License
- */
-
-// These values are established by empiricism with tests (tradeoff: performance VS precision)
-var NEWTON_ITERATIONS = 4;
-var NEWTON_MIN_SLOPE = 0.001;
-var SUBDIVISION_PRECISION = 0.0000001;
-var SUBDIVISION_MAX_ITERATIONS = 10;
-
-var kSplineTableSize = 11;
-var kSampleStepSize = 1.0 / (kSplineTableSize - 1.0);
-
-var float32ArraySupported = typeof Float32Array === 'function';
-
-function A (aA1, aA2) { return 1.0 - 3.0 * aA2 + 3.0 * aA1; }
-function B (aA1, aA2) { return 3.0 * aA2 - 6.0 * aA1; }
-function C (aA1)      { return 3.0 * aA1; }
-
-// Returns x(t) given t, x1, and x2, or y(t) given t, y1, and y2.
-function calcBezier (aT, aA1, aA2) { return ((A(aA1, aA2) * aT + B(aA1, aA2)) * aT + C(aA1)) * aT; }
-
-// Returns dx/dt given t, x1, and x2, or dy/dt given t, y1, and y2.
-function getSlope (aT, aA1, aA2) { return 3.0 * A(aA1, aA2) * aT * aT + 2.0 * B(aA1, aA2) * aT + C(aA1); }
-
-function binarySubdivide (aX, aA, aB, mX1, mX2) {
-  var currentX, currentT, i = 0;
-  do {
-    currentT = aA + (aB - aA) / 2.0;
-    currentX = calcBezier(currentT, mX1, mX2) - aX;
-    if (currentX > 0.0) {
-      aB = currentT;
-    } else {
-      aA = currentT;
-    }
-  } while (Math.abs(currentX) > SUBDIVISION_PRECISION && ++i < SUBDIVISION_MAX_ITERATIONS);
-  return currentT;
-}
-
-function newtonRaphsonIterate (aX, aGuessT, mX1, mX2) {
- for (var i = 0; i < NEWTON_ITERATIONS; ++i) {
-   var currentSlope = getSlope(aGuessT, mX1, mX2);
-   if (currentSlope === 0.0) {
-     return aGuessT;
-   }
-   var currentX = calcBezier(aGuessT, mX1, mX2) - aX;
-   aGuessT -= currentX / currentSlope;
- }
- return aGuessT;
-}
-
-var index = function bezier (mX1, mY1, mX2, mY2) {
-  if (!(0 <= mX1 && mX1 <= 1 && 0 <= mX2 && mX2 <= 1)) {
-    throw new Error('bezier x values must be in [0, 1] range');
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-bf1dd1e2", Component.options)
+  } else {
+    hotAPI.reload("data-v-bf1dd1e2", Component.options)
   }
+})()}
 
-  // Precompute samples table
-  var sampleValues = float32ArraySupported ? new Float32Array(kSplineTableSize) : new Array(kSplineTableSize);
-  if (mX1 !== mY1 || mX2 !== mY2) {
-    for (var i = 0; i < kSplineTableSize; ++i) {
-      sampleValues[i] = calcBezier(i * kSampleStepSize, mX1, mX2);
-    }
-  }
-
-  function getTForX (aX) {
-    var intervalStart = 0.0;
-    var currentSample = 1;
-    var lastSample = kSplineTableSize - 1;
-
-    for (; currentSample !== lastSample && sampleValues[currentSample] <= aX; ++currentSample) {
-      intervalStart += kSampleStepSize;
-    }
-    --currentSample;
-
-    // Interpolate to provide an initial guess for t
-    var dist = (aX - sampleValues[currentSample]) / (sampleValues[currentSample + 1] - sampleValues[currentSample]);
-    var guessForT = intervalStart + dist * kSampleStepSize;
-
-    var initialSlope = getSlope(guessForT, mX1, mX2);
-    if (initialSlope >= NEWTON_MIN_SLOPE) {
-      return newtonRaphsonIterate(aX, guessForT, mX1, mX2);
-    } else if (initialSlope === 0.0) {
-      return guessForT;
-    } else {
-      return binarySubdivide(aX, intervalStart, intervalStart + kSampleStepSize, mX1, mX2);
-    }
-  }
-
-  return function BezierEasing (x) {
-    if (mX1 === mY1 && mX2 === mY2) {
-      return x; // linear
-    }
-    // Because JavaScript number are imprecise, we should guarantee the extremes are right.
-    if (x === 0) {
-      return 0;
-    }
-    if (x === 1) {
-      return 1;
-    }
-    return calcBezier(getTForX(x), mY1, mY2);
-  };
-};
-
-var easings = {
-    ease: [0.25, 0.1, 0.25, 1.0],
-    linear: [0.00, 0.0, 1.00, 1.0],
-    "ease-in": [0.42, 0.0, 1.00, 1.0],
-    "ease-out": [0.00, 0.0, 0.58, 1.0],
-    "ease-in-out": [0.42, 0.0, 0.58, 1.0]
-};
-
-var _ = {
-    $: function $(selector) {
-        if (typeof selector !== "string") {
-            return selector;
-        }
-        return document.querySelector(selector);
-    },
-    on: function on(element, events, handler) {
-        if (!(events instanceof Array)) {
-            events = [events];
-        }
-        for (var i = 0; i < events.length; i++) {
-            element.addEventListener(events[i], handler);
-        }
-    },
-    off: function off(element, events, handler) {
-        if (!(events instanceof Array)) {
-            events = [events];
-        }
-        for (var i = 0; i < events.length; i++) {
-            element.removeEventListener(events[i], handler);
-        }
-    },
-    cumulativeOffset: function cumulativeOffset(element) {
-        var top = 0;
-
-        do {
-            top += element.offsetTop || 0;
-            element = element.offsetParent;
-        } while (element);
-
-        return {
-            top: top
-        };
-    }
-};
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-  return typeof obj;
-} : function (obj) {
-  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-};
-
-var abortEvents = ["mousedown", "wheel", "DOMMouseScroll", "mousewheel", "keyup", "touchmove"];
-
-var scroller = function scroller() {
-    var element = void 0; // element to scroll to
-    var container = void 0; // container to scroll
-    var duration = void 0; // duration of the scrolling
-    var easing = void 0; // easing to be used when scrolling
-    var offset = void 0; // offset to be added (subtracted)
-    var onDone = void 0; // callback when scrolling is done
-    var onCancel = void 0; // callback when scrolling is canceled / aborted
-
-    var initialY = void 0; // initial Y of container
-    var targetY = void 0; // target Y of container
-    var diff = void 0; // difference
-
-    var abort = void 0; // is scrolling aborted
-
-    var abortEv = void 0; // event that aborted scrolling
-    var abortFn = function abortFn(e) {
-        abortEv = e;
-        abort = true;
-    };
-    var easingFn = void 0;
-
-    var timeStart = void 0; // time when scrolling started
-    var timeElapsed = void 0; // time elapsed since scrolling started
-
-    var progress = void 0; // progress
-
-    function scrollTop(container) {
-        var scrollTop = container.scrollTop;
-
-        if (container.tagName.toLowerCase() === "body") {
-            // in firefox body.scrollTop always returns 0
-            // thus if we are trying to get scrollTop on a body tag
-            // we need to get it from the documentElement
-            scrollTop = scrollTop || document.documentElement.scrollTop;
-        }
-
-        return scrollTop;
-    }
-
-    function step(timestamp) {
-        if (abort) return done();
-        if (!timeStart) timeStart = timestamp;
-
-        timeElapsed = timestamp - timeStart;
-
-        progress = Math.min(timeElapsed / duration, 1);
-        progress = easingFn(progress);
-
-        top(container, initialY + diff * progress);
-
-        timeElapsed < duration ? window.requestAnimationFrame(step) : done();
-    }
-
-    function done() {
-        if (!abort) top(container, targetY);
-        timeStart = false;
-
-        _.off(container, abortEvents, abortFn);
-        if (abort && onCancel) onCancel(abortEv);
-        if (!abort && onDone) onDone();
-    }
-
-    function top(element, top) {
-        element.scrollTop = top;
-        if (element.tagName.toLowerCase() === "body") {
-            // in firefox body.scrollTop doesn't scroll the page
-            // thus if we are trying to scrollTop on a body tag
-            // we need to scroll on the documentElement
-            document.documentElement.scrollTop = top;
-        }
-    }
-
-    function scrollTo(target, _duration) {
-        var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-        if ((typeof _duration === "undefined" ? "undefined" : _typeof(_duration)) === "object") {
-            options = _duration;
-        } else if (typeof _duration === "number") {
-            options.duration = _duration;
-        }
-
-        element = _.$(target);
-
-        if (!element) {
-            return console.warn("[vue-scrollto warn]: Trying to scroll to an element that is not on the page: " + target);
-        }
-
-        container = _.$(options.container || "body");
-        duration = options.duration || 500;
-        easing = options.easing || "ease";
-        offset = options.offset || 0;
-        onDone = options.onDone || false;
-        onCancel = options.onCancel || false;
-
-        initialY = scrollTop(container);
-        targetY = _.cumulativeOffset(element).top - container.offsetTop + offset;
-
-        abort = false;
-
-        diff = targetY - initialY;
-
-        if (typeof easing === "string") {
-            easing = easings[easing] || easings["ease"];
-        }
-
-        easingFn = index.apply(index, easing);
-
-        if (!diff) return;
-
-        _.on(container, abortEvents, abortFn);
-
-        window.requestAnimationFrame(step);
-    }
-
-    return scrollTo;
-};
-
-var _scroller = scroller();
-
-var bindings = []; // store binding data
-
-function deleteBinding(el) {
-    for (var i = 0; i < bindings.length; ++i) {
-        if (bindings[i].el === el) {
-            bindings.splice(i, 1);
-            return true;
-        }
-    }
-    return false;
-}
-
-function getBinding(el) {
-    var binding = bindings.find(function (entry) {
-        return entry.el == el;
-    });
-
-    if (binding) {
-        return binding;
-    }
-
-    bindings.push(binding = {
-        el: el,
-        binding: {}
-    });
-
-    return binding;
-}
-
-function handleClick(e) {
-    e.preventDefault();
-    var ctx = getBinding(this).binding;
-
-    if (typeof ctx.value === "string") {
-        return _scroller(ctx.value);
-    }
-    _scroller(ctx.value.el || ctx.value.element, ctx.value);
-}
-
-var VueScrollTo$1 = {
-    bind: function bind(el, binding) {
-        getBinding(el).binding = binding;
-        _.on(el, "click", handleClick);
-    },
-    unbind: function unbind(el) {
-        deleteBinding(el);
-        _.off(el, "click", handleClick);
-    },
-    update: function update(el, binding) {
-        getBinding(el).binding = binding;
-    },
-
-    scrollTo: _scroller,
-    bindings: bindings
-};
-
-var install = function install(Vue) {
-    Vue.directive("scroll-to", VueScrollTo$1);
-    Vue.prototype.$scrollTo = VueScrollTo$1.scrollTo;
-};
-
-if (typeof window !== "undefined" && window.Vue) {
-    window.VueScrollTo = VueScrollTo$1;
-    Vue.use(install);
-}
-
-VueScrollTo$1.install = install;
-
-return VueScrollTo$1;
-
-})));
+module.exports = Component.exports
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5659,10 +5358,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(11);
+    adapter = __webpack_require__(12);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(11);
+    adapter = __webpack_require__(12);
   }
   return adapter;
 }
@@ -5733,10 +5432,10 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5766,7 +5465,7 @@ var Thread = function Thread(data) {
 /* harmony default export */ __webpack_exports__["a"] = (Thread);
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
@@ -5800,7 +5499,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
@@ -5834,7 +5533,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5845,7 +5544,7 @@ var settle = __webpack_require__(146);
 var buildURL = __webpack_require__(149);
 var parseHeaders = __webpack_require__(155);
 var isURLSameOrigin = __webpack_require__(153);
-var createError = __webpack_require__(14);
+var createError = __webpack_require__(15);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(148);
 
 module.exports = function xhrAdapter(config) {
@@ -6016,10 +5715,10 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6045,7 +5744,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6057,7 +5756,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6081,7 +5780,7 @@ module.exports = function createError(message, config, code, response) {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6097,32 +5796,6 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-
-/***/ }),
-/* 16 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var showNotificationsMixin = {
-    methods: {
-        showError: function showError(error) {
-            var vm = this;
-            this.errorMessage = error;
-            // setTimeout(function(){
-            //     vm.errorMessage = false;
-            // }, 10000);
-        },
-        showSuccess: function showSuccess(message) {
-            var vm = this;
-            this.successMessage = message;
-            // setTimeout(function(){
-            //     vm.successMessage = false;
-            // }, 10000);
-        }
-    }
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (showNotificationsMixin);
 
 /***/ }),
 /* 17 */
@@ -17229,40 +16902,6 @@ return zhTw;
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(157),
-  /* template */
-  __webpack_require__(203),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/giulio/Desktop/Projects/laravel/forum/resources/assets/js/components/Error.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Error.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-bf1dd1e2", Component.options)
-  } else {
-    hotAPI.reload("data-v-bf1dd1e2", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 134 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(1)(
-  /* script */
   __webpack_require__(163),
   /* template */
   __webpack_require__(204),
@@ -17292,7 +16931,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 135 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
@@ -17326,7 +16965,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 136 */
+/* 135 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19733,7 +19372,368 @@ if (inBrowser && window.Vue) {
 
 /* harmony default export */ __webpack_exports__["a"] = (VueRouter);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
+
+/***/ }),
+/* 136 */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function (global, factory) {
+	 true ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global['vue-scrollto'] = factory());
+}(this, (function () { 'use strict';
+
+/**
+ * https://github.com/gre/bezier-easing
+ * BezierEasing - use bezier curve for transition easing function
+ * by Gaëtan Renaudeau 2014 - 2015 – MIT License
+ */
+
+// These values are established by empiricism with tests (tradeoff: performance VS precision)
+var NEWTON_ITERATIONS = 4;
+var NEWTON_MIN_SLOPE = 0.001;
+var SUBDIVISION_PRECISION = 0.0000001;
+var SUBDIVISION_MAX_ITERATIONS = 10;
+
+var kSplineTableSize = 11;
+var kSampleStepSize = 1.0 / (kSplineTableSize - 1.0);
+
+var float32ArraySupported = typeof Float32Array === 'function';
+
+function A (aA1, aA2) { return 1.0 - 3.0 * aA2 + 3.0 * aA1; }
+function B (aA1, aA2) { return 3.0 * aA2 - 6.0 * aA1; }
+function C (aA1)      { return 3.0 * aA1; }
+
+// Returns x(t) given t, x1, and x2, or y(t) given t, y1, and y2.
+function calcBezier (aT, aA1, aA2) { return ((A(aA1, aA2) * aT + B(aA1, aA2)) * aT + C(aA1)) * aT; }
+
+// Returns dx/dt given t, x1, and x2, or dy/dt given t, y1, and y2.
+function getSlope (aT, aA1, aA2) { return 3.0 * A(aA1, aA2) * aT * aT + 2.0 * B(aA1, aA2) * aT + C(aA1); }
+
+function binarySubdivide (aX, aA, aB, mX1, mX2) {
+  var currentX, currentT, i = 0;
+  do {
+    currentT = aA + (aB - aA) / 2.0;
+    currentX = calcBezier(currentT, mX1, mX2) - aX;
+    if (currentX > 0.0) {
+      aB = currentT;
+    } else {
+      aA = currentT;
+    }
+  } while (Math.abs(currentX) > SUBDIVISION_PRECISION && ++i < SUBDIVISION_MAX_ITERATIONS);
+  return currentT;
+}
+
+function newtonRaphsonIterate (aX, aGuessT, mX1, mX2) {
+ for (var i = 0; i < NEWTON_ITERATIONS; ++i) {
+   var currentSlope = getSlope(aGuessT, mX1, mX2);
+   if (currentSlope === 0.0) {
+     return aGuessT;
+   }
+   var currentX = calcBezier(aGuessT, mX1, mX2) - aX;
+   aGuessT -= currentX / currentSlope;
+ }
+ return aGuessT;
+}
+
+var index = function bezier (mX1, mY1, mX2, mY2) {
+  if (!(0 <= mX1 && mX1 <= 1 && 0 <= mX2 && mX2 <= 1)) {
+    throw new Error('bezier x values must be in [0, 1] range');
+  }
+
+  // Precompute samples table
+  var sampleValues = float32ArraySupported ? new Float32Array(kSplineTableSize) : new Array(kSplineTableSize);
+  if (mX1 !== mY1 || mX2 !== mY2) {
+    for (var i = 0; i < kSplineTableSize; ++i) {
+      sampleValues[i] = calcBezier(i * kSampleStepSize, mX1, mX2);
+    }
+  }
+
+  function getTForX (aX) {
+    var intervalStart = 0.0;
+    var currentSample = 1;
+    var lastSample = kSplineTableSize - 1;
+
+    for (; currentSample !== lastSample && sampleValues[currentSample] <= aX; ++currentSample) {
+      intervalStart += kSampleStepSize;
+    }
+    --currentSample;
+
+    // Interpolate to provide an initial guess for t
+    var dist = (aX - sampleValues[currentSample]) / (sampleValues[currentSample + 1] - sampleValues[currentSample]);
+    var guessForT = intervalStart + dist * kSampleStepSize;
+
+    var initialSlope = getSlope(guessForT, mX1, mX2);
+    if (initialSlope >= NEWTON_MIN_SLOPE) {
+      return newtonRaphsonIterate(aX, guessForT, mX1, mX2);
+    } else if (initialSlope === 0.0) {
+      return guessForT;
+    } else {
+      return binarySubdivide(aX, intervalStart, intervalStart + kSampleStepSize, mX1, mX2);
+    }
+  }
+
+  return function BezierEasing (x) {
+    if (mX1 === mY1 && mX2 === mY2) {
+      return x; // linear
+    }
+    // Because JavaScript number are imprecise, we should guarantee the extremes are right.
+    if (x === 0) {
+      return 0;
+    }
+    if (x === 1) {
+      return 1;
+    }
+    return calcBezier(getTForX(x), mY1, mY2);
+  };
+};
+
+var easings = {
+    ease: [0.25, 0.1, 0.25, 1.0],
+    linear: [0.00, 0.0, 1.00, 1.0],
+    "ease-in": [0.42, 0.0, 1.00, 1.0],
+    "ease-out": [0.00, 0.0, 0.58, 1.0],
+    "ease-in-out": [0.42, 0.0, 0.58, 1.0]
+};
+
+var _ = {
+    $: function $(selector) {
+        if (typeof selector !== "string") {
+            return selector;
+        }
+        return document.querySelector(selector);
+    },
+    on: function on(element, events, handler) {
+        if (!(events instanceof Array)) {
+            events = [events];
+        }
+        for (var i = 0; i < events.length; i++) {
+            element.addEventListener(events[i], handler);
+        }
+    },
+    off: function off(element, events, handler) {
+        if (!(events instanceof Array)) {
+            events = [events];
+        }
+        for (var i = 0; i < events.length; i++) {
+            element.removeEventListener(events[i], handler);
+        }
+    },
+    cumulativeOffset: function cumulativeOffset(element) {
+        var top = 0;
+
+        do {
+            top += element.offsetTop || 0;
+            element = element.offsetParent;
+        } while (element);
+
+        return {
+            top: top
+        };
+    }
+};
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
+
+var abortEvents = ["mousedown", "wheel", "DOMMouseScroll", "mousewheel", "keyup", "touchmove"];
+
+var scroller = function scroller() {
+    var element = void 0; // element to scroll to
+    var container = void 0; // container to scroll
+    var duration = void 0; // duration of the scrolling
+    var easing = void 0; // easing to be used when scrolling
+    var offset = void 0; // offset to be added (subtracted)
+    var onDone = void 0; // callback when scrolling is done
+    var onCancel = void 0; // callback when scrolling is canceled / aborted
+
+    var initialY = void 0; // initial Y of container
+    var targetY = void 0; // target Y of container
+    var diff = void 0; // difference
+
+    var abort = void 0; // is scrolling aborted
+
+    var abortEv = void 0; // event that aborted scrolling
+    var abortFn = function abortFn(e) {
+        abortEv = e;
+        abort = true;
+    };
+    var easingFn = void 0;
+
+    var timeStart = void 0; // time when scrolling started
+    var timeElapsed = void 0; // time elapsed since scrolling started
+
+    var progress = void 0; // progress
+
+    function scrollTop(container) {
+        var scrollTop = container.scrollTop;
+
+        if (container.tagName.toLowerCase() === "body") {
+            // in firefox body.scrollTop always returns 0
+            // thus if we are trying to get scrollTop on a body tag
+            // we need to get it from the documentElement
+            scrollTop = scrollTop || document.documentElement.scrollTop;
+        }
+
+        return scrollTop;
+    }
+
+    function step(timestamp) {
+        if (abort) return done();
+        if (!timeStart) timeStart = timestamp;
+
+        timeElapsed = timestamp - timeStart;
+
+        progress = Math.min(timeElapsed / duration, 1);
+        progress = easingFn(progress);
+
+        top(container, initialY + diff * progress);
+
+        timeElapsed < duration ? window.requestAnimationFrame(step) : done();
+    }
+
+    function done() {
+        if (!abort) top(container, targetY);
+        timeStart = false;
+
+        _.off(container, abortEvents, abortFn);
+        if (abort && onCancel) onCancel(abortEv);
+        if (!abort && onDone) onDone();
+    }
+
+    function top(element, top) {
+        element.scrollTop = top;
+        if (element.tagName.toLowerCase() === "body") {
+            // in firefox body.scrollTop doesn't scroll the page
+            // thus if we are trying to scrollTop on a body tag
+            // we need to scroll on the documentElement
+            document.documentElement.scrollTop = top;
+        }
+    }
+
+    function scrollTo(target, _duration) {
+        var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+        if ((typeof _duration === "undefined" ? "undefined" : _typeof(_duration)) === "object") {
+            options = _duration;
+        } else if (typeof _duration === "number") {
+            options.duration = _duration;
+        }
+
+        element = _.$(target);
+
+        if (!element) {
+            return console.warn("[vue-scrollto warn]: Trying to scroll to an element that is not on the page: " + target);
+        }
+
+        container = _.$(options.container || "body");
+        duration = options.duration || 500;
+        easing = options.easing || "ease";
+        offset = options.offset || 0;
+        onDone = options.onDone || false;
+        onCancel = options.onCancel || false;
+
+        initialY = scrollTop(container);
+        targetY = _.cumulativeOffset(element).top - container.offsetTop + offset;
+
+        abort = false;
+
+        diff = targetY - initialY;
+
+        if (typeof easing === "string") {
+            easing = easings[easing] || easings["ease"];
+        }
+
+        easingFn = index.apply(index, easing);
+
+        if (!diff) return;
+
+        _.on(container, abortEvents, abortFn);
+
+        window.requestAnimationFrame(step);
+    }
+
+    return scrollTo;
+};
+
+var _scroller = scroller();
+
+var bindings = []; // store binding data
+
+function deleteBinding(el) {
+    for (var i = 0; i < bindings.length; ++i) {
+        if (bindings[i].el === el) {
+            bindings.splice(i, 1);
+            return true;
+        }
+    }
+    return false;
+}
+
+function getBinding(el) {
+    var binding = bindings.find(function (entry) {
+        return entry.el == el;
+    });
+
+    if (binding) {
+        return binding;
+    }
+
+    bindings.push(binding = {
+        el: el,
+        binding: {}
+    });
+
+    return binding;
+}
+
+function handleClick(e) {
+    e.preventDefault();
+    var ctx = getBinding(this).binding;
+
+    if (typeof ctx.value === "string") {
+        return _scroller(ctx.value);
+    }
+    _scroller(ctx.value.el || ctx.value.element, ctx.value);
+}
+
+var VueScrollTo$1 = {
+    bind: function bind(el, binding) {
+        getBinding(el).binding = binding;
+        _.on(el, "click", handleClick);
+    },
+    unbind: function unbind(el) {
+        deleteBinding(el);
+        _.off(el, "click", handleClick);
+    },
+    update: function update(el, binding) {
+        getBinding(el).binding = binding;
+    },
+
+    scrollTo: _scroller,
+    bindings: bindings
+};
+
+var install = function install(Vue) {
+    Vue.directive("scroll-to", VueScrollTo$1);
+    Vue.prototype.$scrollTo = VueScrollTo$1.scrollTo;
+};
+
+if (typeof window !== "undefined" && window.Vue) {
+    window.VueScrollTo = VueScrollTo$1;
+    Vue.use(install);
+}
+
+VueScrollTo$1.install = install;
+
+return VueScrollTo$1;
+
+})));
+
 
 /***/ }),
 /* 137 */
@@ -19773,7 +19773,8 @@ var app = new Vue({
         // username: false,
         path: new __WEBPACK_IMPORTED_MODULE_4__models_Path__["a" /* default */](),
         channels: [],
-        searchQuery: ''
+        searchQuery: '',
+        showNavbar: false
     },
     created: function created() {
         var _this = this;
@@ -19834,9 +19835,9 @@ module.exports = __webpack_require__(140);
 
 
 var utils = __webpack_require__(2);
-var bind = __webpack_require__(15);
+var bind = __webpack_require__(16);
 var Axios = __webpack_require__(142);
-var defaults = __webpack_require__(7);
+var defaults = __webpack_require__(8);
 
 /**
  * Create an instance of Axios
@@ -19869,9 +19870,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(12);
+axios.Cancel = __webpack_require__(13);
 axios.CancelToken = __webpack_require__(141);
-axios.isCancel = __webpack_require__(13);
+axios.isCancel = __webpack_require__(14);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -19892,7 +19893,7 @@ module.exports.default = axios;
 "use strict";
 
 
-var Cancel = __webpack_require__(12);
+var Cancel = __webpack_require__(13);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -19956,7 +19957,7 @@ module.exports = CancelToken;
 "use strict";
 
 
-var defaults = __webpack_require__(7);
+var defaults = __webpack_require__(8);
 var utils = __webpack_require__(2);
 var InterceptorManager = __webpack_require__(143);
 var dispatchRequest = __webpack_require__(144);
@@ -20109,8 +20110,8 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(2);
 var transformData = __webpack_require__(147);
-var isCancel = __webpack_require__(13);
-var defaults = __webpack_require__(7);
+var isCancel = __webpack_require__(14);
+var defaults = __webpack_require__(8);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -20219,7 +20220,7 @@ module.exports = function enhanceError(error, config, code, response) {
 "use strict";
 
 
-var createError = __webpack_require__(14);
+var createError = __webpack_require__(15);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -21185,7 +21186,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Thread__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Thread__ = __webpack_require__(9);
 //
 //
 //
@@ -21249,8 +21250,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     components: {
-        'thread': __webpack_require__(10),
-        'paginate': __webpack_require__(9)
+        'thread': __webpack_require__(11),
+        'paginate': __webpack_require__(10)
     }
 });
 
@@ -21262,7 +21263,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Form__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_IsLoggedMixin__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_showNotificationsMixin__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_showNotificationsMixin__ = __webpack_require__(5);
 //
 //
 //
@@ -21352,7 +21353,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     components: {
-        'error': __webpack_require__(133)
+        'error': __webpack_require__(7)
     }
 });
 
@@ -21437,7 +21438,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Form__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_showNotificationsMixin__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_showNotificationsMixin__ = __webpack_require__(5);
 //
 //
 //
@@ -21540,8 +21541,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     components: {
-        'error': __webpack_require__(133),
-        'success': __webpack_require__(134)
+        'error': __webpack_require__(7),
+        'success': __webpack_require__(133)
 
     }
 });
@@ -21553,7 +21554,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Form__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_showNotificationsMixin__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_showNotificationsMixin__ = __webpack_require__(5);
 //
 //
 //
@@ -21745,8 +21746,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     components: {
-        'error': __webpack_require__(133),
-        'success': __webpack_require__(134)
+        'error': __webpack_require__(7),
+        'success': __webpack_require__(133)
     }
 
 });
@@ -21759,7 +21760,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_ThreadWithReplies__ = __webpack_require__(177);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_IsLoggedMixin__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_showNotificationsMixin__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_showNotificationsMixin__ = __webpack_require__(5);
 //
 //
 //
@@ -21827,11 +21828,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     components: {
-        'thread': __webpack_require__(10),
+        'thread': __webpack_require__(11),
         'reply': __webpack_require__(183),
         'newReply': __webpack_require__(180),
-        'paginate': __webpack_require__(9),
-        'error': __webpack_require__(133)
+        'paginate': __webpack_require__(10),
+        'error': __webpack_require__(7)
     }
 });
 
@@ -21841,7 +21842,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Thread__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Thread__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_IsLoggedMixin__ = __webpack_require__(3);
 //
 //
@@ -21862,7 +21863,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-var VueScrollTo = __webpack_require__(6);
+var VueScrollTo = __webpack_require__(136);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -21919,8 +21920,8 @@ var VueScrollTo = __webpack_require__(6);
         }
     },
     components: {
-        'thread': __webpack_require__(10),
-        'paginate': __webpack_require__(9)
+        'thread': __webpack_require__(11),
+        'paginate': __webpack_require__(10)
     }
 
 });
@@ -21930,13 +21931,13 @@ var VueScrollTo = __webpack_require__(6);
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(135);
 window.Vue = __webpack_require__(205);
 
 
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]);
 
-var VueScrollTo = __webpack_require__(6);
+var VueScrollTo = __webpack_require__(136);
 Vue.use(VueScrollTo);
 
 window.moment = __webpack_require__(0);
@@ -22197,7 +22198,7 @@ var Path = function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Thread__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Thread__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Reply__ = __webpack_require__(17);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -22243,19 +22244,19 @@ var ThreadWithReplies = function (_Thread) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(135);
 
 
 var routes = [{
     path: '/',
-    component: __webpack_require__(135),
+    component: __webpack_require__(134),
     name: 'home'
 }, {
     path: '/reset-password/:token',
     component: __webpack_require__(186)
 }, {
     path: '/threads',
-    component: __webpack_require__(135)
+    component: __webpack_require__(134)
 }, {
     path: '/new-thread',
     component: __webpack_require__(184)
@@ -33708,7 +33709,7 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(206)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(206)))
 
 /***/ }),
 /* 206 */
