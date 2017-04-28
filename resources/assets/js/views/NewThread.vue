@@ -32,12 +32,16 @@
                 </p>
             </div>
         </form> 
+        <transition name="fade">
+            <error v-if="errorMessage" :errorMessage="errorMessage" @close="errorMessage = false"></error>
+        </transition>
     </div>        
 </template>
 
 <script>
     import Form from '../models/Form';
     import isLoggedMixin from '../mixins/IsLoggedMixin';
+    import showNotificationsMixin from '../mixins/showNotificationsMixin';
 
     export default {
         data(){
@@ -47,11 +51,11 @@
                     title: '',
                     description: '',
                     body: ''
-                })
-
+                }),
+                errorMessage: false
             }
         },
-        mixins:[isLoggedMixin],
+        mixins:[isLoggedMixin, showNotificationsMixin],
         beforeRouteEnter: (to, from, next) => {
             next(vm => {
                 vm.checkIfLogged()
@@ -66,9 +70,16 @@
             sendPost(){
                 var vm = this;
                 this.form.post('/channels/'+this.channel+'/threads')
-                    .then(response => vm.$router.back())
-                    .catch(error => console.log(error));
+                    .then(response => vm.$router.push({path: '/'+this.channel+'/'+response}))
+                    .catch(error => {
+                        let out = '';
+                        Object.keys(error).forEach(field => out += error[field] +'\n' );
+                        this.showError(out);
+                    });
             }
+        },
+        components: {
+            'error': require('../components/Error.vue')
         }
     }
 </script>

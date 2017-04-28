@@ -27,6 +27,7 @@
     import Form from '../models/Form';
     import isLoggedMixin from '../mixins/IsLoggedMixin';
 
+
     export default {
         props: ['thread'],
         data(){
@@ -47,7 +48,11 @@
                         vm.$emit('posted');
                         vm.$emit('close');
                     })
-                    .catch(error => console.log(error));
+                    .catch(error => {
+                        let out = '';
+                        Object.keys(error).forEach(field => out += error[field] +'\n' );
+                        this.$emit('error', out);
+                    });
             }
         }
     }

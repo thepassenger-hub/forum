@@ -1,5 +1,7 @@
 <aside class="menu column is-3">
-    <router-link class="button" v-if="user" to="new-thread">Create new Thread</router-link>
+    <keep-alive>
+        <router-link class="button" v-if="user" :to="{path: '/new-thread'}">Create new Thread</router-link>
+    </keep-alive>
 
      <p class="menu-label">
         Filters

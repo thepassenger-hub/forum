@@ -3,9 +3,19 @@
     <a class="nav-item">
       <p>Logo qua</p>
     </a>
-    <router-link class="nav-item is-tab" to='/' exact>
-      <p>Home</p>
-    </router-link>
+    <div class="nav-item field has-addons" id="search-bar">
+      <p class="control">
+          <input class="input" v-model="searchQuery" placeholder="Search">
+      </p>
+      <p class="control">
+        <router-link :to="{ path: '/threads', query: { search: searchQuery }}" exact>
+            <button class="button is-primary">
+                SEARCH
+            </button>
+        </router-link>
+          {{-- <button class="button is-primary" @click="">SEARCH</button> --}}
+      </p>
+    </div>
   </div>
 
   <!-- This "nav-toggle" hamburger menu is only visible on mobile -->

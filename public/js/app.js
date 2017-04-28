@@ -19772,7 +19772,8 @@ var app = new Vue({
         user: false,
         // username: false,
         path: new __WEBPACK_IMPORTED_MODULE_4__models_Path__["a" /* default */](),
-        channels: []
+        channels: [],
+        searchQuery: ''
     },
     created: function created() {
         var _this = this;
@@ -20730,12 +20731,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         sendPost: function sendPost() {
+            var _this = this;
+
             var vm = this;
             this.form.post('/threads/' + this.thread + '/replies').then(function (response) {
                 vm.$emit('posted');
                 vm.$emit('close');
             }).catch(function (error) {
-                return console.log(error);
+                var out = '';
+                Object.keys(error).forEach(function (field) {
+                    return out += error[field] + '\n';
+                });
+                _this.$emit('error', out);
             });
         }
     }
@@ -21198,7 +21205,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 
-var VueScrollTo = __webpack_require__(6);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -21211,6 +21217,7 @@ var VueScrollTo = __webpack_require__(6);
     created: function created() {
         this.getLatestThreads();
         this.$root.path.update(this.$route.path);
+        this.$root.searchQuery = '';
     },
 
     watch: {
@@ -21218,6 +21225,7 @@ var VueScrollTo = __webpack_require__(6);
             this.threads = [];
             this.currentPage = 1, this.getLatestThreads();
             this.$root.path.update(this.$route.path);
+            this.$root.searchQuery = '';
         }
     },
     methods: {
@@ -21254,6 +21262,7 @@ var VueScrollTo = __webpack_require__(6);
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Form__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_IsLoggedMixin__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_showNotificationsMixin__ = __webpack_require__(16);
 //
 //
 //
@@ -21291,6 +21300,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+
 
 
 
@@ -21303,12 +21316,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 title: '',
                 description: '',
                 body: ''
-            })
-
+            }),
+            errorMessage: false
         };
     },
 
-    mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_IsLoggedMixin__["a" /* default */]],
+    mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_IsLoggedMixin__["a" /* default */], __WEBPACK_IMPORTED_MODULE_2__mixins_showNotificationsMixin__["a" /* default */]],
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
         next(function (vm) {
             vm.checkIfLogged().then(function (response) {
@@ -21324,13 +21337,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         sendPost: function sendPost() {
+            var _this = this;
+
             var vm = this;
             this.form.post('/channels/' + this.channel + '/threads').then(function (response) {
-                return vm.$router.back();
+                return vm.$router.push({ path: '/' + _this.channel + '/' + response });
             }).catch(function (error) {
-                return console.log(error);
+                var out = '';
+                Object.keys(error).forEach(function (field) {
+                    return out += error[field] + '\n';
+                });
+                _this.showError(out);
             });
         }
+    },
+    components: {
+        'error': __webpack_require__(133)
     }
 });
 
@@ -21640,8 +21662,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 
 
@@ -21685,7 +21705,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 vm.$root.user = response.user;
                 vm.$router.back();
             }).catch(function (error) {
-                return _this.showError(error);
+                var out = '';
+                Object.keys(error).forEach(function (field) {
+                    return out += error[field] + '\n';
+                });
+                _this.showError(out);
             });
         },
         postRegisterForm: function postRegisterForm() {
@@ -21697,7 +21721,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 vm.$root.user = response.user;
                 vm.$router.push('/');
             }).catch(function (error) {
-                return _this2.showError(error);
+                var out = '';
+                Object.keys(error).forEach(function (field) {
+                    return out += error[field] + '\n';
+                });
+                _this2.showError(out);
             });
         },
         resetPassword: function resetPassword() {
@@ -21708,7 +21736,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this3.showSuccess(response);
                 _this3.reset.reset();
             }).catch(function (error) {
-                return _this3.showError(error);
+                var out = '';
+                Object.keys(error).forEach(function (field) {
+                    return out += error[field] + '\n';
+                });
+                _this3.showError(out);
             });
         }
     },
@@ -21727,6 +21759,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_ThreadWithReplies__ = __webpack_require__(177);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_IsLoggedMixin__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_showNotificationsMixin__ = __webpack_require__(16);
+//
+//
 //
 //
 //
@@ -21749,7 +21784,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-var VueScrollTo = __webpack_require__(6);
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -21759,12 +21794,13 @@ var VueScrollTo = __webpack_require__(6);
             channel: this.$route.params.channel,
             isLogged: false,
             currentPage: 1,
-            perPage: 10
+            perPage: 10,
+            errorMessage: false
         };
     },
 
 
-    mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_IsLoggedMixin__["a" /* default */]],
+    mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_IsLoggedMixin__["a" /* default */], __WEBPACK_IMPORTED_MODULE_2__mixins_showNotificationsMixin__["a" /* default */]],
 
     created: function created() {
         var _this = this;
@@ -21794,8 +21830,8 @@ var VueScrollTo = __webpack_require__(6);
         'thread': __webpack_require__(10),
         'reply': __webpack_require__(183),
         'newReply': __webpack_require__(180),
-        'paginate': __webpack_require__(9)
-
+        'paginate': __webpack_require__(9),
+        'error': __webpack_require__(133)
     }
 });
 
@@ -21844,7 +21880,8 @@ var VueScrollTo = __webpack_require__(6);
         '$route': function $route() {
             this.channel = this.$route.params.channel;
             this.threads = [];
-            this.currentPage = 1, this.getThreads();
+            this.currentPage = 1;
+            this.getThreads();
             this.$root.path.update(this.$route.path);
         }
     },
@@ -22213,12 +22250,7 @@ var routes = [{
     path: '/',
     component: __webpack_require__(135),
     name: 'home'
-},
-// {
-//     path: '/reset-password/:token',
-//     component: require('./views/ResetPassword')
-// },
-{
+}, {
     path: '/reset-password/:token',
     component: __webpack_require__(186)
 }, {
@@ -23186,9 +23218,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         this.VueScrollTo.scrollTo('.column.is-9');
       }
     }
-  }) : _vm._e(), _vm._v(" "), _c('h1', {
-    staticClass: "title"
-  }, [_vm._v("List of threads")]), _vm._v(" "), _vm._l((_vm.threads.slice(0 + 10 * (_vm.currentPage - 1), 10 * _vm.currentPage)), function(thread) {
+  }) : _vm._e(), _vm._v(" "), (_vm.threads) ? _c('h3', {
+    staticClass: "title is-3"
+  }, [_vm._v(_vm._s(_vm.threads[0].channel.name))]) : _vm._e(), _vm._v(" "), _vm._l((_vm.threads.slice(0 + 10 * (_vm.currentPage - 1), 10 * _vm.currentPage)), function(thread) {
     return _c('thread', {
       key: thread.id,
       attrs: {
@@ -23384,9 +23416,25 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "thread": _vm.threadPath
     },
     on: {
-      "posted": _vm.getThread
+      "posted": _vm.getThread,
+      "error": function($event) {
+        _vm.showError($event)
+      }
     }
-  }) : _vm._e()], 2) : _vm._e()
+  }) : _vm._e(), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [(_vm.errorMessage) ? _c('error', {
+    attrs: {
+      "errorMessage": _vm.errorMessage
+    },
+    on: {
+      "close": function($event) {
+        _vm.errorMessage = false
+      }
+    }
+  }) : _vm._e()], 1)], 2) : _vm._e()
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -23645,7 +23693,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$router.back()
       }
     }
-  }, [_vm._v("Cancel")])])])])])
+  }, [_vm._v("Cancel")])])])]), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [(_vm.errorMessage) ? _c('error', {
+    attrs: {
+      "errorMessage": _vm.errorMessage
+    },
+    on: {
+      "close": function($event) {
+        _vm.errorMessage = false
+      }
+    }
+  }) : _vm._e()], 1)], 1)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('p', {
     staticClass: "control"

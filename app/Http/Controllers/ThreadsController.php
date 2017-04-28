@@ -29,7 +29,7 @@ class ThreadsController extends Controller
                 'body' => 'required|min:10'
             ]);
         try {
-            $channel->addThread([
+            $thread = $channel->addThread([
                 'title' => request('title'),
                 'slug' => makeSlugFromTitle(request('title')),
                 'body' => request('body'),
@@ -37,6 +37,7 @@ class ThreadsController extends Controller
                 'channel_id' => $channel->id,
                 'last_reply' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')
             ]);
+            return response($thread->slug, 200);
         } catch (Exception $e) {
             return response( $e, 500);
         }

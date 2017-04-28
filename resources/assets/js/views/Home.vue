@@ -17,7 +17,6 @@
 
 <script>
     import Thread from '../models/Thread';
-    var VueScrollTo = require('vue-scrollto');
 
     export default {
 
@@ -31,7 +30,7 @@
         created(){
             this.getLatestThreads();            
             this.$root.path.update(this.$route.path);
-            
+            this.$root.searchQuery = '';
         },
         watch: {
             '$route': function(){
@@ -39,6 +38,7 @@
                 this.currentPage = 1,
                 this.getLatestThreads();
                 this.$root.path.update(this.$route.path);
+                this.$root.searchQuery = '';
             }
         },
         methods: {

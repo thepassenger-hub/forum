@@ -26,6 +26,6 @@ class Channel extends Model
 
     public function addThread($fields)
     {
-        $this->threads()->create($fields);
+        return $this->threads()->create($fields);
     }
 }

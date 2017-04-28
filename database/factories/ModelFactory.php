@@ -52,6 +52,6 @@ $factory->define(App\Reply::class, function (Faker\Generator $faker) {
     return [
         'body' => $faker->text(100),
         'user_id' => $faker->numberBetween(1,11),
-        'thread_id' => $faker->numberBetween(1, 501)
+        'thread_id' => $faker->numberBetween(1, 101)
     ];
 });

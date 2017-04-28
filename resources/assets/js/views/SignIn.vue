@@ -94,11 +94,9 @@
                         <button class="button is-primary" @click="resetPassword">Send Password reset link</button>
                     </p>
                 </div>
-
-
             </div>
-
         </transition>
+        
         <transition name="fade">
             <success v-if="successMessage" :successMessage="successMessage" @close="successMessage = false"></success>
         </transition>
@@ -148,7 +146,11 @@
                         vm.$root.user = response.user;
                         vm.$router.back();
                     })
-                    .catch(error => this.showError(error));
+                    .catch(error => {
+                        let out = '';
+                        Object.keys(error).forEach(field => out += error[field] +'\n' );
+                        this.showError(out);
+                    });
             },
             postRegisterForm(){
                 var vm = this;
@@ -158,7 +160,11 @@
                         vm.$root.user = response.user;
                         vm.$router.push('/');
                     })
-                    .catch(error => this.showError(error));
+                    .catch(error => {
+                        let out = '';
+                        Object.keys(error).forEach(field => out += error[field] +'\n' );
+                        this.showError(out);
+                    });
             },
             resetPassword() {
                 this.reset.post('/password/email')
@@ -167,7 +173,11 @@
                         this.showSuccess(response);   
                         this.reset.reset();          
                     })
-                    .catch(error => this.showError(error));
+                    .catch(error => {
+                        let out = '';
+                        Object.keys(error).forEach(field => out += error[field] +'\n' );
+                        this.showError(out);
+                    });
             }
         },
         components: {

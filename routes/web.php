@@ -21,11 +21,11 @@ Route::get('/sessionStatus', function() {
     });
 
 Route::get('/home', 'HomeController@index');
-// \Event::listen('Illuminate\Database\Events\QueryExecuted', function ($query) {
-//     var_dump($query->sql);
-//     // var_dump($query->bindings);
-//     // var_dump($query->time);
-// });
+\Event::listen('Illuminate\Database\Events\QueryExecuted', function ($query) {
+    // dd($query->sql);
+    // var_dump($query->bindings);
+    // var_dump($query->time);
+});
 Route::get('channels', 'ChannelsController@index');
 Route::get('threads', 'ThreadsController@index');
 Route::get('channels/{channel}/threads', 'ThreadsController@index');

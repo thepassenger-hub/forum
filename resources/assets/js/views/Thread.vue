@@ -11,16 +11,18 @@
         <paginate v-if="thread.replies.length > perPage" :current="currentPage" :perPage="perPage" :posts="thread.replies"
             @pageClicked="currentPage = $event; this.VueScrollTo.scrollTo('.replies');">
         </paginate>
-        <!--<button  class="button is-primary" @click="showNewReply = true">Add reply</button>-->
         <hr>
-        <new-reply v-if="isLogged && $root.username" :thread="threadPath" @posted="getThread"></new-reply>
+        <new-reply v-if="isLogged && $root.username" :thread="threadPath" @posted="getThread" @error="showError($event)"></new-reply>
+        <transition name="fade">
+            <error v-if="errorMessage" :errorMessage="errorMessage" @close="errorMessage = false"></error>
+        </transition>
     </div>
 </template>
 
 <script>
     import ThreadWithReplies from '../models/ThreadWithReplies';
     import isLoggedMixin from '../mixins/IsLoggedMixin';
-    var VueScrollTo = require('vue-scrollto');
+    import showNotificationsMixin from '../mixins/showNotificationsMixin';
 
     export default {
         data(){
@@ -30,11 +32,12 @@
                 channel: this.$route.params.channel,
                 isLogged: false,
                 currentPage: 1,
-                perPage: 10
+                perPage: 10,
+                errorMessage: false
             }
         },
 
-        mixins:[isLoggedMixin],
+        mixins:[isLoggedMixin, showNotificationsMixin],
 
         created(){
             this.getThread();
@@ -61,8 +64,8 @@
             'thread': require('../components/Thread.vue'),
             'reply': require('../components/Reply.vue'),
             'newReply': require('../components/NewReply.vue'),
-            'paginate': require('../components/Paginate.vue')
-
+            'paginate': require('../components/Paginate.vue'),
+            'error': require('../components/Error.vue')
         }
     }
 </script>

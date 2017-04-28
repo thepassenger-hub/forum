@@ -6,10 +6,6 @@ let routes = [
         component: require('./views/Home'),
         name: 'home'
     },
-    // {
-    //     path: '/reset-password/:token',
-    //     component: require('./views/ResetPassword')
-    // },
     {
         path: '/reset-password/:token',
         component: require('./views/ResetPassword')

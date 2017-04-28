@@ -9,7 +9,7 @@ class ThreadFilters extends Filters
      *
      * @var array
      */
-    protected $filters = ['by', 'popular', 'trending', 'contributed_to'];
+    protected $filters = ['by', 'popular', 'trending', 'contributed_to', 'search'];
     /**
      * Filter the query by a given username.
      *
@@ -59,6 +59,38 @@ class ThreadFilters extends Filters
                             });
         return $builder;
     }
+
+    /**
+    * Filter the quest to show threads that contain all words entered
+    * in the search bar inside the title OR the body OR its replies body.
+    *
+    * @param string $terms
+    * @return Builder
+    */
+
+    public function search($terms)
+    {
+        $terms = explode(' ', $terms);
+        $builder = $this->builder;
+        $builder->whereHas('replies', function($query) use($terms){
+            foreach ($terms as $term) {
+                if($term) $query -> where('body', 'like', '%' . $term . '%');
+            }
+        })
+            ->orWhere(function($query) use($terms){
+                foreach ($terms as $term) {
+                    if($term) $query -> where('body', 'like', "%{$term}%");
+                }
+            })
+            ->orWhere(function($query) use($terms){
+                foreach ($terms as $term) {
+                    if($term) $query -> where('title', 'like', "%{$term}%");
+                }
+            });
+        return $builder;
+    }
+
+
 
     
 }
