@@ -16,18 +16,21 @@ class ProfileController extends Controller
             'bio' => 'max: 300',
             'location' => 'max:30'
         ]);
-        
-        auth()->user()->profile()->update(request()->all());
+        $user = auth()->user();
+        $user->profile()->update(request()->all());
+        cache()->forget('profile_' . $user->username);
     }
 
     public function show(User $user)
     {
-        return $user->profile()->with([
+        return cache()->rememberForever('profile_' . $user->username, function() use ($user){
+            return $user->profile()->with([
                 'user' => function($query){
                             $query->withCount(['replies', 'threads']);
                             $query->with('replies.thread.channel');
                         }
                 ])->first();                 
+        });
     }
     
     public function uploadAvatar()
@@ -38,6 +41,7 @@ class ProfileController extends Controller
         $path = request()->file('avatar')->store('public/avatars');
         $path = str_replace('public/', 'storage/', $path);
         auth()->user()->profile()->update(['avatar' => $path]);
-
+        cache()->forget('profile_' . $user->username);
+        
     }
 }

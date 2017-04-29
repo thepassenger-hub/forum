@@ -12,14 +12,21 @@ class ThreadsController extends Controller
 
     public function index(Channel $channel, ThreadFilters $filters)
     {
-       
+        // $ay = request()->intersect(['by', 'popular', 'trending', 'contributed_to', 'search']);
+        // dd($ay);
+        // foreach($ay as $key => $value){
+        //     dd($key .'_'. $value);
+        // }
         return $this->getThreads($channel, $filters);
+        // if (cache()->has('threads_'.$channel.'_filters'.request()->))
 
     }
 
     public function show($channel, Thread $thread )
     {   
-        return $thread->load('replies.creator.profile', 'creator.profile');
+        return cache()->rememberForever('thread_'. $thread->id, function() use($thread){
+           return $thread->load('replies.creator.profile', 'creator.profile');
+        });
     }
 
     public function store(Channel $channel)
@@ -54,7 +61,7 @@ class ThreadsController extends Controller
     {
         $threads = Thread::with('creator.profile', 'channel')->withCount('replies')
                          ->orderBy('last_reply', 'desc')->filter($filters);
-
+            
         if ($channel->exists) {
             $threads->where('channel_id', $channel->id);
         }

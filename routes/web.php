@@ -24,21 +24,21 @@ Route::get('/home', 'HomeController@index');
 \Event::listen('Illuminate\Database\Events\QueryExecuted', function ($query) {
     // dd($query->sql);
     // var_dump($query->bindings);
-    // var_dump($query->time);
+    var_dump('TIME: ' . $query->time);
 });
 Route::get('channels', 'ChannelsController@index');
 Route::get('threads', 'ThreadsController@index');
 Route::get('channels/{channel}/threads', 'ThreadsController@index');
 Route::get('channels/{channel}/{thread}', 'ThreadsController@show');
 Route::get('profile/{user}', 'ProfileController@show');
-Route::get('replies/{user}', 'RepliesController@index');
+// Route::get('replies/{user}', 'RepliesController@index');
 Route::get('test', 'ThreadsController@test');
 Route::post('profile', 'ProfileController@store')->middleware('auth');
 Route::post('profile/avatar', 'ProfileController@uploadAvatar')->middleware('auth');
 
 Route::post('threads/{thread}/replies', 'RepliesController@store')->middleware('auth');
 Route::post('channels/{channel}/threads', 'ThreadsController@store')->middleware('auth');
-Route::post('channels/{channel}/{thread}/replies', 'RepliesController@store')->middleware('auth');
+// Route::post('channels/{channel}/{thread}/replies', 'RepliesController@store')->middleware('auth');
 Route::post('user/password', 'UsersController@update')->middleware('auth');
 
 

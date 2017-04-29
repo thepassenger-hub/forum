@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use \App\Events\ReplyCreated;
 use \App\Thread;
 use \App\User;
 
@@ -10,6 +11,10 @@ class Reply extends Model
 {
 
     protected $guarded = [];
+
+    protected $events = [
+        'created' => ReplyCreated::class,
+    ];
 
     public function thread()
     {

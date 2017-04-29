@@ -5,14 +5,17 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Filters\ThreadFilters;
-
-
+use App\Events\ThreadCreated;
 class Thread extends Model
 {
     protected $guarded = [];
     
     protected $hidden = ['user_id', 'channel_id'];
 
+    protected $events = [
+        'created' => ThreadCreated::class
+    ];
+    
     public function getRouteKeyName()
     {
         return 'slug';
