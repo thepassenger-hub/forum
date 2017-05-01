@@ -10,23 +10,16 @@ use \App\Filters\ThreadFilters;
 class ThreadsController extends Controller
 {
 
-    public function index(Channel $channel, ThreadFilters $filters)
+    public function index(Request $request, Channel $channel, ThreadFilters $filters)
     {
-        // $ay = request()->intersect(['by', 'popular', 'trending', 'contributed_to', 'search']);
-        // dd($ay);
-        // foreach($ay as $key => $value){
-        //     dd($key .'_'. $value);
-        // }
-        return $this->getThreads($channel, $filters);
-        // if (cache()->has('threads_'.$channel.'_filters'.request()->))
+
+        return $this->getThreads($request, $channel, $filters);
 
     }
 
     public function show($channel, Thread $thread )
     {   
-        return cache()->rememberForever('thread_'. $thread->id, function() use($thread){
-           return $thread->load('replies.creator.profile', 'creator.profile');
-        });
+        return $thread->load('replies.creator.profile', 'creator.profile');
     }
 
     public function store(Channel $channel)
@@ -57,7 +50,7 @@ class ThreadsController extends Controller
      * @param ThreadFilters $filters
      * @return mixed
      */
-    protected function getThreads(Channel $channel, ThreadFilters $filters)
+    protected function getThreads(Request $request, Channel $channel, ThreadFilters $filters)
     {
         $threads = Thread::with('creator.profile', 'channel')->withCount('replies')
                          ->orderBy('last_reply', 'desc')->filter($filters);

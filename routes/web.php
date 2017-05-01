@@ -21,16 +21,16 @@ Route::get('/sessionStatus', function() {
     });
 
 Route::get('/home', 'HomeController@index');
-\Event::listen('Illuminate\Database\Events\QueryExecuted', function ($query) {
-    // dd($query->sql);
-    // var_dump($query->bindings);
-    var_dump('TIME: ' . $query->time);
-});
+// \Event::listen('Illuminate\Database\Events\QueryExecuted', function ($query) {
+//     // var_dump($query->sql);
+//     // var_dump($query->bindings);
+//     var_dump('TIME: ' . $query->time);
+// });
 Route::get('channels', 'ChannelsController@index');
-Route::get('threads', 'ThreadsController@index');
-Route::get('channels/{channel}/threads', 'ThreadsController@index');
-Route::get('channels/{channel}/{thread}', 'ThreadsController@show');
-Route::get('profile/{user}', 'ProfileController@show');
+Route::get('threads', 'ThreadsController@index')->middleware('cache:threads');
+Route::get('channels/{channel}/threads', 'ThreadsController@index')->middleware('cache:threads');
+Route::get('channels/{channel}/{thread}', 'ThreadsController@show')->middleware('cache:threadWithReplies');
+Route::get('profile/{user}', 'ProfileController@show')->middleware('cache:profile');
 // Route::get('replies/{user}', 'RepliesController@index');
 Route::get('test', 'ThreadsController@test');
 Route::post('profile', 'ProfileController@store')->middleware('auth');

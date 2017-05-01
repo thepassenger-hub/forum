@@ -2,9 +2,10 @@
 
 namespace App\Listeners;
 
-use App\Events\ReplyCreated;
+use App\Events\ThreadCreated;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Cache;
 
 class ClearCacheThread
 {
@@ -21,12 +22,12 @@ class ClearCacheThread
     /**
      * Handle the event.
      *
-     * @param  =ReplyCreated  $event
+     * @param  ThreadCreated  $event
      * @return void
      */
-    public function handle(ReplyCreated $event)
+    public function handle(ThreadCreated $event)
     {
-        cache()->forget('thread_' . $event->reply->thread()->first()->id);
-        cache()->forget('profile_' .$event->reply->creator()->first()->username);
+        Cache::tags('profile')->forget('profile/' . $event->username);
+        Cache::tags('threads')->flush();
     }
 }

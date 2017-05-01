@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \App\Profile;
 use \App\User;
+use Illuminate\Support\Facades\Cache;
 
 class ProfileController extends Controller
 {
@@ -18,19 +19,17 @@ class ProfileController extends Controller
         ]);
         $user = auth()->user();
         $user->profile()->update(request()->all());
-        cache()->forget('profile_' . $user->username);
+        Cache::tags('profile')->forget('profile/' . $user->username);
     }
 
-    public function show(User $user)
+    public function show(Request $request, User $user)
     {
-        return cache()->rememberForever('profile_' . $user->username, function() use ($user){
-            return $user->profile()->with([
-                'user' => function($query){
-                            $query->withCount(['replies', 'threads']);
-                            $query->with('replies.thread.channel');
-                        }
-                ])->first();                 
-        });
+        return $user->profile()->with([
+            'user' => function($query){
+                        $query->withCount(['replies', 'threads']);
+                        $query->with('replies.thread.channel');
+                    }
+            ])->first();                 
     }
     
     public function uploadAvatar()
@@ -41,7 +40,6 @@ class ProfileController extends Controller
         $path = request()->file('avatar')->store('public/avatars');
         $path = str_replace('public/', 'storage/', $path);
         auth()->user()->profile()->update(['avatar' => $path]);
-        cache()->forget('profile_' . $user->username);
-        
+        Cache::tags('profile')->forget('profile/' . $user->username);
     }
 }

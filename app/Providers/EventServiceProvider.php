@@ -17,13 +17,13 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\CreateProfile',
         ],
         'App\Events\ReplyCreated' => [
-            'App\Listeners\ClearCacheThread',
+            'App\Listeners\ClearCacheReply',
         ],
         'App\Events\ProfileUpdated' => [
             'App\Listeners\ClearCacheProfile',
         ],
         'App\Events\ThreadCreated' => [
-            'App\Listeners\ClearCacheProfile',
+            'App\Listeners\ClearCacheThread',
         ],
     ];
 
