@@ -248,6 +248,12 @@ li.is-active a {
 }
 
 @media (max-width: 768px) {
+
+  /***** Home page ******/
+  .container > .columns {
+    margin-right: 0;
+    margin-left: 0;
+  }
   #mobile-nav {
     position: absolute;
     width: 100%;
@@ -256,6 +262,13 @@ li.is-active a {
     display: block;
     box-shadow: none;
     top: 0;
+  }
+
+  #mobile-nav > div > ul li:first-of-type {
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   #mobile-nav .field.has-addons {
@@ -268,6 +281,47 @@ li.is-active a {
   }
 
   .pagination-link {
-    min-width: 2em;
+    min-width: 0.9em;
   }
+
+  .container > .columns {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .container > .columns .menu.column {
+    order: 2;
+  }
+
+  .container > .columns .column {
+    order:0;
+  }
+
+  .thread {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .thread .thread-if-reply-counter {
+    padding-right: 0;
+  }
+
+  .channel-link {
+    display: block;
+  }
+
+  .created-at {
+    margin-left: 0;
+  }
+
+  #new-thread-button {
+    width: 100%;
+  }
+
+  /***** Profile page ******/
+  #profile-name-input {
+    max-width: initial;
+  }
+  
 }

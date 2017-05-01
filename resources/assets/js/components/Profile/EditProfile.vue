@@ -65,11 +65,18 @@
                     @click="passwordForm.reset()">Reset</button>
             </p>
         </div>
+        <transition name="fade">
+            <success v-if="successMessage" :successMessage="successMessage" @close="successMessage = false"></success>
+        </transition>
+        <transition name="fade">
+            <error v-if="errorMessage" :errorMessage="errorMessage" @close="errorMessage = false"></error>
+        </transition>
     </div>
 </template>
 
 <script>
     import Form from '../../models/Form';
+    import showNotificationsMixin from '../../mixins/showNotificationsMixin';
 
     export default {
         props: ['profile'],
@@ -87,14 +94,21 @@
                     password_confirmation: null
                 }),
                 avatar: null,
-                imageSrc: null
+                imageSrc: null,
+                errorMessage: false,
+                successMessage: false
             }
         },
+        mixins: [showNotificationsMixin],
         methods: {
             submitChanges() {
                 this.form.post('/profile')
                     .then(response => this.$emit('changesSaved'))
-                    .catch(error => console.log(error));
+                    .catch(error => {
+                        let out = '';
+                        Object.keys(error).forEach(field => out += error[field] +'\n' );
+                        this.showError(out);
+                    });
             },
 
             resetFields() {
@@ -121,15 +135,30 @@
                 data.set('avatar', this.avatar)
                 axios.post('/profile/avatar', data)
                     .then(response => this.$emit('changesSaved'))
-                    .catch(error => console.log(error));
+                    .catch(error => {
+                        let out = '';
+                        Object.keys(error).forEach(field => out += error[field] +'\n' );
+                        this.showError(out);
+                    });
             },
 
             changePassword(){
                 this.passwordForm.post('/user/password')
-                    .then(response => console.log('ok'))
-                    .catch(error => console.log(error));
+                    .then(response => {
+                        this.showSuccess(response);
+                        this.passwordForm.reset();
+                    })
+                    .catch(error => {
+                        let out = '';
+                        Object.keys(error).forEach(field => out += error[field] +'\n' );
+                        this.showError(out);
+                    });
             }
 
+        },
+        components: {
+            'error': require('../Error.vue'),
+            'success': require('../Success.vue')
         }
         
     }

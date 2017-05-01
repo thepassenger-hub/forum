@@ -25,6 +25,7 @@
                     <div class="columns">
                         @include ('layouts.sidenav')
                         <router-view></router-view>
+                        <hr class="is-block-mobile">
                     </div>
                 </div>
             </section>

@@ -3,7 +3,7 @@
         <paginate v-if="threads.length > perPage" :current="currentPage" :perPage="perPage" :posts="threads"
             @pageClicked="currentPage = $event; this.VueScrollTo.scrollTo('.column.is-9');" >
         </paginate>
-        <h3 class="title is-3" v-if="threads">{{threads[0].channel.name}}</h3>
+        <h3 class="title is-3" v-if="threads.length">{{threads[0].channel.name}}</h3>
         <thread v-for="thread in threads.slice(0+10*(currentPage-1), 10*currentPage)" :key="thread.id" @clicked="goToThread(thread)" :thread="thread">
             <a>{{thread.title}}</a>
             <p slot="body">{{thread.body | truncate(200)}}</p>

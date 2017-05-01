@@ -53,9 +53,9 @@
         </p>
         <p class="control">
           <router-link :to="{ path: '/threads', query: { search: searchQuery }}" exact>
-              <button class="button is-primary">
+              <a class="button is-primary">
                   SEARCH
-              </button>
+              </a>
           </router-link>
         </p>
       </div>

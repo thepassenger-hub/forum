@@ -27,7 +27,7 @@ class UsersController extends Controller
             return response('The password change was successful', 200);
         }
 
-        return response('Current password doesn\'t match. Try again', 403);
+        return response(['error' => 'Current password doesn\'t match. Try again'], 403);
     }
 
     public function destroy($id)

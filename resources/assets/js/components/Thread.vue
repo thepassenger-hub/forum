@@ -1,7 +1,7 @@
 <template>
     <div class="thread">
         <article class="media">
-            <figure class="media-left">
+            <figure class="media-left is-hidden-mobile">
                 <p class="image is-64x64">
                     <img :src="thread.creator.profile.avatar">
                 </p>
@@ -12,14 +12,14 @@
                     <slot name="channel"></slot>
                     <span class="created-at">{{thread.updated_at | fromNow}}</span>
                     by
-                    <strong>
+                    <strong class="created-by">
                         <router-link :to="'/@'+thread.creator.username">{{thread.creator.username}}</router-link>
                     </strong>
                     <slot name="body"></slot>
                 </div>
             </div>
             
-            <div class="reply-count replies-count">
+            <div class="reply-count replies-count is-hidden-mobile">
                 {{thread.replies_count}}
             </div>
         </article>

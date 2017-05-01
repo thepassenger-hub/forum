@@ -33,7 +33,8 @@
                         <button class="button is-primary" @click="postLoginForm">Login</button>
                     </p>
                     <p class="control">
-                        <button class="button is-link" @click="forgotPassword = true">Forgot your password?</button>
+                        <button class="button is-link" 
+                        @click="forgotPassword = true; $scrollTo('#forgot-password', {'offset': -30});">Forgot your password?</button>
                     </p>
                 </div>
 
@@ -80,29 +81,33 @@
             
         </div>
         <transition name="fade">
-            <div v-if="forgotPassword">
-                <div class="field">
-                    <h4 class="title is-4">Reset Password</h4>
-                </div>
-                <div class="field">
-                    <p class="control">
-                        <input type="email" class="input" placeholder="Email address" v-model="reset.email">
-                    </p>
-                </div>
-                <div class="field">
-                    <p class="control">
-                        <button class="button is-primary" @click="resetPassword">Send Password reset link</button>
-                    </p>
+            <div id="forgot-password">
+                <div v-if="forgotPassword">
+                    <div class="field">
+                        <h4 class="title is-4">Reset Password</h4>
+                    </div>
+                    <div class="field">
+                        <p class="control">
+                            <input type="email" class="input" placeholder="Email address" v-model="reset.email">
+                        </p>
+                    </div>
+                    <div class="field">
+                        <p class="control">
+                            <button class="button is-primary" @click="resetPassword">Send Password reset link</button>
+                        </p>
+                    </div>
                 </div>
             </div>
         </transition>
         
-        <transition name="fade">
+        <div id="messages">
+            <transition name="fade">
             <success v-if="successMessage" :successMessage="successMessage" @close="successMessage = false"></success>
-        </transition>
-        <transition name="fade">
-            <error v-if="errorMessage" :errorMessage="errorMessage" @close="errorMessage = false"></error>
-        </transition>
+            </transition>
+            <transition name="fade">
+                <error v-if="errorMessage" :errorMessage="errorMessage" @close="errorMessage = false"></error>
+            </transition>
+        </div>
     </div>
 </template>
 
@@ -150,6 +155,8 @@
                         let out = '';
                         Object.keys(error).forEach(field => out += error[field] +'\n' );
                         this.showError(out);
+                        this.$scrollTo('#messages', {'offset': -30});
+                        
                     });
             },
             postRegisterForm(){
@@ -164,19 +171,20 @@
                         let out = '';
                         Object.keys(error).forEach(field => out += error[field] +'\n' );
                         this.showError(out);
+                        this.$scrollTo('#messages', {'offset': -30});
                     });
             },
             resetPassword() {
                 this.reset.post('/password/email')
                     .then(response => {
-                        console.log(response);
                         this.showSuccess(response);   
-                        this.reset.reset();          
+                        this.reset.reset();      
+                            
                     })
                     .catch(error => {
                         let out = '';
                         Object.keys(error).forEach(field => out += error[field] +'\n' );
-                        this.showError(out);
+                        this.showError(out);                        
                     });
             }
         },

@@ -33,7 +33,6 @@
 </template>
 
 <script>
-    // var VueScrollTo = require('vue-scrollto');
     export default {
         props: ['posts', 'perPage', 'current'],
         data() {
@@ -59,8 +58,6 @@
         },
         methods: {
             getPageTabs() {
-                console.log('qua');
-                
                 let numOfPages = Math.ceil(this.posts.length / this.perPage);
                 this.pageTabs = Array(numOfPages).fill().map((e,i)=>i+1); // From n pages creates [1,2,...,n] 
                 this.setPageTabs();

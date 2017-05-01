@@ -1,6 +1,6 @@
 <aside class="menu column is-3">
     <keep-alive>
-        <router-link class="button" v-if="user" :to="{path: '/new-thread'}">Create new Thread</router-link>
+        <router-link class="button" id="new-thread-button" v-if="user" :to="{path: '/new-thread'}">Create new Thread</router-link>
     </keep-alive>
 
      <p class="menu-label">

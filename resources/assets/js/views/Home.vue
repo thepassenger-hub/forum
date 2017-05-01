@@ -5,8 +5,8 @@
         </paginate>
         <thread v-for="thread in threads.slice(0+10*(currentPage-1), 10*currentPage)" :thread="thread" :key="thread.name"
             @clicked="goToThread(thread.channel.slug + '/'+thread.slug)" >
-                <a>{{thread.title}}</a>
-                <router-link slot="channel" :to="thread.channel.slug">{{thread.channel.name}}</router-link>
+                <a >{{thread.title}}</a>
+                <router-link slot="channel" :to="thread.channel.slug" class="channel-link">{{thread.channel.name}}</router-link>
                 <p class="thread-body" slot="body"> {{thread.body | truncate(200)}}</p>
         </thread>
         <paginate v-if="threads.length > perPage" :current="currentPage" :perPage="perPage" :posts="threads"
