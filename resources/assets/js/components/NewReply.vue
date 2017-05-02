@@ -13,7 +13,7 @@
             </div>
             <div class="field is-grouped">
                 <p class="control">
-                    <button class="button is-primary" type="button" @click="sendPost">Submit</button>
+                    <button class="button is-primary" id="new-reply-button" type="button" @click="sendPost">Submit</button>
                 </p>
                 <p class="control" id="clear-form-button">
                     <button class="button is-default" type="button" @click="form.reset()">Clear</button>

@@ -21284,9 +21284,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['reply']
+    props: ['reply'],
+    data: function data() {
+        return {
+            edit: false,
+            replyMessage: this.reply.body
+        };
+    }
 });
 
 /***/ }),
@@ -21954,6 +21990,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -21996,6 +22033,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (response.data) vm.thread = new __WEBPACK_IMPORTED_MODULE_0__models_ThreadWithReplies__["a" /* default */](response.data);
             }).catch(function (error) {
                 return console.log(error);
+            });
+        },
+        deleteReply: function deleteReply(event) {
+            var _this2 = this;
+
+            axios.delete('/replies/' + event).then(function (response) {
+                return _this2.getThread();
+            }).catch(function (error) {
+                _this2.showError(error);
+                _this2.$scrollTo('#new-reply-button');
+            });
+        },
+        editReply: function editReply(replyMessage, replyId) {
+            var _this3 = this;
+
+            axios.patch('/replies/' + replyId, {
+                body: replyMessage
+            }).catch(function (error) {
+                _this3.showError(error);
+                _this3.$scrollTo('#new-reply-button');
             });
         }
     },
@@ -23759,6 +23816,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       key: reply.id,
       attrs: {
         "reply": reply
+      },
+      on: {
+        "delete": function($event) {
+          _vm.deleteReply($event)
+        },
+        "edit": _vm.editReply
       }
     }, [_c('p', {
       staticClass: "reply-creator",
@@ -23792,7 +23855,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "posted": _vm.getThread,
       "error": function($event) {
-        _vm.showError($event)
+        _vm.showError($event);
+        _vm.$scrollTo('#new-reply-button')
       }
     }
   }) : _vm._e(), _vm._v(" "), _c('transition', {
@@ -24172,9 +24236,92 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "content"
   }, [_vm._t("username"), _vm._v(" "), _c('span', {
     staticClass: "created-at"
-  }, [_vm._v(_vm._s(_vm._f("fromNow")(_vm.reply.createdAt)))]), _vm._v(" "), _vm._t("body"), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('p')], 2)])])
+  }, [_vm._v(_vm._s(_vm._f("fromNow")(_vm.reply.createdAt)))]), _vm._v(" "), (!_vm.edit) ? _vm._t("body") : _vm._e(), _vm._v(" "), (_vm.edit) ? _c('div', [_c('div', {
+    staticClass: "field"
+  }, [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.replyMessage),
+      expression: "replyMessage"
+    }],
+    staticClass: "textarea",
+    attrs: {
+      "required": ""
+    },
+    domProps: {
+      "value": (_vm.replyMessage)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.replyMessage = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "field is-grouped"
+  }, [_c('p', {
+    staticClass: "control"
+  }, [_c('button', {
+    staticClass: "button is-primary",
+    attrs: {
+      "id": "new-reply-button",
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$emit('edit', _vm.replyMessage, _vm.reply.id);
+        _vm.edit = false;
+        _vm.reply.body = _vm.replyMessage
+      }
+    }
+  }, [_vm._v("\n                                Update your reply\n                        ")])]), _vm._v(" "), _c('p', {
+    staticClass: "control",
+    attrs: {
+      "id": "clear-form-button"
+    }
+  }, [_c('button', {
+    staticClass: "button is-default",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.replyMessage = _vm.reply.body;
+        _vm.edit = false;
+      }
+    }
+  }, [_vm._v("Clear")])])])]) : _vm._e(), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('p')], 2)]), _vm._v(" "), (_vm.reply.creator.username === _vm.$root.user.username) ? _c('div', {
+    staticClass: "reply-modifiers"
+  }, [_c('a', {
+    staticClass: "reply-edit",
+    on: {
+      "click": function($event) {
+        _vm.edit = true;
+      }
+    }
+  }, [_vm._m(1)]), _vm._v(" "), _c('a', {
+    staticClass: "reply-delete",
+    on: {
+      "click": function($event) {
+        _vm.$emit('delete', _vm.reply.id)
+      }
+    }
+  }, [_vm._m(2)])]) : _vm._e()])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('small', [_c('a', [_vm._v("Reply")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-pencil"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-trash-o"
+  })])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -24225,6 +24372,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('button', {
     staticClass: "button is-primary",
     attrs: {
+      "id": "new-reply-button",
       "type": "button"
     },
     on: {

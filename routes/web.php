@@ -40,6 +40,9 @@ Route::post('threads/{thread}/replies', 'RepliesController@store')->middleware('
 Route::post('channels/{channel}/threads', 'ThreadsController@store')->middleware('auth');
 // Route::post('channels/{channel}/{thread}/replies', 'RepliesController@store')->middleware('auth');
 Route::post('user/password', 'UsersController@update')->middleware('auth');
+Route::delete('replies/{reply}', 'RepliesController@destroy')->middleware('auth');
+Route::patch('replies/{reply}', 'RepliesController@update')->middleware('auth');
+
 
 
 
