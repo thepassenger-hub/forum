@@ -16,6 +16,12 @@ Vue.filter('fromNow', function(date){
     return moment(date).fromNow();
 });
 
+// var marked = require('marked');
+
+// Vue.filter('marked', function (text) {
+//     return marked(text, { sanitize: true })                
+// });
+
 const app = new Vue({
     el: '#app',
     router,

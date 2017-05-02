@@ -1,12 +1,14 @@
 <template>
     <div class="column is-9" v-if="thread">
-        <thread :thread="thread" :key="thread.id">{{thread.title}} <p slot="body" class="thread-body">{{thread.body}}</p></thread>
+        <thread :thread="thread" :key="thread.id">{{thread.title}} 
+            <p slot="body" class="thread-body" v-html="markdown(thread.body)"></p>
+        </thread>
         <reply v-if="thread.replies" v-for="reply in thread.replies.slice(0+10*(currentPage-1), 10*currentPage)"
-            :reply="reply" :key="reply.id" @delete="deleteReply($event)" @edit="editReply">
+            :reply="reply" :key="reply.id" @delete="deleteReply" @edit="editReply">
             <p class="reply-creator" slot="username">
                 <router-link :to="'/@'+reply.creator.username">{{reply.creator.username}}</router-link>
             </p>
-            <p class="reply-body" slot="body" v-for="line in reply.body.split('\n')">{{line}}</p>
+            <p class="reply-body" slot="body" v-html="markdown(reply.body)"></p>
         </reply>
         <paginate v-if="thread.replies.length > perPage" :current="currentPage" :perPage="perPage" :posts="thread.replies"
             @pageClicked="currentPage = $event; this.VueScrollTo.scrollTo('.replies');">
@@ -21,9 +23,12 @@
 </template>
 
 <script>
+
     import ThreadWithReplies from '../models/ThreadWithReplies';
     import isLoggedMixin from '../mixins/IsLoggedMixin';
     import showNotificationsMixin from '../mixins/showNotificationsMixin';
+    import MarkdownMixin from '../mixins/MarkdownMixin';
+    
 
     export default {
         data(){
@@ -38,7 +43,7 @@
             }
         },
 
-        mixins:[isLoggedMixin, showNotificationsMixin],
+        mixins:[isLoggedMixin, showNotificationsMixin, MarkdownMixin],
 
         created(){
             this.getThread();
@@ -60,8 +65,8 @@
                      })
                      .catch(error => console.log(error));
             },
-            deleteReply(event){
-                axios.delete('/replies/'+event)
+            deleteReply(replyId){
+                axios.delete('/replies/'+replyId)
                     .then(response => this.getThread())
                     .catch(error => {
                         this.showError(error);
