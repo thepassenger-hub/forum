@@ -324,4 +324,19 @@ li.is-active a {
     max-width: initial;
   }
   
+  /***** New Thread ********/
+  .control .select, select {
+    max-width: 100%;
+  }
+
+  /******* Thread **********/
+  .replies {
+        padding-left: 0;
+    padding-right: 0;
+  }
+
+  #clear-form-button {
+    position: absolute;
+    right: 12px;
+  }
 }

@@ -1,6 +1,6 @@
 <template>
     <article class="media replies">
-        <figure class="media-left">
+        <figure class="media-left is-hidden-mobile">
             <p class="image is-64x64">
                 <img :src="reply.creator.profile.avatar">
             </p>

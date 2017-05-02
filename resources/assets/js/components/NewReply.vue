@@ -1,6 +1,6 @@
 <template>
     <article class="media">
-        <figure class="media-left">
+        <figure class="media-left is-hidden-mobile">
             <p class="image is-64x64">
              <img src="http://bulma.io/images/placeholders/128x128.png">
             </p>
@@ -8,14 +8,14 @@
         <div class="media-content">
             <div class="field">
                 <p class="control">
-                        <textarea v-model="form.body" class="textarea" placeholder="Textarea" name="body"></textarea>
+                        <textarea v-model="form.body" class="textarea" placeholder="Add a reply" name="body"></textarea>
                 </p>
             </div>
             <div class="field is-grouped">
                 <p class="control">
                     <button class="button is-primary" type="button" @click="sendPost">Submit</button>
                 </p>
-                <p class="control">
+                <p class="control" id="clear-form-button">
                     <button class="button is-default" type="button" @click="form.reset()">Clear</button>
                 </p>
             </div>
@@ -46,7 +46,6 @@
                 this.form.post('/threads/'+this.thread+'/replies')
                     .then(response => {
                         vm.$emit('posted');
-                        vm.$emit('close');
                     })
                     .catch(error => {
                         let out = '';
