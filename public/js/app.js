@@ -21028,6 +21028,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     return out += error[field] + '\n';
                 });
                 _this2.showError(out);
+                _this2.$scrollTo('.button.is-danger');
             });
         },
         changePassword: function changePassword() {

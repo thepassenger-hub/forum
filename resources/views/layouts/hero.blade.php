@@ -2,10 +2,10 @@
   <div class="hero-body">
     <div class="container">
       <h1 class="title">
-        Titolo Forum
+        Forum Title
       </h1>
       <h2 class="subtitle">
-        Comunità per discutere {argomento}
+        Community to discuss Programming.
       </h2>
     </div>
   </div>

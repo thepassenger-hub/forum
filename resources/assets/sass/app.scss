@@ -1,5 +1,8 @@
 @import 'node_modules/bulma/bulma.sass';
 
+.nav-left .nav-item img {
+  max-height: 3rem;
+}
 .notification.is-danger {
   margin-top: 20px;
 }
@@ -64,13 +67,8 @@ ul.breadcrumb li a:hover{
 
 #add-new-avatar {
   display: none;
-  // font-size: 999px;
-  // min-height: 100%;
   opacity: 0;
-  // position: absolute;
-  // right: 0;
   text-align: right;
-  // top: 0;
   cursor: pointer;
 }
 
@@ -110,15 +108,6 @@ li.is-active a {
   font-size: 14px;
 }
 
-// .profile-header {
-//   min-height: 128px;
-// }
-
-
-.image.is-128x128 {
-  // float: left;
-  // margin-right: 20px;
-}
 .image.is-128x128 img{
   border-radius: 128px;
 }
@@ -258,6 +247,15 @@ li.is-active a {
   transform: scale(1.1);
 }
 
+#my-nick {
+  color: $primary;
+}
+
+ .reply-modifiers,
+  .thread-modifiers {
+    position: absolute;
+    right: 0;
+  }
 @media (max-width: 768px) {
 
   /***** Home page ******/
@@ -361,11 +359,7 @@ li.is-active a {
     position: absolute;
     right: 12px;
   }
-  .reply-modifiers,
-  .thread-modifiers {
-    position: absolute;
-    right: 0;
-  }
+ 
   
 }
 

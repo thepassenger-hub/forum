@@ -139,6 +139,7 @@
                         let out = '';
                         Object.keys(error).forEach(field => out += error[field] +'\n' );
                         this.showError(out);
+                        this.$scrollTo('.button.is-danger');
                     });
             },
 

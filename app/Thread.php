@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Filters\ThreadFilters;
 use App\Events\ThreadCreated;
+
 class Thread extends Model
 {
     protected $guarded = [];

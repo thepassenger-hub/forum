@@ -1,8 +1,6 @@
 <nav class="nav">
   <div class="nav-left">
-    <a class="nav-item">
-      <p>Logo qua</p>
-    </a>
+    <router-link class="nav-item" :to="{name: 'home'}"><img src="/images/drawing.svg" alt="Forum"></router-link>
     <div class="nav-item field has-addons is-hidden-mobile" id="search-bar">
       <p class="control">
           <input class="input" v-model="searchQuery" placeholder="Search">
