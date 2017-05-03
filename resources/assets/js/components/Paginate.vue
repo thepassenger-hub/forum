@@ -3,7 +3,7 @@
         <a class="pagination-previous" :class="{'is-disabled': this.current == 1}" 
             @click="changePage(current - 1)">Previous</a>
         <a class="pagination-next" :class="{'is-disabled': this.current == this.pageTabs.slice(-1)[0]}"
-            @click="changePage(current + 1)">Next page</a>
+            @click="changePage(current + 1)">Next</a>
         <ul class="pagination-list" v-if="pageTabs.length <= 9">
             <li v-for="page in pageTabs" @click="changePage(page)" >
                 <a class="pagination-link" :class="{'is-current': current === page}">{{page}}</a>

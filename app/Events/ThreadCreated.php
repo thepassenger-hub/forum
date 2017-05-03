@@ -15,7 +15,7 @@ class ThreadCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $username;
+    public $thread;
     /**
      * Create a new event instance.
      *
@@ -24,7 +24,7 @@ class ThreadCreated
     public function __construct(Thread $thread)
     {
         
-        $this->username = $thread->creator()->first()->username;
+        $this->thread = $thread;
     }
 
     /**

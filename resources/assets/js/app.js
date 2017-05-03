@@ -1,7 +1,6 @@
 import './bootstrap';
 import router from './routes';
-// Vue.component('createFile', require('./components/CreateFile.vue'));
-// Vue.component('channel', require('./components/Channel.vue'));
+
 import isLoggedMixin from './mixins/IsLoggedMixin';
 import getChannelsMixin from './mixins/GetChannelsMixin';
 
@@ -16,19 +15,12 @@ Vue.filter('fromNow', function(date){
     return moment(date).fromNow();
 });
 
-// var marked = require('marked');
-
-// Vue.filter('marked', function (text) {
-//     return marked(text, { sanitize: true })                
-// });
-
 const app = new Vue({
     el: '#app',
     router,
     mixins:[isLoggedMixin, getChannelsMixin],
     data: {
         user: false,
-        // username: false,
         path: new Path(),
         channels: [],
         searchQuery: '',
@@ -37,7 +29,7 @@ const app = new Vue({
     created(){
         this.checkIfLogged()
             .then(response => {
-                    this.username = response ? response.username : false;
+                    // this.username = response ? response.username : false;
                     this.user = response ? response : false;
                 })                    
             .catch(error => console.log(error));

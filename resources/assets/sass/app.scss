@@ -224,6 +224,17 @@ li.is-active a {
   float: right;
 }
 
+.modal-mask.confirmation-modal {
+  background-color: rgba(0, 0, 0, .4);  
+}
+
+.modal-mask.confirmation-modal .is-grouped {
+  position: relative;
+}
+#close-modal-button{
+    position: absolute;
+    right: 0;
+}
 /*
  * The following styles are auto-applied to elements with
  * transition="modal" when their visibility is toggled
@@ -257,6 +268,8 @@ li.is-active a {
   #mobile-nav {
     position: absolute;
     width: 100%;
+    max-width: 400px;
+    right: 0;
   }
   #mobile-nav .nav-menu {
     display: block;
@@ -269,6 +282,11 @@ li.is-active a {
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+
+  #mobile-nav > div > ul li:nth-of-type(2) a,
+  #mobile-nav > div > ul li:nth-of-type(3) a {
+    justify-content: flex-end;
   }
 
   #mobile-nav .field.has-addons {
@@ -317,6 +335,10 @@ li.is-active a {
 
   #new-thread-button {
     width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
   }
 
   /***** Profile page ******/
@@ -339,9 +361,27 @@ li.is-active a {
     position: absolute;
     right: 12px;
   }
-  .reply-modifiers {
+  .reply-modifiers,
+  .thread-modifiers {
     position: absolute;
     right: 0;
+  }
+  
+}
+
+@media (min-width: 768px) {
+  nav .nav-left {
+    width: 60%;
+    position: relative;
+  }
+
+  nav .nav-right {
+    max-width: 40%;
+  }
+  #search-bar {
+    position: absolute;
+    right: 0;
+    top: 14px;
   }
   
 }

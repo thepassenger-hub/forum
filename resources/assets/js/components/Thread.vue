@@ -15,19 +15,93 @@
                     <strong class="created-by">
                         <router-link :to="'/@'+thread.creator.username">{{thread.creator.username}}</router-link>
                     </strong>
-                    <slot name="body"></slot>
+                    <slot name="body" v-if="!edit"></slot>
+                    <div v-if="edit">
+                        <div class="field">
+                            <textarea class="textarea" v-model="threadMessage" required></textarea>
+                        </div>
+                        <div class="field is-grouped">
+                            <p class="control">
+                                <button class="button is-primary" id="edit-thread-message" type="button" 
+                                    @click="editThread(threadMessage, thread.slug); edit = false; thread.body = threadMessage">
+                                        Update your reply
+                                </button>
+                            </p>
+                            <p class="control" id="clear-form-button">
+                                <button class="button is-default" type="button"
+                                    @click="threadMessage = thread.body; edit = false;">Clear</button>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
+            <div class="thread-modifiers" v-if="thread.creator.username === $root.user.username">
+                <a class="thread-edit" @click="edit = true;">
+                    <span class="icon">
+                        <i class="fa fa-pencil"></i>
+                    </span>
+                </a>
+                <a class="thread-delete" @click="confirm = true">
+                    <span class="icon">
+                        <i class="fa fa-trash-o"></i>
+                    </span>
+                </a>
+                <confirmation-modal v-if="confirm" @delete="deleteThread(thread.slug); confirm = false" 
+                    @close="confirm = false">
+                    <p class="control">
+                        Are you sure you want to delete your thread?
+                    </p>
+                </confirmation-modal>
+            </div>
             <div class="reply-count replies-count is-hidden-mobile">
                 {{thread.replies_count}}
             </div>
         </article>
+        <div id="messages">
+            <transition name="fade">
+                <error v-if="errorMessage" :errorMessage="errorMessage" @close="errorMessage = false"></error>
+            </transition>
+        </div>
     </div>
 </template>
 
 <script>
+    import showNotificationsMixin from '../mixins/showNotificationsMixin';
     export default {
-        props: ['thread']
+        
+        props: ['thread'],
+        data() {
+            return {
+                confirm: false,
+                threadMessage: this.thread.body,
+                edit: false,
+                errorMessage: false,
+                successMessage: false
+            }
+        },
+        mixins: [showNotificationsMixin],
+        components: {
+            'confirmationModal': require('./ConfirmationModal.vue'),
+            'error': require('./Error.vue'),
+            'success': require('./Success.vue')
+        },
+        methods: {
+            editThread(threadMessage, threadSlug) {
+                axios.patch('threads/'+threadSlug, {
+                    body: threadMessage
+                })
+                .catch(error => {
+                    this.showError(error);
+                });
+            },
+
+            deleteThread(threadSlug) {
+                axios.delete('threads/'+threadSlug)
+                    .then(response => this.$router.push({ name: 'home'}))
+                    .catch(error => {
+                        this.showError(error);
+                    })
+            }
+        }
     }
 </script>

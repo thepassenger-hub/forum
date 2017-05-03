@@ -48,7 +48,7 @@
                         </p>
                         <br>
                         <div class="content">
-                            <p v-for="line in reply.body.split('\n')">{{line}}</p>
+                            <p v-html="markdown(reply.body)"></p>
                         </div>
                         <hr>    
                     </div>
@@ -62,6 +62,8 @@
 </template>
 
 <script>
+    // var marked = require('marked');
+
     export default {
         props: ['profile'],
         computed: {
@@ -76,7 +78,13 @@
                 });
                 return replies;
             }
+        },
+        methods: {
+            markdown(text){
+                return marked(text, {sanitize: true});
+            }
+        }
             
-        }        
+                
     }
 </script>

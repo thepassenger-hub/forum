@@ -27,7 +27,9 @@ class ClearCacheThread
      */
     public function handle(ThreadCreated $event)
     {
-        Cache::tags('profile')->forget('profile/' . $event->username);
+        Cache::tags('profile')->forget('profile/' . $event->thread->creator()->first()->username);
+        Cache::tags('threadWithReplies')->forget(
+            'channels/' . $event->thread->channel()->first()->slug . '/' . $event->thread->slug);   
         Cache::tags('threads')->flush();
     }
 }

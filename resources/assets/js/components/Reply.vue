@@ -37,12 +37,13 @@
                     <i class="fa fa-pencil"></i>
                 </span>
             </a>
-            <a class="reply-delete" @click="$emit('delete', reply.id)">
+            <a class="reply-delete" @click="confirm = true">
                 <span class="icon">
                     <i class="fa fa-trash-o"></i>
                 </span>
             </a>
-            
+            <confirmation-modal v-if="confirm" @delete="$emit('delete', reply.id); confirm = false" 
+                @close="confirm = false"></confirmation-modal>
         </div>
     </article>
 
@@ -54,12 +55,17 @@
 
 <script>
     export default {
+        
         props: ['reply'],
         data() {
             return {
                 edit: false,
-                replyMessage: this.reply.body
+                replyMessage: this.reply.body,
+                confirm: false
             }
+        },
+        components: {
+            'confirmationModal': require('./ConfirmationModal.vue')
         }
     }
 </script>

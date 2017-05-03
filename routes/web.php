@@ -42,6 +42,11 @@ Route::post('channels/{channel}/threads', 'ThreadsController@store')->middleware
 Route::post('user/password', 'UsersController@update')->middleware('auth');
 Route::delete('replies/{reply}', 'RepliesController@destroy')->middleware('auth');
 Route::patch('replies/{reply}', 'RepliesController@update')->middleware('auth');
+Route::patch('threads/{thread}', 'ThreadsController@update')->middleware('auth');
+Route::delete('threads/{thread}', 'ThreadsController@destroy')->middleware('auth');
+
+
+
 
 
 

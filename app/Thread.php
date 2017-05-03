@@ -13,7 +13,8 @@ class Thread extends Model
     protected $hidden = ['user_id', 'channel_id'];
 
     protected $events = [
-        'created' => ThreadCreated::class
+        'created' => ThreadCreated::class,
+        'deleted' => ThreadCreated::class
     ];
     
     public function getRouteKeyName()

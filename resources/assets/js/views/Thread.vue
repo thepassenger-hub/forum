@@ -27,8 +27,6 @@
     import ThreadWithReplies from '../models/ThreadWithReplies';
     import isLoggedMixin from '../mixins/IsLoggedMixin';
     import showNotificationsMixin from '../mixins/showNotificationsMixin';
-    import MarkdownMixin from '../mixins/MarkdownMixin';
-    
 
     export default {
         data(){
@@ -43,7 +41,7 @@
             }
         },
 
-        mixins:[isLoggedMixin, showNotificationsMixin, MarkdownMixin],
+        mixins:[isLoggedMixin, showNotificationsMixin],
 
         created(){
             this.getThread();
@@ -81,6 +79,9 @@
                     this.showError(error);
                     this.$scrollTo('#new-reply-button');
                 });
+            },
+            markdown(text){
+                return marked(text, {sanitize: true});
             }
         },
         components: {

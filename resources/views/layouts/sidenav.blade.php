@@ -50,7 +50,13 @@
     </p>
     <ul class="menu-list">
         <router-link v-for="channel in channels" tag="li" :to="{ name: 'channel', params: { channel: channel.slug}}" 
-            :key="channel.slug"><a>@{{channel.name}}</a></router-link>
+            :key="channel.slug">
+            <a>
+                <span class="icon is-small filter-icons">
+                    <i class="fa fa-asterisk"></i>
+                </span>@{{channel.name}}
+            </a>
+            </router-link>
     </ul>
 </aside>
 

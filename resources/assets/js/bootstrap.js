@@ -6,6 +6,7 @@ Vue.use(VueRouter);
 var VueScrollTo = require('vue-scrollto');
 Vue.use(VueScrollTo)
 
+window.marked = require('marked');
 
 window.moment = require('moment');
 moment.updateLocale('en', {

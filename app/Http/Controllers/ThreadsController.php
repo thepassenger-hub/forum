@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \App\Events\ThreadCreated;
 use \App\Channel;
 use \App\Thread;
 use \App\Filters\ThreadFilters;
@@ -64,5 +65,23 @@ class ThreadsController extends Controller
     public function test(Channel $channel, ThreadFilters $filters)
     {
         return $this->getThreads($channel, $filters);
+    }
+
+    public function update(Thread $thread)
+    {
+        $this->authorize('update', $thread);
+        $this->validate(request(), ['body' => 'required|min:10']);
+        $thread->update(['body' => request()->body]);
+        event(new ThreadCreated($thread));
+
+        return response('Your thread has been updated', 200);
+    }
+
+    public function destroy(Thread $thread)
+    {
+        $this->authorize('update', $thread);
+
+        $thread->delete();
+        return response('Your reply has been deleted', 200);
     }
 }
