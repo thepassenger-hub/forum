@@ -64,7 +64,8 @@ class ThreadsController extends Controller
 
     public function test(Channel $channel, ThreadFilters $filters)
     {
-        return $this->getThreads($channel, $filters);
+        // return $this->getThreads($channel, $filters);
+        return response('OK', 200);
     }
 
     public function update(Thread $thread)
