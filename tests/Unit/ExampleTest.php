@@ -23,7 +23,6 @@ class ExampleTest extends TestCase
         $channel = Channel::first();
         $response = $this->actingAs($user)
                          ->post("/channels/{$channel->slug}/threads", 
-            
                          ['title' => 'My title', 'body' => 'My body longer than 10 chars'])->assertStatus(200);
         $this->assertEquals(str_slug('My title', '-'), $response->getContent());
     }

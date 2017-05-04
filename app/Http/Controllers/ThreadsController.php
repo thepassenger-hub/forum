@@ -13,7 +13,6 @@ class ThreadsController extends Controller
 
     public function index(Request $request, Channel $channel, ThreadFilters $filters)
     {
-
         return $this->getThreads($request, $channel, $filters);
 
     }
@@ -55,10 +54,11 @@ class ThreadsController extends Controller
     {
         $threads = Thread::with('creator.profile', 'channel')->withCount('replies')
                          ->orderBy('last_reply', 'desc')->filter($filters);
-            
+        
         if ($channel->exists) {
             $threads->where('channel_id', $channel->id);
         }
+        
         return $threads->get();
     }
 

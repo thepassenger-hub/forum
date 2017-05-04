@@ -26,7 +26,7 @@ Route::get('/home', 'HomeController@index');
 //     // var_dump($query->bindings);
 //     var_dump('TIME: ' . $query->time);
 // });
-Route::get('channels', 'ChannelsController@index');
+Route::get('channels', 'ChannelsController@index')->middleware('cache:channels');
 Route::get('threads', 'ThreadsController@index')->middleware('cache:threads');
 Route::get('channels/{channel}/threads', 'ThreadsController@index')->middleware('cache:threads');
 Route::get('channels/{channel}/{thread}', 'ThreadsController@show')->middleware('cache:threadWithReplies');
