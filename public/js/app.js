@@ -21069,7 +21069,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         submitChanges: function submitChanges() {
             var _this = this;
 
-            this.form.post('/profile').then(function (response) {
+            this.form.patch('/profile').then(function (response) {
                 return _this.$emit('changesSaved');
             }).catch(function (error) {
                 var out = '';

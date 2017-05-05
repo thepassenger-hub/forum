@@ -33,13 +33,13 @@ Route::get('channels/{channel}/{thread}', 'ThreadsController@show')->middleware(
 Route::get('profile/{user}', 'ProfileController@show')->middleware('cache:profile');
 // Route::get('replies/{user}', 'RepliesController@index');
 Route::get('test', 'ThreadsController@test');
-Route::post('profile', 'ProfileController@store')->middleware('auth');
+Route::patch('profile', 'ProfileController@update')->middleware('auth');
 Route::post('profile/avatar', 'ProfileController@uploadAvatar')->middleware('auth');
 
 Route::post('threads/{thread}/replies', 'RepliesController@store')->middleware('auth');
 Route::post('channels/{channel}/threads', 'ThreadsController@store')->middleware('auth');
 // Route::post('channels/{channel}/{thread}/replies', 'RepliesController@store')->middleware('auth');
-Route::post('user/password', 'UsersController@update')->middleware('auth');
+Route::patch('user/password', 'UsersController@update')->middleware('auth');
 Route::delete('replies/{reply}', 'RepliesController@destroy')->middleware('auth');
 Route::patch('replies/{reply}', 'RepliesController@update')->middleware('auth');
 Route::patch('threads/{thread}', 'ThreadsController@update')->middleware('auth');

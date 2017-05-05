@@ -102,7 +102,7 @@
         mixins: [showNotificationsMixin],
         methods: {
             submitChanges() {
-                this.form.post('/profile')
+                this.form.patch('/profile')
                     .then(response => this.$emit('changesSaved'))
                     .catch(error => {
                         let out = '';

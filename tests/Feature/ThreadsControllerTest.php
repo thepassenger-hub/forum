@@ -1,10 +1,12 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+
 use \App\Thread;
 use \App\Channel;
 use \App\User;
@@ -18,6 +20,16 @@ class ThreadsControllerTest extends TestCase
      *
      * @return void
      */
+    protected $user;
+    protected $channel;
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->user = User::inRandomOrder()->first();
+        $this->channel = Channel::inRandomOrder()->first();
+        
+    }
     public function testIndexMethodReturnsAllThreads()
     {   
 
@@ -124,11 +136,14 @@ class ThreadsControllerTest extends TestCase
     {
         $user = User::inRandomOrder()->first();
         $channel = Channel::inRandomOrder()->first();
+
+        // Validation failing returns a redirect
         $response = $this->actingAs($user)->post("channels/{$channel->slug}/threads", [
             'title' => null,
             'body' => null
         ])->assertStatus(302);
 
+        // Successful validation creates new thread model and stores it in db.
         $response = $this->actingAs($user)->post("channels/{$channel->slug}/threads", [
             'title' => 'My new title',
             'body' => 'My body at least 10 chars long'
@@ -136,12 +151,54 @@ class ThreadsControllerTest extends TestCase
 
         $this->assertInstanceOf(Thread::class, Thread::where('slug', str_slug('My new title'))->first());
 
+        // If duplicate title slug is modified to {title}-N
         $response = $this->actingAs($user)->post("channels/{$channel->slug}/threads", [
             'title' => 'My new title',
             'body' => 'My body at least 10 chars long'
         ]) -> assertStatus(200);
 
         $this->assertInstanceOf(Thread::class, Thread::where('slug', str_slug('My new title 1'))->first());
+    }
 
+    public function testUpdateMethodDoesUpdateTheModel()
+    {
+        // User who isn't owner of thread can't update it.
+        $thread = Thread::inRandomOrder()->where('user_id', '!=', $this->user->id)->first();
+        $response = $this->actingAs($this->user)->patch("threads/{$thread->slug}", [
+            'body' => 'My new body'
+        ]);
+        $response->assertStatus(403);
+
+        //Validation failed returns redirect.
+        $thread = Thread::inRandomOrder()->where('user_id', '=', $this->user->id)->first();
+        $response = $this->actingAs($this->user)->patch("threads/{$thread->slug}", [
+            'body' => 'My body'
+        ]);
+        $response->assertStatus(302);
+
+        //Validation success leads to model update.
+        $response = $this->actingAs($this->user)->patch("threads/{$thread->slug}", [
+            'body' => 'My new body long enough'
+        ]);
+        $response->assertStatus(200);
+
+        $this->assertEquals(Thread::find($thread->id)->body, 'My new body long enough');
+
+    }
+
+    public function testDestroyMethodDeletesModel()
+    {
+        //Random user cannot delete thread
+        $thread = Thread::where('user_id', '!=', $this->user->id)->inRandomOrder()->first();
+        $this->actingAs($this->user)->delete("threads/{$thread->slug}")
+            ->assertStatus(403);
+
+        //Owner can send delete request and thread is deleted.        
+        $thread = Thread::inRandomOrder()->where('user_id', '=', $this->user->id)->first();
+        $this->actingAs($this->user)->delete("threads/{$thread->slug}")
+            ->assertStatus(200);
+
+        $this->assertNull(Thread::find($thread->id));
+        
     }
 }

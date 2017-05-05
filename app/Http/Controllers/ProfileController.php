@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Cache;
 class ProfileController extends Controller
 {
 
-    public function store()
+    public function update()
     {
         $this->validate(request(), [
             'name' => 'max: 30',
@@ -40,6 +40,6 @@ class ProfileController extends Controller
         $path = request()->file('avatar')->store('public/avatars');
         $path = str_replace('public/', 'storage/', $path);
         auth()->user()->profile()->update(['avatar' => $path]);
-        Cache::tags('profile')->forget('profile/' . $user->username);
+        Cache::tags('profile')->forget('profile/' . auth()->user()->username);
     }
 }
