@@ -134,9 +134,8 @@ class ThreadsControllerTest extends TestCase
 
     public function testStoreMethodCreatesThreadInDatabase()
     {
-        $user = User::inRandomOrder()->first();
-        $channel = Channel::inRandomOrder()->first();
-
+        $user = $this->user;
+        $channel = $this->channel;
         // Validation failing returns a redirect
         $response = $this->actingAs($user)->post("channels/{$channel->slug}/threads", [
             'title' => null,
@@ -179,8 +178,7 @@ class ThreadsControllerTest extends TestCase
         //Validation success leads to model update.
         $response = $this->actingAs($this->user)->patch("threads/{$thread->slug}", [
             'body' => 'My new body long enough'
-        ]);
-        $response->assertStatus(200);
+        ])->assertStatus(200);
 
         $this->assertEquals(Thread::find($thread->id)->body, 'My new body long enough');
 

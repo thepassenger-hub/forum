@@ -27,6 +27,7 @@ class ClearCacheReply
      */
     public function handle(ReplyCreated $event)
     {
+        // dd('QUA');
         Cache::tags('profile')->forget('profile/' . $event->reply->creator()->first()->username);
         Cache::tags('threadWithReplies')->forget(
             'channels/' . $event->reply->thread()->first()->channel()->first()->slug . '/' . $event->reply->thread()->first()->slug);

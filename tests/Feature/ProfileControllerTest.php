@@ -26,6 +26,7 @@ class ProfileControllerTest extends TestCase
     {
         parent::setUp();
         $this->user = User::inRandomOrder()->first();
+        
     }
 
     public function testShowMethodReturnsCorrectProfileObject()
@@ -69,15 +70,13 @@ class ProfileControllerTest extends TestCase
     {
         Storage::fake('local');
 
-        // Assert storage is empty.        
-        $this->assertEquals([], Storage::allFiles());
-        
+        $file = UploadedFile::fake()->image('avatar.jpg');
         $response = $this->actingAs($this->user)->json('POST', 'profile/avatar', [
-            'avatar' => UploadedFile::fake()->image('avatar.jpg')
-        ])->assertStatus(200);
-
-        // Assert the file was stored...
-         $this->assertNotEquals([], Storage::allFiles());
+            'avatar' => $file
+        ]);
+        
+        // Assert the file was stored...        
+        Storage::disk('local')->assertExists("public/avatars/{$file->hashName()}");
 
          $this->assertRegExp('/\.jpe?g$/', $this->user->profile()->first()->avatar);
     }

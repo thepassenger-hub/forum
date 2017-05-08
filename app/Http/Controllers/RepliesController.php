@@ -47,8 +47,7 @@ class RepliesController extends Controller
 
         $this->authorize('update', $reply);
         $this->validate(request(), ['body' => 'required|min:1']);
-        $reply->update(['body' => request()->body]);
-        event(new ReplyCreated($reply));
+        $reply->update(request(['body']));
 
         return response('Your reply has been updated', 200);
     }

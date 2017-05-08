@@ -14,7 +14,9 @@ class Reply extends Model
 
     protected $events = [
         'created' => ReplyCreated::class,
-        'deleted' => ReplyCreated::class
+        'deleted' => ReplyCreated::class,
+        'updated' => ReplyCreated::class
+        
     ];
 
     public function thread()

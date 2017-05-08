@@ -72,8 +72,7 @@ class ThreadsController extends Controller
     {
         $this->authorize('update', $thread);
         $this->validate(request(), ['body' => 'required|min:10']);
-        $thread->update(['body' => request()->body]);
-        event(new ThreadCreated($thread));
+        $thread->update(request(['body']));
 
         return response('Your thread has been updated', 200);
     }

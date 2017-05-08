@@ -15,7 +15,8 @@ class Thread extends Model
 
     protected $events = [
         'created' => ThreadCreated::class,
-        'deleted' => ThreadCreated::class
+        'deleted' => ThreadCreated::class,
+        'updated' => ThreadCreated::class
     ];
     
     public function getRouteKeyName()

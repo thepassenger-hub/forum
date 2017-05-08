@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+
 use \App\Profile;
 use \App\User;
-use Illuminate\Support\Facades\Cache;
 
 class ProfileController extends Controller
 {
@@ -18,7 +19,9 @@ class ProfileController extends Controller
             'location' => 'max:30'
         ]);
         $user = auth()->user();
-        $user->profile()->update(request()->all());
+        $profile = $user->profile()->first();
+        $profile->update(request()->all());
+        
         Cache::tags('profile')->forget('profile/' . $user->username);
     }
 
@@ -39,7 +42,9 @@ class ProfileController extends Controller
         ]);
         $path = request()->file('avatar')->store('public/avatars');
         $path = str_replace('public/', 'storage/', $path);
-        auth()->user()->profile()->update(['avatar' => $path]);
-        Cache::tags('profile')->forget('profile/' . auth()->user()->username);
+        $user = auth()->user();
+        $profile = $user->profile()->first();
+        $profile->update(['avatar' => $path]);
+        Cache::tags('profile')->forget('profile/' . $user->username);
     }
 }
