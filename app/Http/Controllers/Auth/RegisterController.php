@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-// use Illuminate\Foundation\Auth\RegistersUsers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
@@ -23,7 +23,6 @@ class RegisterController extends Controller
     |
     */
 
-    // use RegistersUsers;
     /**
      * Handle a registration request for the application.
      *

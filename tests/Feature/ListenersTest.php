@@ -23,12 +23,7 @@ use \App\Listeners\CreateProfile;
 
 class ListenersTest extends TestCase
 {
-    use DatabaseTransactions;
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+
     public function testProfileUpdatedEventTriggersCorrectListener()
     {
         $listener = \Mockery::mock(ClearCacheProfile::class);
@@ -38,9 +33,6 @@ class ListenersTest extends TestCase
         
 
         event(new ProfileUpdated(\App\Profile::first()));
-        // $listener = new ClearCacheProfile();
-        // $listener->handle($this->createMock(ProfileUpdated::class));
-
     }
 
     public function testReplyCreatedEventTriggersCorrectListener()

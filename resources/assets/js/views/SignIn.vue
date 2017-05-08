@@ -9,14 +9,12 @@
                     <p class="control">
                         <input class="input" type="email" placeholder="Email" v-model="login.email">
                     </p>
-                    <!--<p class="help is-danger">This email is invalid</p>-->
                 </div>
 
                 <div class="field">
                     <p class="control">
                         <input class="input" type="password" placeholder="Password" v-model="login.password">
                     </p>
-                    <!--<p class="help is-danger">This email is invalid</p>-->
                 </div>
 
                 <div class="field">
