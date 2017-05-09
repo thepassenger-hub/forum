@@ -23,9 +23,6 @@ class ProfileController extends Controller
         $user = auth()->user();
         $profile = $user->profile;
         $profile->update(request()->all());
-        
-        // event(new ProfileUpdated($profile));
-        // Cache::tags('profile')->forget('profile/' . $user->username);
     }
 
     public function show(Request $request, User $user)
@@ -48,6 +45,5 @@ class ProfileController extends Controller
         $user = auth()->user();
         $profile = $user->profile;
         $profile->update(['avatar' => $path]);
-        // Cache::tags('profile')->forget('profile/' . $user->username);
     }
 }
