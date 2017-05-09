@@ -29,7 +29,7 @@ class EventsTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->user = User::inRandomOrder()->first();
+        $this->user = User::has('threads')->inRandomOrder()->first();
         
     }
     /**
@@ -127,10 +127,9 @@ class EventsTest extends TestCase
     public function testProfileUpdatedFiresEvent()
     {
         Event:: fake();
-
-        $profile = $this->user->profile()->first();
+        
+        $profile = $this->user->profile;
         $profile->update(['name' => 'My new name changed']);
-
 
         Event::assertDispatched(ProfileUpdated::class, function ($e){
             return $e->username === $this->user->username;
@@ -170,7 +169,6 @@ class EventsTest extends TestCase
     {
         Event:: fake();
         $thread = $this->user->threads()->inRandomOrder()->first();
-        
         $this->actingAs($this->user)->patch("threads/{$thread->slug}", [
             'body' => 'The new random body.',
         ]);
@@ -211,8 +209,9 @@ class EventsTest extends TestCase
     public function testRepliesControllerUpdateMethodFiresUpdateEvent()
     {
         Event::fake();
-        $reply = $this->user->replies()->inRandomOrder()->first();
-        $this->actingAs($this->user)->patch("replies/{$reply->id}", [
+        $reply = Reply::inRandomOrder()->first();
+        $user = $reply->creator()->first();
+        $this->actingAs($user)->patch("replies/{$reply->id}", [
             'body' => 'The new reply body updated.'
         ]);
 

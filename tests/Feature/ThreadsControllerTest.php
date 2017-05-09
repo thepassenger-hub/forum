@@ -26,7 +26,7 @@ class ThreadsControllerTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->user = User::inRandomOrder()->first();
+        $this->user = User::has('threads')->inRandomOrder()->first();
         $this->channel = Channel::inRandomOrder()->first();
         
     }

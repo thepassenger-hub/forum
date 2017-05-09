@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
             'isAdmin' => true
         ]);
 
-        factory(User::class, 10)->create();
+        factory(User::class, 30)->create();
 
     }
 }

@@ -25,9 +25,8 @@ class RepliesControllerTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->user = User::inRandomOrder()->first();
+        $this->user = User::has('replies')->inRandomOrder()->first();
         $this->channel = Channel::inRandomOrder()->first();
-        $this->thread = Thread::inRandomOrder()->first();
         $this->thread = Thread::inRandomOrder()->first();
         $this->reply = $this->user->replies()->inRandomOrder()->first();
         

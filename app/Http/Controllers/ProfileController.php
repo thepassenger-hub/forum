@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
+use \App\Events\ProfileUpdated;
+
 use \App\Profile;
 use \App\User;
 
@@ -19,10 +21,11 @@ class ProfileController extends Controller
             'location' => 'max:30'
         ]);
         $user = auth()->user();
-        $profile = $user->profile()->first();
+        $profile = $user->profile;
         $profile->update(request()->all());
         
-        Cache::tags('profile')->forget('profile/' . $user->username);
+        // event(new ProfileUpdated($profile));
+        // Cache::tags('profile')->forget('profile/' . $user->username);
     }
 
     public function show(Request $request, User $user)
@@ -43,8 +46,8 @@ class ProfileController extends Controller
         $path = request()->file('avatar')->store('public/avatars');
         $path = str_replace('public/', 'storage/', $path);
         $user = auth()->user();
-        $profile = $user->profile()->first();
+        $profile = $user->profile;
         $profile->update(['avatar' => $path]);
-        Cache::tags('profile')->forget('profile/' . $user->username);
+        // Cache::tags('profile')->forget('profile/' . $user->username);
     }
 }

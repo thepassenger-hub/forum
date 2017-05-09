@@ -8,7 +8,7 @@ use \App\User;
 
 class Profile extends Model
 {
-    protected $fillable = ['name', 'bio', 'location', 'avatar'];
+    protected $fillable = ['name', 'bio', 'location', 'avatar', 'user_id'];
     
     protected $events = [
         'updated' => ProfileUpdated::class
