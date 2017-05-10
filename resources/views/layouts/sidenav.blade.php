@@ -14,14 +14,14 @@
                 </span>All Threads
             </a>
         </router-link>
-        <router-link tag="li" :to="{ path: '/threads', query: { by: 'forumAdmin' }}" exact>
+        <router-link v-if="$root.username" tag="li" :to="{ path: '/threads', query: { by: $root.username }}" exact>
             <a>
                 <span class="icon is-small filter-icons">
                     <i class="fa fa-user"></i>
                 </span>My Threads
             </a>
         </router-link>
-        <router-link tag="li" :to="{ path: '/threads', query: { contributed_to: 1 }}" exact>
+        <router-link v-if="$root.username" tag="li" :to="{ path: '/threads', query: { contributed_to: 1 }}" exact>
             <a>
                 <span class="icon is-small filter-icons">
                     <i class="fa fa-code-fork"></i>

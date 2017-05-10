@@ -21928,6 +21928,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -24492,7 +24493,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input",
     attrs: {
       "type": "email",
-      "placeholder": "Email"
+      "placeholder": "Email",
+      "id": "login-email"
     },
     domProps: {
       "value": (_vm.login.email)
@@ -24517,7 +24519,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input",
     attrs: {
       "type": "password",
-      "placeholder": "Password"
+      "placeholder": "Password",
+      "id": "login-password"
     },
     domProps: {
       "value": (_vm.login.password)
@@ -24604,6 +24607,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "text",
       "placeholder": "Username",
+      "id": "register-username",
       "required": ""
     },
     domProps: {
@@ -24630,6 +24634,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "email",
       "placeholder": "Email",
+      "id": "register-email",
       "required": ""
     },
     domProps: {
@@ -24656,6 +24661,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "password",
       "placeholder": "Password",
+      "id": "register-password",
       "required": ""
     },
     domProps: {
@@ -24682,6 +24688,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "password",
       "placeholder": "Verify Password",
+      "id": "register-password-confirmation",
       "required": ""
     },
     domProps: {
@@ -24927,7 +24934,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_c('a', {
-    staticClass: "pagination-link"
+    staticClass: "pagination-link",
+    attrs: {
+      "id": "paginate-previous-group"
+    }
   }, [_vm._v("...")])]) : _vm._e(), _vm._v(" "), _vm._l((_vm.middlePages), function(page) {
     return _c('li', {
       on: {
@@ -24948,7 +24958,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_c('a', {
-    staticClass: "pagination-link"
+    staticClass: "pagination-link",
+    attrs: {
+      "id": "paginate-next-group"
+    }
   }, [_vm._v("...")])]) : _vm._e(), _vm._v(" "), _vm._l((_vm.endPages), function(page) {
     return _c('li', {
       on: {
@@ -25135,6 +25148,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "image is-128x128"
   }, [_c('img', {
     attrs: {
+      "id": "avatar",
       "src": _vm.profile.avatar
     }
   })]), _vm._v(" "), _c('div', {
@@ -25145,11 +25159,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": "profile-username"
     }
   }, [_c('p', {
-    staticClass: "title is-4"
+    staticClass: "title is-4 username"
   }, [_vm._v("\n                            " + _vm._s(_vm.profile.user.username) + "\n                        ")]), _vm._v(" "), (_vm.profile.name) ? _c('p', {
-    staticClass: "subtitle"
+    staticClass: "subtitle profile-name"
   }, [_vm._v("\n                            aka " + _vm._s(_vm.profile.name) + "\n                        ")]) : _vm._e()]) : _vm._e()])])])]), _vm._v(" "), (_vm.profile.user) ? _c('nav', {
-    staticClass: "level"
+    staticClass: "level",
+    attrs: {
+      "id": "profile-infos"
+    }
   }, [_c('div', {
     staticClass: "level-item"
   }, [_c('h4', [_vm._v(" Member since "), _c('strong', [_vm._v(_vm._s(_vm._f("fromNow")(_vm.profile.user.created_at)))])])]), _vm._v(" "), _c('div', {
@@ -25159,7 +25176,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('h4', [_c('strong', [_vm._v(_vm._s(_vm.profile.user.threads_count))]), _vm._v(" threads created")])]), _vm._v(" "), _c('div', {
     staticClass: "level-item"
   }, [_c('h4', [_c('strong', [_vm._v(_vm._s(_vm.profile.user.replies_count))]), _vm._v(" replies posted")])])]) : _vm._e(), _vm._v(" "), _c('hr'), _vm._v(" "), _c('h5', {
-    staticClass: "title is-5"
+    staticClass: "title is-5",
+    attrs: {
+      "id": "profile-bio"
+    }
   }, [_vm._v(_vm._s(_vm.profile.bio))]), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.profile.user) ? _c('div', _vm._l((_vm.repliesByMonth), function(replies, day) {
     return _c('div', {
       staticClass: "columns"
@@ -25697,7 +25717,10 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('article', {
-    staticClass: "media"
+    staticClass: "media",
+    attrs: {
+      "id": "new-reply-form"
+    }
   }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "media-content"
   }, [_c('div', {

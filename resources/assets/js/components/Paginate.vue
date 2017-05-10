@@ -14,14 +14,14 @@
                 <a class="pagination-link" :class="{'is-current': current === page}">{{page}}</a>
             </li>
             <li v-if="startEllipsis" @click="changePage(middlePages[0] !== undefined ? middlePages[0] - 1 : endPages[0] - 1)">
-                <a class="pagination-link">...</a>
+                <a class="pagination-link" id="paginate-previous-group">...</a>
             </li>
             <li v-for="page in middlePages" @click="changePage(page)">
                 <a class="pagination-link" :class="{'is-current': current === page}">{{page}}</a>
             </li>
             <li v-if="endEllipsis" 
                 @click="changePage(middlePages.slice(-1)[0] !== undefined ? middlePages.slice(-1)[0] + 1 : startPages.slice(-1)[0] + 1)">
-                <a class="pagination-link">...</a>
+                <a class="pagination-link" id="paginate-next-group">...</a>
             </li>
             <li v-for="page in endPages" @click="changePage(page)" >
                 <a class="pagination-link" :class="{'is-current': current === page}">{{page}}</a>

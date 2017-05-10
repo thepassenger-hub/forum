@@ -7,13 +7,13 @@
                 </div>
                 <div class="field">
                     <p class="control">
-                        <input class="input" type="email" placeholder="Email" v-model="login.email">
+                        <input class="input" type="email" placeholder="Email" id="login-email" v-model="login.email">
                     </p>
                 </div>
 
                 <div class="field">
                     <p class="control">
-                        <input class="input" type="password" placeholder="Password" v-model="login.password">
+                        <input class="input" type="password" placeholder="Password" id="login-password" v-model="login.password">
                     </p>
                 </div>
 
@@ -45,27 +45,28 @@
                 </div>
                 <div class="field">
                     <p class="control">
-                        <input class="input" type="text" placeholder="Username" v-model="register.username" required>
+                        <input class="input" type="text" placeholder="Username" id="register-username" v-model="register.username" required>
                     </p>
                     <!--<p class="help is-danger">This email is invalid</p>-->
                 </div>
                 <div class="field">
                     <p class="control">
-                        <input class="input" type="email" placeholder="Email" v-model="register.email" required>
-                    </p>
-                    <!--<p class="help is-danger">This email is invalid</p>-->
-                </div>
-
-                <div class="field">
-                    <p class="control">
-                        <input class="input" type="password" placeholder="Password" v-model="register.password" required>
+                        <input class="input" type="email" placeholder="Email" id="register-email" v-model="register.email" required>
                     </p>
                     <!--<p class="help is-danger">This email is invalid</p>-->
                 </div>
 
                 <div class="field">
                     <p class="control">
-                        <input class="input" type="password" placeholder="Verify Password" v-model="register.password_confirmation" required>
+                        <input class="input" type="password" placeholder="Password" id="register-password" v-model="register.password" required>
+                    </p>
+                    <!--<p class="help is-danger">This email is invalid</p>-->
+                </div>
+
+                <div class="field">
+                    <p class="control">
+                        <input class="input" type="password" placeholder="Verify Password" 
+                            id="register-password-confirmation" v-model="register.password_confirmation" required>
                     </p>
                     <!--<p class="help is-danger">This email is invalid</p>-->
                 </div>

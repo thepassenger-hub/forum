@@ -4,14 +4,14 @@
             <div class="column is-9">
                 <article class="media">
                     <figure class="image is-128x128">
-                        <img :src="profile.avatar">
+                        <img id="avatar" :src="profile.avatar">
                     </figure>
                     <div class="media-content">
                         <div v-if="profile" class="content" id="profile-username">
-                            <p class="title is-4">
+                            <p class="title is-4 username">
                                 {{profile.user.username}}
                             </p>
-                            <p class="subtitle" v-if="profile.name">
+                            <p class="subtitle profile-name" v-if="profile.name">
                                 aka {{profile.name}}
                             </p>
                         </div>
@@ -19,7 +19,7 @@
                 </article>
             </div>
         </div>
-        <nav class="level" v-if="profile.user">
+        <nav class="level" id="profile-infos" v-if="profile.user">
             <div class="level-item">
                     <h4> Member since <strong>{{profile.user.created_at | fromNow}}</strong></h4>
                 </div>
@@ -34,7 +34,7 @@
                 </div>
         </nav>
         <hr>
-        <h5 class="title is-5">{{profile.bio}}</h5>
+        <h5 class="title is-5" id="profile-bio">{{profile.bio}}</h5>
         <hr>
         <div v-if="profile.user">
             <div class="columns" v-for="(replies, day) in repliesByMonth">

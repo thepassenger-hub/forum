@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 use Illuminate\Http\UploadedFile;
-use  \Illuminate\Support\Facades\Event;
+use  Illuminate\Support\Facades\Event;
 
 use \App\Events\UserCreated;
 use \App\Events\ThreadCreated;
