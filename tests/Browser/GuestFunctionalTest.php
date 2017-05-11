@@ -5,9 +5,8 @@ namespace Tests\Browser;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class FunctionalTest extends DuskTestCase
+class GuestFunctionalTest extends DuskTestCase
 {
     
     protected $user;
@@ -15,6 +14,8 @@ class FunctionalTest extends DuskTestCase
     public function setUp()
     {
         parent::setUp();
+        
+      
         $this->user = factory(\App\User::class)->create();
     }
 
@@ -92,6 +93,7 @@ class FunctionalTest extends DuskTestCase
             $browser->visit('/')->waitFor('.thread')
                     ->type('#search-bar input', 'learn php')
                     ->press('SEARCH')
+                    ->pause(200)
                     ->assertSeeIn('.breadcrumb', 'threads')
                     ->assertSeeIn('.thread-title', 'Learn PHP')
                     ->assertSeeIn('.thread-body', 'Lorem ipsum dolor');
@@ -228,6 +230,44 @@ class FunctionalTest extends DuskTestCase
                     ->assertMissing('.reply-edit')
                     ->assertMissing('.reply-delete');
         });
+    }
 
+    public function testUserCanClickForgotPassword()
+    {
+        $this->browse(function(Browser $browser){
+            $browser->visit('/#/sign-in')->pause(200)
+                    ->clickLink('Forgot your password?')
+                    ->waitFor('#forgot-password')
+                    ->assertSee('Reset Password')
+                    ->type('#reset-password-email', $this->user->email)
+                    ->click('#reset-password-button')
+                    ->pause(500)
+                    ->assertVisible('.notification.is-success')
+                    ->assertMissing('.notification.is-danger');
+        });
+    }
+
+    public function testUserCanClickResetPasswordLinkAndCompileForm()
+    {
+        
+
+        $this->browse(function(Browser $browser){
+            $browser->visit('/#/reset-password/a88305cc7786ab38948416226b327acafa3474a18d1db6e31b6eb7dcb45a616e')
+                    ->pause(200)
+                    ->whenAvailable('.modal-container', function ($modal) {
+                        $modal->assertSee('Reset Password')
+                            ->type('#reset-password-modal-email', $this->user->email)
+                            ->type('#reset-password-modal-password', 'newpassword')
+                            ->type('#reset-password-modal-confirmation', 'newpassword')
+                            ->click('#reset-password-modal-reset')
+                            ->pause(500)
+                            ->assertVisible('.notification.is-danger')
+                            ->assertMissing('.notification.is-success')
+                            ->click('#reset-password-modal-back');
+                            
+                    })
+                    ->pause(500)
+                    ->assertSee('Forum Title');
+        });
     }
 }

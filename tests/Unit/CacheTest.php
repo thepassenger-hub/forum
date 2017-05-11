@@ -20,6 +20,8 @@ class CacheTest extends TestCase
      *
      * @return void
      */
+    use DatabaseTransactions;
+
     public function testClearCacheReplyTriggersCacheMethods()
     {
         $obj = \Mockery::mock('\Illuminate\Cache\TaggedCache');

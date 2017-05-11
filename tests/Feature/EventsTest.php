@@ -10,6 +10,7 @@ use Illuminate\Http\UploadedFile;
 use  Illuminate\Support\Facades\Event;
 
 use \App\Events\UserCreated;
+use \App\Events\UserDeleted;
 use \App\Events\ThreadCreated;
 use \App\Events\ReplyCreated;
 use \App\Events\ProfileUpdated;
@@ -46,6 +47,18 @@ class EventsTest extends TestCase
             return $e->user_id === $user->id;
         });
 
+    }
+
+    public function testUserDeletedFiresEvent()
+    {
+        Event::fake();
+
+        $user = User::inRandomOrder()->first();
+        $user->delete();
+
+        Event::assertDispatched(UserDeleted::class, function ($e) use ($user) {
+            return $e->user->id === $user->id;
+        });
     }
 
     public function testThreadCreatedFiresEvent()
@@ -140,7 +153,7 @@ class EventsTest extends TestCase
     {
         Event:: fake();
 
-        $this->actingAs($this->user)->patch('profile', [
+        $this->actingAs($this->user)->patch('/profile', [
             'name' => 'John',
             'bio' => 'John doe from test class.',
             'location' => 'Unknown'

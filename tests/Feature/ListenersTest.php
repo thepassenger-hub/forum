@@ -14,16 +14,21 @@ use \App\Events\ProfileUpdated;
 use \App\Events\ReplyCreated;
 use \App\Events\ThreadCreated;
 use \App\Events\UserCreated;
+use \App\Events\UserDeleted;
+
 
 use \App\Listeners\ClearCacheProfile;
 use \App\Listeners\ClearCacheReply;
 use \App\Listeners\ClearCacheThread;
 use \App\Listeners\CreateProfile;
+use \App\Listeners\DeleteProfile;
+
 
 
 class ListenersTest extends TestCase
 {
-
+    use DatabaseTransactions;
+    
     public function testProfileUpdatedEventTriggersCorrectListener()
     {
         $listener = \Mockery::mock(ClearCacheProfile::class);
@@ -65,5 +70,32 @@ class ListenersTest extends TestCase
         $this->app->instance(CreateProfile::class, $listener);
         
         event(new UserCreated(\App\User::first()));
+    }
+
+    public function testUserCreatedEventCreatesTheProfile()
+    {
+        $user = \Mockery::mock(\App\User::class);
+        $user->shouldReceive('getAttribute')->with('id')->once()->andReturn(1000);
+        $user->shouldReceive('getAttribute')->with('profile')->once()->andReturn(\Mockery::mock(\App\Profile::class));
+        
+        event(new UserCreated($user));
+        $this->assertNotNull($user->profile);
+    }
+    public function testUserDeletedEventTriggersCorrectListener()
+    {
+        $listener = \Mockery::mock('DeleteProfile');
+        $listener->shouldReceive('handle')->once();
+        
+        $this->app->instance(DeleteProfile::class, $listener);
+        
+        event(new UserDeleted(\App\User::inRandomOrder()->first()));
+    }
+
+    public function testUserDeletedAlsoDeletesProfile()
+    {
+        $user = \App\User::inRandomOrder()->first();
+
+        event(new UserDeleted($user));
+        $this->assertNull($user->profile);
     }
 }

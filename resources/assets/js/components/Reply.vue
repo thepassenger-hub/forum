@@ -10,9 +10,9 @@
                 <slot name="username"></slot>
                 <span class="created-at">{{reply.createdAt | fromNow}}</span>
                 <slot name="body" v-if="!edit"></slot>
-                <div v-if="edit">
+                <div class="edit-reply-form" v-if="edit">
                     <div class="field">
-                        <textarea class="textarea" v-model="replyMessage" required></textarea>
+                        <textarea class="textarea" name="reply-message" v-model="replyMessage" required></textarea>
                     </div>
                     <div class="field is-grouped">
                         <p class="control">

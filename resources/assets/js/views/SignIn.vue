@@ -31,8 +31,8 @@
                         <button class="button is-primary" @click="postLoginForm">Login</button>
                     </p>
                     <p class="control">
-                        <button class="button is-link" 
-                        @click="forgotPassword = true; $scrollTo('#forgot-password', {'offset': -30});">Forgot your password?</button>
+                        <a class="button is-link" 
+                        @click="forgotPassword = true; $scrollTo('#forgot-password', {'offset': -30});">Forgot your password?</a>
                     </p>
                 </div>
 
@@ -87,12 +87,12 @@
                     </div>
                     <div class="field">
                         <p class="control">
-                            <input type="email" class="input" placeholder="Email address" v-model="reset.email">
+                            <input type="email" class="input" placeholder="Email address" id="reset-password-email" v-model="reset.email">
                         </p>
                     </div>
                     <div class="field">
                         <p class="control">
-                            <button class="button is-primary" @click="resetPassword">Send Password reset link</button>
+                            <button class="button is-primary" id="reset-password-button" @click="resetPassword">Send Password reset link</button>
                         </p>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
                 this.login.post('/login')
                     .then(response => {
                         vm.$root.user = response.user;
-                        vm.$router.back();
+                        vm.$router.push({name: 'home'});
                     })
                     .catch(error => {
                         let out = '';

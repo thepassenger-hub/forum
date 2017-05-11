@@ -2,7 +2,7 @@
     <article class="media" id="new-reply-form">
         <figure class="media-left is-hidden-mobile">
             <p class="image is-64x64">
-             <img src="http://bulma.io/images/placeholders/128x128.png">
+             <img :src="$root.user.profile.avatar">
             </p>
         </figure>
         <div class="media-content">

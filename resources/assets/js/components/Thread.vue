@@ -2,7 +2,7 @@
     <div class="thread">
         <article class="media">
             <figure class="media-left is-hidden-mobile">
-                <p class="image is-64x64">
+                <p class="image is-64x64" v-if="thread.creator.profile">
                     <img :src="thread.creator.profile.avatar">
                 </p>
             </figure>
@@ -16,9 +16,9 @@
                         <router-link :to="'/@'+thread.creator.username">{{thread.creator.username}}</router-link>
                     </strong>
                     <slot name="body" v-if="!edit"></slot>
-                    <div v-if="edit">
+                    <div class="edit-thread-form" v-if="edit">
                         <div class="field">
-                            <textarea class="textarea" v-model="threadMessage" required></textarea>
+                            <textarea class="textarea" name="thread-message" v-model="threadMessage" required></textarea>
                         </div>
                         <div class="field is-grouped">
                             <p class="control">

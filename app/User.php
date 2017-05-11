@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use \App\Events\UserCreated;
+use \App\Events\UserDeleted;
 use \App\Thread;
 use \App\Reply;
 use \App\Profile;
@@ -23,6 +24,7 @@ class User extends Authenticatable
 
      protected $events = [
         'created' => UserCreated::class,
+        'deleted' => UserDeleted::class
     ];
 
     public function getRouteKeyName()

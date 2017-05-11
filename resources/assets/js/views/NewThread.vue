@@ -11,7 +11,7 @@
                 <label class="label">Pick a channel</label>
                   <p class="control">
                     <span class="select">
-                    <select v-model="channel" required>
+                    <select name="channel" v-model="channel" required>
                         <option v-for="channel in $root.channels" :value="channel.slug">{{channel.name}}</option>
                     </select>
                     </span>
@@ -28,7 +28,7 @@
                     <button class="button is-primary" type="submit">Submit</button>
                 </p>
                 <p class="control">
-                    <button class="button is-link" @click="$router.back()">Cancel</button>
+                    <button class="button is-link" @click="$router.push({name: 'home'})">Cancel</button>
                 </p>
             </div>
         </form> 

@@ -21970,7 +21970,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var vm = this;
             this.login.post('/login').then(function (response) {
                 vm.$root.user = response.user;
-                vm.$router.back();
+                vm.$router.push({ name: 'home' });
             }).catch(function (error) {
                 var out = '';
                 Object.keys(error).forEach(function (field) {
@@ -22119,6 +22119,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         markdown: function markdown(text) {
             return marked(text, { sanitize: true });
+        },
+        newReply: function newReply() {
+            var _this4 = this;
+
+            var vm = this;
+            axios.get('/channels/' + this.channel + '/' + this.threadPath).then(function (response) {
+                if (response.data) {
+                    vm.thread = new __WEBPACK_IMPORTED_MODULE_0__models_ThreadWithReplies__["a" /* default */](response.data);
+                    var pages = _this4.thread.replies.length;
+                    _this4.currentPage = Math.ceil(pages / _this4.perPage);
+                }
+            }).catch(function (error) {
+                return console.log(error);
+            });
         }
     },
     components: {
@@ -24580,7 +24594,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Login")])]), _vm._v(" "), _c('p', {
     staticClass: "control"
-  }, [_c('button', {
+  }, [_c('a', {
     staticClass: "button is-link",
     on: {
       "click": function($event) {
@@ -24735,7 +24749,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input",
     attrs: {
       "type": "email",
-      "placeholder": "Email address"
+      "placeholder": "Email address",
+      "id": "reset-password-email"
     },
     domProps: {
       "value": (_vm.reset.email)
@@ -24752,6 +24767,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "control"
   }, [_c('button', {
     staticClass: "button is-primary",
+    attrs: {
+      "id": "reset-password-button"
+    },
     on: {
       "click": _vm.resetPassword
     }
@@ -25044,7 +25062,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "thread": _vm.threadPath
     },
     on: {
-      "posted": _vm.getThread,
+      "posted": _vm.newReply,
       "error": function($event) {
         _vm.showError($event);
         _vm.$scrollTo('#new-reply-button')
@@ -25333,6 +25351,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "channel"
     }],
     attrs: {
+      "name": "channel",
       "required": ""
     },
     on: {
@@ -25387,7 +25406,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "button is-link",
     on: {
       "click": function($event) {
-        _vm.$router.back()
+        _vm.$router.push({
+          name: 'home'
+        })
       }
     }
   }, [_vm._v("Cancel")])])])]), _vm._v(" "), _c('transition', {
@@ -25433,13 +25454,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "media"
   }, [_c('figure', {
     staticClass: "media-left is-hidden-mobile"
-  }, [_c('p', {
+  }, [(_vm.thread.creator.profile) ? _c('p', {
     staticClass: "image is-64x64"
   }, [_c('img', {
     attrs: {
       "src": _vm.thread.creator.profile.avatar
     }
-  })])]), _vm._v(" "), _c('div', {
+  })]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "media-content",
     class: {
       'thread-if-reply-counter': _vm.thread.replies_count !== undefined
@@ -25461,7 +25482,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "to": '/@' + _vm.thread.creator.username
     }
-  }, [_vm._v(_vm._s(_vm.thread.creator.username))])], 1), _vm._v(" "), (!_vm.edit) ? _vm._t("body") : _vm._e(), _vm._v(" "), (_vm.edit) ? _c('div', [_c('div', {
+  }, [_vm._v(_vm._s(_vm.thread.creator.username))])], 1), _vm._v(" "), (!_vm.edit) ? _vm._t("body") : _vm._e(), _vm._v(" "), (_vm.edit) ? _c('div', {
+    staticClass: "edit-thread-form"
+  }, [_c('div', {
     staticClass: "field"
   }, [_c('textarea', {
     directives: [{
@@ -25472,6 +25495,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "textarea",
     attrs: {
+      "name": "thread-message",
       "required": ""
     },
     domProps: {
@@ -25606,7 +25630,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "content"
   }, [_vm._t("username"), _vm._v(" "), _c('span', {
     staticClass: "created-at"
-  }, [_vm._v(_vm._s(_vm._f("fromNow")(_vm.reply.createdAt)))]), _vm._v(" "), (!_vm.edit) ? _vm._t("body") : _vm._e(), _vm._v(" "), (_vm.edit) ? _c('div', [_c('div', {
+  }, [_vm._v(_vm._s(_vm._f("fromNow")(_vm.reply.createdAt)))]), _vm._v(" "), (!_vm.edit) ? _vm._t("body") : _vm._e(), _vm._v(" "), (_vm.edit) ? _c('div', {
+    staticClass: "edit-reply-form"
+  }, [_c('div', {
     staticClass: "field"
   }, [_c('textarea', {
     directives: [{
@@ -25617,6 +25643,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "textarea",
     attrs: {
+      "name": "reply-message",
       "required": ""
     },
     domProps: {
@@ -25721,7 +25748,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "id": "new-reply-form"
     }
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
+  }, [_c('figure', {
+    staticClass: "media-left is-hidden-mobile"
+  }, [_c('p', {
+    staticClass: "image is-64x64"
+  }, [_c('img', {
+    attrs: {
+      "src": _vm.$root.user.profile.avatar
+    }
+  })])]), _vm._v(" "), _c('div', {
     staticClass: "media-content"
   }, [_c('div', {
     staticClass: "field"
@@ -25777,17 +25812,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("Clear")])])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('figure', {
-    staticClass: "media-left is-hidden-mobile"
-  }, [_c('p', {
-    staticClass: "image is-64x64"
-  }, [_c('img', {
-    attrs: {
-      "src": "http://bulma.io/images/placeholders/128x128.png"
-    }
-  })])])
-}]}
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -26104,7 +26129,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input",
     attrs: {
       "type": "email",
-      "placeholder": "Email"
+      "placeholder": "Email",
+      "id": "reset-password-modal-email"
     },
     domProps: {
       "value": (_vm.form.email)
@@ -26129,6 +26155,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input",
     attrs: {
       "type": "password",
+      "id": "reset-password-modal-password",
       "placeholder": "New password"
     },
     domProps: {
@@ -26154,6 +26181,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input",
     attrs: {
       "type": "password",
+      "id": "reset-password-modal-confirmation",
       "placeholder": "Confirm password"
     },
     domProps: {
@@ -26199,6 +26227,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "control"
   }, [_c('button', {
     staticClass: "button is-primary",
+    attrs: {
+      "id": "reset-password-modal-reset"
+    },
     on: {
       "click": _vm.resetPassword
     }
@@ -26206,6 +26237,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "control"
   }, [_c('button', {
     staticClass: "button",
+    attrs: {
+      "id": "reset-password-modal-back"
+    },
     on: {
       "click": function($event) {
         _vm.$router.push('/')

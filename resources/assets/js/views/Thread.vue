@@ -14,7 +14,7 @@
             @pageClicked="currentPage = $event; this.VueScrollTo.scrollTo('.replies');">
         </paginate>
         <hr>
-        <new-reply v-if="isLogged && $root.username" :thread="threadPath" @posted="getThread" 
+        <new-reply v-if="isLogged && $root.username" :thread="threadPath" @posted="newReply" 
             @error="showError($event); $scrollTo('#new-reply-button')"></new-reply>
         <transition name="fade">
             <error v-if="errorMessage" :errorMessage="errorMessage" @close="errorMessage = false"></error>
@@ -60,6 +60,7 @@
                 axios.get('/channels/'+this.channel+'/'+this.threadPath)
                      .then(response => {
                             if (response.data) vm.thread = new ThreadWithReplies(response.data);
+                            
                      })
                      .catch(error => console.log(error));
             },
@@ -82,6 +83,19 @@
             },
             markdown(text){
                 return marked(text, {sanitize: true});
+            },
+
+            newReply(){
+                var vm = this;
+                axios.get('/channels/'+this.channel+'/'+this.threadPath)
+                     .then(response => {
+                            if (response.data) {
+                                vm.thread = new ThreadWithReplies(response.data);
+                                let pages = this.thread.replies.length
+                                this.currentPage = Math.ceil(pages / this.perPage);
+                            }
+                     })
+                     .catch(error => console.log(error));
             }
         },
         components: {

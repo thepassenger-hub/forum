@@ -15,6 +15,8 @@ class ForgotPasswordTest extends TestCase
      *
      * @return void
      */
+    use DatabaseTransactions;
+
     public function testPostToForgotPasswordActuallySendsEmail()
     {
         \Notification::fake();

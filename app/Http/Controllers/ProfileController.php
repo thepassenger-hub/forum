@@ -22,7 +22,7 @@ class ProfileController extends Controller
         ]);
         $user = auth()->user();
         $profile = $user->profile;
-        $profile->update(request()->all());
+        $profile->update(request(['name', 'bio', 'location']));
     }
 
     public function show(Request $request, User $user)

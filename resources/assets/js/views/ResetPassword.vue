@@ -16,19 +16,19 @@
           <div class="modal-body">
             <div class="field">
                 <p class="control">
-                    <input class="input" type="email" placeholder="Email" v-model="form.email">
+                    <input class="input" type="email" placeholder="Email" id="reset-password-modal-email" v-model="form.email">
                 </p>
             </div>
 
               <div class="field">
                   <p class="control">
-                      <input class="input" type="password" placeholder="New password" v-model="form.password">
+                      <input class="input" type="password" id="reset-password-modal-password" placeholder="New password" v-model="form.password">
                   </p>
               </div>
 
               <div class="field">
                   <p class="control">
-                      <input class="input" type="password" placeholder="Confirm password" v-model="form.password_confirmation">
+                      <input class="input" type="password" id="reset-password-modal-confirmation" placeholder="Confirm password" v-model="form.password_confirmation">
                   </p>
               </div>
               
@@ -45,10 +45,10 @@
           <div class="modal-footer">
               <div class="field is-grouped">
                   <p class="control">
-                      <button class="button is-primary" @click="resetPassword">Reset Password</button>
+                      <button class="button is-primary" id="reset-password-modal-reset" @click="resetPassword">Reset Password</button>
                   </p>
                   <p class="control">
-                      <button class="button" @click="$router.push('/')">Back</button>
+                      <button class="button" @click="$router.push('/')" id="reset-password-modal-back">Back</button>
                   </p>
               </div>
           </div>
