@@ -14,9 +14,10 @@ class GuestFunctionalTest extends DuskTestCase
     public function setUp()
     {
         parent::setUp();
-        
-      
         $this->user = factory(\App\User::class)->create();
+        $this->browse(function (Browser $browser) {
+            $browser->maximize();
+        });
     }
 
     public function tearDown()
@@ -241,7 +242,7 @@ class GuestFunctionalTest extends DuskTestCase
                     ->assertSee('Reset Password')
                     ->type('#reset-password-email', $this->user->email)
                     ->click('#reset-password-button')
-                    ->pause(500)
+                    ->pause(1000)
                     ->assertVisible('.notification.is-success')
                     ->assertMissing('.notification.is-danger');
         });
