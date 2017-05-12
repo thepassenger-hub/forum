@@ -1,5 +1,5 @@
 <template>
-    <div v-if="form">
+    <div v-if="form" class="edit-profile">
         <div class="columns">
             <div class="column is-9">
                 <article class="media">
@@ -26,13 +26,13 @@
         <div class="field">
             <label class="label">About me</label>
             <p class="control">
-                <textarea class="textarea" placeholder="About me" v-model="form.bio"></textarea>
+                <textarea id="profile-bio-textarea" class="textarea" placeholder="About me" v-model="form.bio"></textarea>
             </p>
         </div>
         <div class="field">
             <label class="label">Location</label>
             <p class="control">
-                <input type="text" class="input" id="profile-name-input" placeholder="Location" v-model="form.location">
+                <input type="text" class="input" id="profile-location-input" placeholder="Location" v-model="form.location">
             </p>
         </div>
         <div class="field is-grouped">
@@ -48,13 +48,13 @@
             <label class="label">Change your password</label>
         </div>
         <div class="field">
-            <input type="password" class="input" v-model="passwordForm.oldPassword" placeholder="Current password.">
+            <input type="password" id="edit-password-current" class="input" v-model="passwordForm.oldPassword" placeholder="Current password.">
         </div>
         <div class="field">
-            <input type="password" class="input" v-model="passwordForm.password" placeholder="New password. Min 6 Chars.">
+            <input type="password" id="edit-password-new" class="input" v-model="passwordForm.password" placeholder="New password. Min 6 Chars.">
         </div>
         <div class="field">
-            <input type="password" class="input" v-model="passwordForm.password_confirmation" placeholder="Confirm new password.">
+            <input type="password" id="edit-password-confirmation" class="input" v-model="passwordForm.password_confirmation" placeholder="Confirm new password.">
         </div>
         <div class="field is-grouped">
             <p class="control">
@@ -144,7 +144,7 @@
             },
 
             changePassword(){
-                this.passwordForm.post('/user/password')
+                this.passwordForm.patch('/user/password')
                     .then(response => {
                         this.showSuccess(response);
                         this.passwordForm.reset();

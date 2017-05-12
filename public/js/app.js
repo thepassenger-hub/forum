@@ -21115,7 +21115,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         changePassword: function changePassword() {
             var _this3 = this;
 
-            this.passwordForm.post('/user/password').then(function (response) {
+            this.passwordForm.patch('/user/password').then(function (response) {
                 _this3.showSuccess(response);
                 _this3.passwordForm.reset();
             }).catch(function (error) {
@@ -25826,7 +25826,9 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return (_vm.form) ? _c('div', [_c('div', {
+  return (_vm.form) ? _c('div', {
+    staticClass: "edit-profile"
+  }, [_c('div', {
     staticClass: "columns"
   }, [_c('div', {
     staticClass: "column is-9"
@@ -25912,6 +25914,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "textarea",
     attrs: {
+      "id": "profile-bio-textarea",
       "placeholder": "About me"
     },
     domProps: {
@@ -25939,7 +25942,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input",
     attrs: {
       "type": "text",
-      "id": "profile-name-input",
+      "id": "profile-location-input",
       "placeholder": "Location"
     },
     domProps: {
@@ -25979,6 +25982,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input",
     attrs: {
       "type": "password",
+      "id": "edit-password-current",
       "placeholder": "Current password."
     },
     domProps: {
@@ -26002,6 +26006,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input",
     attrs: {
       "type": "password",
+      "id": "edit-password-new",
       "placeholder": "New password. Min 6 Chars."
     },
     domProps: {
@@ -26025,6 +26030,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input",
     attrs: {
       "type": "password",
+      "id": "edit-password-confirmation",
       "placeholder": "Confirm new password."
     },
     domProps: {

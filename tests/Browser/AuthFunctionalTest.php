@@ -14,21 +14,16 @@ class AuthFunctionalTest extends DuskTestCase
     public function setUp()
     {
         parent::setUp();
-        
-        $this->user = factory(\App\User::class)->create();
+        $this->user = \App\User::inRandomOrder()->first();
         $this->browse(function (Browser $browser) {
-            $browser->visit('/#/sign-in')
-                    ->waitForText('Log In')
-                    ->type('#login-email', $this->user->email)
-                    ->type('#login-password', 'secret')
-                    ->press('Login')
-                    ->waitFor('.thread');
+            $browser->maximize()
+                    ->loginAs($this->user->id)
+                    ->visit('/');
         });
     }
 
     public function tearDown()
     {
-        $this->user->delete();
         parent::tearDown();
         
     }
@@ -97,7 +92,38 @@ class AuthFunctionalTest extends DuskTestCase
 
     public function testCanModifyMyProfile()
     {
-        //  $this->browse(function (Browser $browser) {
-        //     $browser->pause(200)->click('.thread-title')
+         $this->browse(function (Browser $browser) {
+            $browser->pause(200)->clickLink($this->user->username)
+                    ->waitFor('.view-profile')
+                    ->assertSeeIn('.breadcrumb .is-active', "@{$this->user->username}")
+                    ->assertVisible('.tabs')
+                    ->assertSeeIn('.tabs .is-active', 'View')
+                    ->clickLink('Edit')
+                    ->waitFor('.edit-profile')
+                    ->assertSeeIn('.tabs .is-active', 'Edit')
+                    ->attach('#add-new-avatar', base_path() .'/public/images/drawing.svg')
+                    ->press('Upload Avatar')
+                    ->assertMissing('.notification.is-danger')
+                    ->waitFor('.view-profile')
+                    ->clickLink('Edit')
+                    ->waitFor('.edit-profile')
+                    ->type('#edit-password-current', 'secret')
+                    ->type('#edit-password-new', 'mynewpassword')
+                    ->type('#edit-password-confirmation', 'wrongconfirmation')
+                    ->press('Change Password')
+                    ->pause(1000)
+                    ->assertVisible('.notification.is-danger')
+                    ->click('.notification.is-danger button')
+                    ->clear('#edit-password-confirmation')
+                    ->type('#edit-password-confirmation', 'mynewpassword')
+                    ->press('Change Password')                    
+                    ->pause(1000)
+                    ->assertVisible('.notification.is-success')
+                    ->type('#profile-name-input', 'John')
+                    ->type('#profile-bio-textarea', 'John doe using laravel dusk')
+                    ->type('#profile-location-input', 'JohnDoeLand')
+                    ->press('Save changes')
+                    ->waitFor('.view-profile');
+         });
     }
 }
