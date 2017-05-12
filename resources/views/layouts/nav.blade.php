@@ -3,7 +3,7 @@
     <router-link class="nav-item" :to="{name: 'home'}"><img src="/images/drawing.svg" alt="Forum"></router-link>
     <div class="nav-item field has-addons is-hidden-mobile" id="search-bar">
       <p class="control">
-          <input class="input" v-model="searchQuery" placeholder="Search">
+          <input class="input" v-model="searchQuery" placeholder="Search" @keyup.enter="$router.push({ path: '/threads', query: { search: searchQuery }})">
       </p>
       <p class="control">
         <router-link :to="{ path: '/threads', query: { search: searchQuery }}" exact>

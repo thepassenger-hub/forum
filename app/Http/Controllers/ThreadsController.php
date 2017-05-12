@@ -46,9 +46,9 @@ class ThreadsController extends Controller
     /**
      * Fetch all relevant threads.
      *
-     * @param Channel       $channel
-     * @param ThreadFilters $filters
-     * @return mixed
+     * @param  Channel  $channel
+     * @param  ThreadFilters  $filters
+     * @return  mixed
      */
     protected function getThreads(Request $request, Channel $channel, ThreadFilters $filters)
     {

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Filters\ThreadFilters;
 use App\Events\ThreadCreated;
+use App\Events\ThreadDeleted;
 
 class Thread extends Model
 {
@@ -15,7 +16,7 @@ class Thread extends Model
 
     protected $events = [
         'created' => ThreadCreated::class,
-        'deleted' => ThreadCreated::class,
+        'deleted' => ThreadDeleted::class,
         'updated' => ThreadCreated::class
     ];
     

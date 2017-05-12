@@ -13,6 +13,7 @@ use Illuminate\Cache\CacheManager;
 use \App\Events\ProfileUpdated;
 use \App\Events\ReplyCreated;
 use \App\Events\ThreadCreated;
+use \App\Events\ThreadDeleted;
 use \App\Events\UserCreated;
 use \App\Events\UserDeleted;
 
@@ -22,6 +23,7 @@ use \App\Listeners\ClearCacheReply;
 use \App\Listeners\ClearCacheThread;
 use \App\Listeners\CreateProfile;
 use \App\Listeners\DeleteProfile;
+use \App\Listeners\ThreadDeletedListener;
 
 
 
@@ -97,5 +99,23 @@ class ListenersTest extends TestCase
 
         event(new UserDeleted($user));
         $this->assertNull($user->profile);
+    }
+
+    public function testThreadDeletedTriggersCorrectListener()
+    {
+        $listener = \Mockery::mock('ThreadDeletedListener');
+        $listener->shouldReceive('handle')->once();
+        
+        $this->app->instance(ThreadDeletedListener::class, $listener);
+        
+        event(new ThreadDeleted(\App\Thread::inRandomOrder()->first()));
+    }
+
+    public function testThreadDeletedAlsoDeletesItsReplies()
+    {
+        $thread = \App\Thread::inRandomOrder()->first();
+
+        event(new ThreadDeleted($thread));
+        $this->assertEmpty($thread->replies);
     }
 }

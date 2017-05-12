@@ -28,6 +28,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\ThreadCreated' => [
             'App\Listeners\ClearCacheThread',
         ],
+        'App\Events\ThreadDeleted' => [
+            'App\Listeners\ThreadDeletedListener',
+        ]
     ];
 
     /**

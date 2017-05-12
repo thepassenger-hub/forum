@@ -12,6 +12,7 @@ use  Illuminate\Support\Facades\Event;
 use \App\Events\UserCreated;
 use \App\Events\UserDeleted;
 use \App\Events\ThreadCreated;
+use \App\Events\ThreadDeleted;
 use \App\Events\ReplyCreated;
 use \App\Events\ProfileUpdated;
 
@@ -78,9 +79,7 @@ class EventsTest extends TestCase
         $thread = Thread::inRandomOrder()->first();
         $thread->delete();
 
-        //The event is threadcreated because the actions performed are the same.
-        // Name may be misleading, should refactor it.
-        Event::assertDispatched(ThreadCreated::class, function ($e) use ($thread) {
+        Event::assertDispatched(ThreadDeleted::class, function ($e) use ($thread) {
             return $e->thread === $thread;
         });
     }
@@ -198,7 +197,7 @@ class EventsTest extends TestCase
         
         $this->actingAs($this->user)->delete("threads/{$thread->slug}");
 
-        Event::assertDispatched(ThreadCreated::class, function ($e) use ($thread) {
+        Event::assertDispatched(ThreadDeleted::class, function ($e) use ($thread) {
             return $e->thread->id === $thread->id;
         });
     }

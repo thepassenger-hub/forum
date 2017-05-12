@@ -22,12 +22,6 @@ class AuthFunctionalTest extends DuskTestCase
         });
     }
 
-    public function tearDown()
-    {
-        parent::tearDown();
-        
-    }
-
     public function testUserCanCreateNewThreadModifyItAndDeleteIt()
     {
         $this->browse(function (Browser $browser) {
