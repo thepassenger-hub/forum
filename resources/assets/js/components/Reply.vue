@@ -10,6 +10,17 @@
                 <slot name="username"></slot>
                 <span class="created-at">{{reply.createdAt | fromNow}}</span>
                 <slot name="body" v-if="!edit"></slot>
+                <div class="thread-admin">
+                    <button class="thread-admin-delete button is-danger" @click="confirmRemove = true">
+                        Remove
+                    </button>
+                </div>
+                <confirmation-modal v-if="confirmRemove" @delete="$emit('remove', reply.id); confirmRemove = false" 
+                    @close="confirmRemove = false">
+                    <p class="control">
+                        Are you sure you want to remove this reply?
+                    </p>
+                </confirmation-modal>
                 <div class="edit-reply-form" v-if="edit">
                     <div class="field">
                         <textarea class="textarea" name="reply-message" v-model="replyMessage" required></textarea>
@@ -61,7 +72,8 @@
             return {
                 edit: false,
                 replyMessage: this.reply.body,
-                confirm: false
+                confirm: false,
+                confirmRemove: false
             }
         },
         components: {

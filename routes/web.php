@@ -45,6 +45,8 @@ Route::patch('replies/{reply}', 'RepliesController@update')->middleware('can:upd
 Route::patch('threads/{thread}', 'ThreadsController@update')->middleware('can:update,thread');
 Route::delete('threads/{thread}', 'ThreadsController@destroy')->middleware('can:update,thread');
 
+Route::delete('admin/threads/{thread}', 'AdminController@deleteThread');
+Route::delete('admin/replies/{reply}', 'AdminController@deleteReply');
 
 
 

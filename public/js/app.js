@@ -21290,6 +21290,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
@@ -21298,7 +21309,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             edit: false,
             replyMessage: this.reply.body,
-            confirm: false
+            confirm: false,
+            confirmRemove: false
         };
     },
 
@@ -21400,6 +21412,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -21408,6 +21431,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             confirm: false,
+            confirmRemove: false,
             threadMessage: this.thread.body,
             edit: false,
             errorMessage: false,
@@ -21422,22 +21446,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         'success': __webpack_require__(8)
     },
     methods: {
-        editThread: function editThread(threadMessage, threadSlug) {
+        removeThread: function removeThread(threadSlug) {
             var _this = this;
+
+            axios.delete('/admin/threads/' + threadSlug).then(this.$router.push({ name: 'home' })).catch(function (error) {
+                _this.showError(error);
+            });
+        },
+        editThread: function editThread(threadMessage, threadSlug) {
+            var _this2 = this;
 
             axios.patch('threads/' + threadSlug, {
                 body: threadMessage
             }).catch(function (error) {
-                _this.showError(error);
+                _this2.showError(error);
             });
         },
         deleteThread: function deleteThread(threadSlug) {
-            var _this2 = this;
+            var _this3 = this;
 
             axios.delete('threads/' + threadSlug).then(function (response) {
-                _this2.$router.push({ name: 'home' });
+                _this3.$router.push({ name: 'home' });
             }).catch(function (error) {
-                _this2.showError(error);
+                _this3.showError(error);
             });
         }
     }
@@ -22110,28 +22141,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.$scrollTo('#new-reply-button');
             });
         },
-        editReply: function editReply(replyMessage, replyId) {
+        removeReply: function removeReply(replyId) {
             var _this3 = this;
+
+            axios.delete('/admin/replies/' + replyId).then(function (response) {
+                return _this3.getThread();
+            }).catch(function (error) {
+                _this3.showError(error);
+                _this3.$scrollTo('#new-reply-button');
+            });
+        },
+        editReply: function editReply(replyMessage, replyId) {
+            var _this4 = this;
 
             axios.patch('/replies/' + replyId, {
                 body: replyMessage
             }).catch(function (error) {
-                _this3.showError(error);
-                _this3.$scrollTo('#new-reply-button');
+                _this4.showError(error);
+                _this4.$scrollTo('#new-reply-button');
             });
         },
         markdown: function markdown(text) {
             return marked(text, { sanitize: true });
         },
         newReply: function newReply() {
-            var _this4 = this;
+            var _this5 = this;
 
             var vm = this;
             axios.get('/channels/' + this.channel + '/' + this.threadPath).then(function (response) {
                 if (response.data) {
                     vm.thread = new __WEBPACK_IMPORTED_MODULE_0__models_ThreadWithReplies__["a" /* default */](response.data);
-                    var pages = _this4.thread.replies.length;
-                    _this4.currentPage = Math.ceil(pages / _this4.perPage);
+                    var pages = _this5.thread.replies.length;
+                    _this5.currentPage = Math.ceil(pages / _this5.perPage);
                 }
             }).catch(function (error) {
                 return console.log(error);
@@ -25040,6 +25081,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       on: {
         "delete": _vm.deleteReply,
+        "remove": _vm.removeReply,
         "edit": _vm.editReply
       }
     }, [_c('p', {
@@ -25551,7 +25593,28 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.edit = false;
       }
     }
-  }, [_vm._v("Clear")])])])]) : _vm._e()], 2)]), _vm._v(" "), (_vm.thread.creator.username === _vm.$root.user.username) ? _c('div', {
+  }, [_vm._v("Clear")])])])]) : _vm._e()], 2)]), _vm._v(" "), _c('div', {
+    staticClass: "thread-admin"
+  }, [_c('button', {
+    staticClass: "thread-admin-delete button is-danger",
+    on: {
+      "click": function($event) {
+        _vm.confirmRemove = true
+      }
+    }
+  }, [_vm._v("\n                Remove\n            ")])]), _vm._v(" "), (_vm.confirmRemove) ? _c('confirmation-modal', {
+    on: {
+      "delete": function($event) {
+        _vm.removeThread(_vm.thread.slug);
+        _vm.confirmRemove = false
+      },
+      "close": function($event) {
+        _vm.confirmRemove = false
+      }
+    }
+  }, [_c('p', {
+    staticClass: "control"
+  }, [_vm._v("\n                Are you sure you want to remove this thread?\n            ")])]) : _vm._e(), _vm._v(" "), (_vm.thread.creator.username === _vm.$root.user.username) ? _c('div', {
     staticClass: "thread-modifiers"
   }, [_c('a', {
     staticClass: "thread-edit",
@@ -25641,7 +25704,28 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "content"
   }, [_vm._t("username"), _vm._v(" "), _c('span', {
     staticClass: "created-at"
-  }, [_vm._v(_vm._s(_vm._f("fromNow")(_vm.reply.createdAt)))]), _vm._v(" "), (!_vm.edit) ? _vm._t("body") : _vm._e(), _vm._v(" "), (_vm.edit) ? _c('div', {
+  }, [_vm._v(_vm._s(_vm._f("fromNow")(_vm.reply.createdAt)))]), _vm._v(" "), (!_vm.edit) ? _vm._t("body") : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "thread-admin"
+  }, [_c('button', {
+    staticClass: "thread-admin-delete button is-danger",
+    on: {
+      "click": function($event) {
+        _vm.confirmRemove = true
+      }
+    }
+  }, [_vm._v("\n                    Remove\n                ")])]), _vm._v(" "), (_vm.confirmRemove) ? _c('confirmation-modal', {
+    on: {
+      "delete": function($event) {
+        _vm.$emit('remove', _vm.reply.id);
+        _vm.confirmRemove = false
+      },
+      "close": function($event) {
+        _vm.confirmRemove = false
+      }
+    }
+  }, [_c('p', {
+    staticClass: "control"
+  }, [_vm._v("\n                    Are you sure you want to remove this reply?\n                ")])]) : _vm._e(), _vm._v(" "), (_vm.edit) ? _c('div', {
     staticClass: "edit-reply-form"
   }, [_c('div', {
     staticClass: "field"

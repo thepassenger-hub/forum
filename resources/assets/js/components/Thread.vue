@@ -35,6 +35,17 @@
                     </div>
                 </div>
             </div>
+            <div class="thread-admin">
+                <button class="thread-admin-delete button is-danger" @click="confirmRemove = true">
+                    Remove
+                </button>
+            </div>
+            <confirmation-modal v-if="confirmRemove" @delete="removeThread(thread.slug); confirmRemove = false" 
+                @close="confirmRemove = false">
+                <p class="control">
+                    Are you sure you want to remove this thread?
+                </p>
+            </confirmation-modal>
             <div class="thread-modifiers" v-if="thread.creator.username === $root.user.username">
                 <a class="thread-edit" @click="edit = true;">
                     <span class="icon">
@@ -74,6 +85,7 @@
         data() {
             return {
                 confirm: false,
+                confirmRemove: false,
                 threadMessage: this.thread.body,
                 edit: false,
                 errorMessage: false,
@@ -87,6 +99,13 @@
             'success': require('./Success.vue')
         },
         methods: {
+            removeThread(threadSlug){
+                axios.delete('/admin/threads/' + threadSlug)
+                    .then(this.$router.push({ name: 'home'}))
+                    .catch(error => {
+                        this.showError(error);
+                    });
+            },
             editThread(threadMessage, threadSlug) {
                 axios.patch('threads/'+threadSlug, {
                     body: threadMessage

@@ -4,7 +4,7 @@
             <p slot="body" class="thread-body" v-html="markdown(thread.body)"></p>
         </thread>
         <reply v-if="thread.replies" v-for="reply in thread.replies.slice(0+10*(currentPage-1), 10*currentPage)"
-            :reply="reply" :key="reply.id" @delete="deleteReply" @edit="editReply">
+            :reply="reply" :key="reply.id" @delete="deleteReply" @remove="removeReply" @edit="editReply">
             <p class="reply-creator" slot="username">
                 <router-link :to="'/@'+reply.creator.username">{{reply.creator.username}}</router-link>
             </p>
@@ -66,6 +66,14 @@
             },
             deleteReply(replyId){
                 axios.delete('/replies/'+replyId)
+                    .then(response => this.getThread())
+                    .catch(error => {
+                        this.showError(error);
+                        this.$scrollTo('#new-reply-button');
+                    })
+            },
+            removeReply(replyId){
+                axios.delete('/admin/replies/'+replyId)
                     .then(response => this.getThread())
                     .catch(error => {
                         this.showError(error);
