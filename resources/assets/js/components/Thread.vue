@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            <div class="thread-admin">
+            <div class="thread-admin" v-if="$root.user.isAdmin">
                 <button class="thread-admin-delete button is-danger" @click="confirmRemove = true">
                     Remove
                 </button>

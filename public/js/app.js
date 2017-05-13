@@ -25593,7 +25593,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.edit = false;
       }
     }
-  }, [_vm._v("Clear")])])])]) : _vm._e()], 2)]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Clear")])])])]) : _vm._e()], 2)]), _vm._v(" "), (_vm.$root.user.isAdmin) ? _c('div', {
     staticClass: "thread-admin"
   }, [_c('button', {
     staticClass: "thread-admin-delete button is-danger",
@@ -25602,7 +25602,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.confirmRemove = true
       }
     }
-  }, [_vm._v("\n                Remove\n            ")])]), _vm._v(" "), (_vm.confirmRemove) ? _c('confirmation-modal', {
+  }, [_vm._v("\n                Remove\n            ")])]) : _vm._e(), _vm._v(" "), (_vm.confirmRemove) ? _c('confirmation-modal', {
     on: {
       "delete": function($event) {
         _vm.removeThread(_vm.thread.slug);
@@ -25704,16 +25704,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "content"
   }, [_vm._t("username"), _vm._v(" "), _c('span', {
     staticClass: "created-at"
-  }, [_vm._v(_vm._s(_vm._f("fromNow")(_vm.reply.createdAt)))]), _vm._v(" "), (!_vm.edit) ? _vm._t("body") : _vm._e(), _vm._v(" "), _c('div', {
-    staticClass: "thread-admin"
-  }, [_c('button', {
-    staticClass: "thread-admin-delete button is-danger",
-    on: {
-      "click": function($event) {
-        _vm.confirmRemove = true
-      }
-    }
-  }, [_vm._v("\n                    Remove\n                ")])]), _vm._v(" "), (_vm.confirmRemove) ? _c('confirmation-modal', {
+  }, [_vm._v(_vm._s(_vm._f("fromNow")(_vm.reply.createdAt)))]), _vm._v(" "), (!_vm.edit) ? _vm._t("body") : _vm._e(), _vm._v(" "), (_vm.confirmRemove) ? _c('confirmation-modal', {
     on: {
       "delete": function($event) {
         _vm.$emit('remove', _vm.reply.id);
@@ -25783,7 +25774,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.edit = false;
       }
     }
-  }, [_vm._v("Clear")])])])]) : _vm._e(), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('p')], 2)]), _vm._v(" "), (_vm.reply.creator.username === _vm.$root.user.username) ? _c('div', {
+  }, [_vm._v("Clear")])])])]) : _vm._e(), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('p')], 2)]), _vm._v(" "), (_vm.$root.user.isAdmin) ? _c('div', {
+    staticClass: "reply-admin"
+  }, [_c('button', {
+    staticClass: "thread-admin-delete button is-danger",
+    on: {
+      "click": function($event) {
+        _vm.confirmRemove = true
+      }
+    }
+  }, [_vm._v("\n            Remove\n        ")])]) : _vm._e(), _vm._v(" "), (_vm.reply.creator.username === _vm.$root.user.username) ? _c('div', {
     staticClass: "reply-modifiers"
   }, [_c('a', {
     staticClass: "reply-edit",

@@ -61,4 +61,17 @@ class UsersControllerTest extends TestCase
         
         $this->assertNotEquals($password_before, $password_after);
     }
+
+    public function testUserCantRegisterAsAdmin()
+    {
+        $this->post('register', [
+            'username' => 'impostorusername',
+            'email' => 'thief@thief.com',            
+            'password' => 'impostorpassword',
+            'password_confirmation' => 'impostorpassword',
+            'isAdmin' => 1
+        ]);
+
+        $this->assertEquals(0, User::where('username', 'impostorusername')->first()->isAdmin);
+    }
 }

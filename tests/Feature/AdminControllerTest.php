@@ -42,4 +42,23 @@ class AdminControllerTest extends TestCase
         $this->assertNull(Reply::find($reply->id));
     }
 
+    public function testGuestUserCantDeleteThread()
+    {
+        $thread = Thread::inRandomOrder()->first();
+        $this->delete("/admin/threads/{$thread->slug}")
+            ->assertStatus(403);
+            
+        $this->assertNotNull(Thread::find($thread->id));
+        
+    }
+
+    public function testAuthUserCantDeleteThread()
+    {
+        $thread = Thread::inRandomOrder()->first();
+        $response = $this->actingAs(User::where('isAdmin', 0)->inRandomOrder()->first())
+            ->delete("/admin/threads/{$thread->slug}")
+            ->assertStatus(403);
+        $this->assertNotNull(Thread::find($thread->id));
+        
+    }
 }

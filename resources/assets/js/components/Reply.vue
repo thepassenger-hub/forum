@@ -10,11 +10,6 @@
                 <slot name="username"></slot>
                 <span class="created-at">{{reply.createdAt | fromNow}}</span>
                 <slot name="body" v-if="!edit"></slot>
-                <div class="thread-admin">
-                    <button class="thread-admin-delete button is-danger" @click="confirmRemove = true">
-                        Remove
-                    </button>
-                </div>
                 <confirmation-modal v-if="confirmRemove" @delete="$emit('remove', reply.id); confirmRemove = false" 
                     @close="confirmRemove = false">
                     <p class="control">
@@ -41,6 +36,11 @@
                 <small><a>Reply</a></small>
             </p>
             </div>
+        </div>
+        <div class="reply-admin" v-if="$root.user.isAdmin">
+            <button class="thread-admin-delete button is-danger" @click="confirmRemove = true">
+                Remove
+            </button>
         </div>
         <div class="reply-modifiers" v-if="reply.creator.username === $root.user.username">
             <a class="reply-edit" @click="edit = true;">

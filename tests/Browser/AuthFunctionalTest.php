@@ -59,6 +59,7 @@ class AuthFunctionalTest extends DuskTestCase
             $browser->pause(200)->click('.thread-title')
                     ->waitFor('.replies')
                     ->assertVisible('#new-reply-form')
+                    ->assertMissing('button.is-danger')                    
                     ->type('body', 'Adding reply with laravel Dusk')
                     ->pause(200)
                     ->press('Submit')

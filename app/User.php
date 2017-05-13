@@ -19,7 +19,7 @@ class User extends Authenticatable
     ];
 
     protected $hidden = [
-        'password', 'remember_token', 'isAdmin', 'id'
+        'password', 'remember_token', 'id'
     ];
 
      protected $events = [
