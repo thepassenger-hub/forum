@@ -70,7 +70,6 @@ class ThreadsController extends Controller
 
     public function update(Thread $thread)
     {
-        $this->authorize('update', $thread);
         $this->validate(request(), ['body' => 'required|min:10']);
         $thread->update(request(['body']));
 
@@ -79,8 +78,6 @@ class ThreadsController extends Controller
 
     public function destroy(Thread $thread)
     {
-        $this->authorize('update', $thread);
-
         $thread->delete();
         return response('Your reply has been deleted', 200);
     }

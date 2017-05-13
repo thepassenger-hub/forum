@@ -46,13 +46,14 @@
                         <i class="fa fa-trash-o"></i>
                     </span>
                 </a>
-                <confirmation-modal v-if="confirm" @delete="deleteThread(thread.slug); confirm = false" 
-                    @close="confirm = false">
-                    <p class="control">
-                        Are you sure you want to delete your thread?
-                    </p>
-                </confirmation-modal>
+                
             </div>
+            <confirmation-modal v-if="confirm" @delete="deleteThread(thread.slug); confirm = false" 
+                @close="confirm = false">
+                <p class="control">
+                    Are you sure you want to delete your thread?
+                </p>
+            </confirmation-modal>
             <div class="reply-count replies-count is-hidden-mobile">
                 {{thread.replies_count}}
             </div>
@@ -97,7 +98,9 @@
 
             deleteThread(threadSlug) {
                 axios.delete('threads/'+threadSlug)
-                    .then(response => this.$router.push({ name: 'home'}))
+                    .then(response => {
+                        this.$router.push({ name: 'home'});
+                    })
                     .catch(error => {
                         this.showError(error);
                     })

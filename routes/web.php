@@ -40,10 +40,10 @@ Route::post('threads/{thread}/replies', 'RepliesController@store')->middleware('
 Route::post('channels/{channel}/threads', 'ThreadsController@store')->middleware('auth');
 // Route::post('channels/{channel}/{thread}/replies', 'RepliesController@store')->middleware('auth');
 Route::patch('user/password', 'UsersController@update')->middleware('auth');
-Route::delete('replies/{reply}', 'RepliesController@destroy')->middleware('auth');
-Route::patch('replies/{reply}', 'RepliesController@update')->middleware('auth');
-Route::patch('threads/{thread}', 'ThreadsController@update')->middleware('auth');
-Route::delete('threads/{thread}', 'ThreadsController@destroy')->middleware('auth');
+Route::delete('replies/{reply}', 'RepliesController@destroy')->middleware('can:update,reply');
+Route::patch('replies/{reply}', 'RepliesController@update')->middleware('can:update,reply');
+Route::patch('threads/{thread}', 'ThreadsController@update')->middleware('can:update,thread');
+Route::delete('threads/{thread}', 'ThreadsController@destroy')->middleware('can:update,thread');
 
 
 

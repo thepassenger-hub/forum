@@ -159,7 +159,7 @@ class GuestFunctionalTest extends DuskTestCase
             $thread5 = $browser->text('.thread-title');
             $this->assertNotEquals($thread2, $thread5);
             $browser->click('#paginate-next-group')  
-                    ->assertSeeIn('.pagination-link.is-current', '8')
+                    ->assertSeeIn('.pagination-link.is-current', '7')
                     ->assertMissing('.pagination .is-disabled');
             $thread8 = $browser->text('.thread-title');                           
             $this->assertNotEquals($thread8, $thread5);

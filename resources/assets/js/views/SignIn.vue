@@ -7,13 +7,15 @@
                 </div>
                 <div class="field">
                     <p class="control">
-                        <input class="input" type="email" placeholder="Email" id="login-email" v-model="login.email">
+                        <input class="input" type="email" placeholder="Email" id="login-email" 
+                            @keyup.enter="postLoginForm" v-model="login.email">
                     </p>
                 </div>
 
                 <div class="field">
                     <p class="control">
-                        <input class="input" type="password" placeholder="Password" id="login-password" v-model="login.password">
+                        <input class="input" type="password" placeholder="Password" 
+                            id="login-password" @keyup.enter="postLoginForm" v-model="login.password">
                     </p>
                 </div>
 

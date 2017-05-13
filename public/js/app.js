@@ -21399,6 +21399,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -21434,7 +21435,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this2 = this;
 
             axios.delete('threads/' + threadSlug).then(function (response) {
-                return _this2.$router.push({ name: 'home' });
+                _this2.$router.push({ name: 'home' });
             }).catch(function (error) {
                 _this2.showError(error);
             });
@@ -21817,6 +21818,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Form__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_showNotificationsMixin__ = __webpack_require__(3);
+//
+//
 //
 //
 //
@@ -24514,6 +24517,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": (_vm.login.email)
     },
     on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.postLoginForm($event)
+      },
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.login.email = $event.target.value
@@ -24540,6 +24547,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": (_vm.login.password)
     },
     on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.postLoginForm($event)
+      },
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.login.password = $event.target.value
@@ -25556,7 +25567,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.confirm = true
       }
     }
-  }, [_vm._m(1)]), _vm._v(" "), (_vm.confirm) ? _c('confirmation-modal', {
+  }, [_vm._m(1)])]) : _vm._e(), _vm._v(" "), (_vm.confirm) ? _c('confirmation-modal', {
     on: {
       "delete": function($event) {
         _vm.deleteThread(_vm.thread.slug);
@@ -25568,9 +25579,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('p', {
     staticClass: "control"
-  }, [_vm._v("\n                    Are you sure you want to delete your thread?\n                ")])]) : _vm._e()], 1) : _vm._e(), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                Are you sure you want to delete your thread?\n            ")])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "reply-count replies-count is-hidden-mobile"
-  }, [_vm._v("\n            " + _vm._s(_vm.thread.replies_count) + "\n        ")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n            " + _vm._s(_vm.thread.replies_count) + "\n        ")])], 1), _vm._v(" "), _c('div', {
     attrs: {
       "id": "messages"
     }
