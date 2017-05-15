@@ -74,4 +74,12 @@ class UsersControllerTest extends TestCase
 
         $this->assertEquals(0, User::where('username', 'impostorusername')->first()->isAdmin);
     }
+
+    public function testUsersIndexMethodReturnsAllUsersWithStatus()
+    {
+        $response  = $this->get('users');
+        $response->assertStatus(200);
+        $this->assertNotNull($response);
+        $this->assertEquals(response(User::where('isAdmin', 0)->with('status')->get(), 200)->getContent(), $response->getContent());
+    }
 }

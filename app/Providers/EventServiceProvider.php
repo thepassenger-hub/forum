@@ -14,7 +14,7 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'App\Events\UserCreated' => [
-            'App\Listeners\CreateProfile',
+            'App\Listeners\UserCreatedListener',
         ],
         'App\Events\UserDeleted' => [
             'App\Listeners\DeleteProfile',

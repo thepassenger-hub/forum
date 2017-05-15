@@ -9,6 +9,7 @@ use \App\Events\UserDeleted;
 use \App\Thread;
 use \App\Reply;
 use \App\Profile;
+use \App\Status;
 
 class User extends Authenticatable
 {
@@ -19,7 +20,7 @@ class User extends Authenticatable
     ];
 
     protected $hidden = [
-        'password', 'remember_token', 'id'
+        'password', 'remember_token', 'id', 'email'
     ];
 
      protected $events = [
@@ -32,6 +33,11 @@ class User extends Authenticatable
         return 'username';
     }
 
+    public function status()
+    {
+        return $this->hasOne(Status::class);
+    }
+    
     public function threads()
     {
         return $this->hasMany(Thread::class);

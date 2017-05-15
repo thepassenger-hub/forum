@@ -11,12 +11,17 @@ use \App\User;
 class AdminFunctionalTest extends DuskTestCase
 {
 
+    protected $admin;
+
     public function setUp()
     {
+        
         parent::setUp();
+        $this->admin = User::first();
+        
          $this->browse(function (Browser $browser) {
             $browser->maximize()
-                    ->loginAs(User::first()->id)
+                    ->loginAs($this->admin->id)
                     ->visit('/')
                     ->waitFor('.thread');
          });
@@ -59,6 +64,44 @@ class AdminFunctionalTest extends DuskTestCase
                     ->waitFor('.thread')
                     ->assertDontSeeIn('.breadcrumb .is-active', 'Home');
             $this->assertNotEquals($replyBody, $browser->text('.reply-body'));
+        });
+    }
+
+    public function testAdminCanBanUsers()
+    {
+        $user = User::where('isAdmin', 0)->first();
+        $this->browse(function(Browser $browser) use ($user){
+            $browser->clickLink('Admin Area')
+                    ->waitFor('.user');
+            $browser->assertSeeIn('.tabs .is-active', 'Users')
+                    ->assertSee($user->username)
+                    ->assertSeeIn('.status', 'Active')                    
+                    ->assertSeeIn('.suspend-wrapper', 'Ban')
+                    ->assertSeeIn('.suspend-wrapper', 'Suspend')
+                    ->assertVisible('.suspend-wrapper input')
+                    ->type('.suspension-time-input', '7')
+                    ->press('Suspend')
+                    ->whenAvailable('.modal-container', function ($modal) use($user) {
+                        $modal->assertSee("Are you sure you want to suspend {$user->username} for 7 days?")
+                        ->press('Yes');
+                    })
+                    ->waitFor('.user')
+                    ->assertSeeIn('.status', 'Banned for 7 more days.')
+                    ->press('Enable')
+                    ->whenAvailable('.modal-container', function ($modal) {
+                        $modal->assertSee('Are you sure you want to enable this account?')
+                        ->press('Yes');
+                    })
+                    ->waitFor('.users')
+                    ->assertSeeIn('.status', 'Active')
+                    ->press('Ban')
+                    ->whenAvailable('.modal-container', function ($modal) {
+                        $modal->assertSee('Are you sure you want to ban this user?')
+                        ->press('Yes');
+                    })
+                    ->waitFor('.users')
+                    ->assertSeeIn('.status', 'Banned')
+                    ->assertSee('Enable');
         });
     }
 }

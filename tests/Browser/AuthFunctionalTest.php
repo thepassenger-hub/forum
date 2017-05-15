@@ -80,7 +80,6 @@ class AuthFunctionalTest extends DuskTestCase
                     })
                     ->pause(1000)
                     ->assertVisible('#new-reply-form')
-                    ->assertMissing('.reply-modifiers')
                     ->assertDontSee('Editing the reply message.');
         });
     }

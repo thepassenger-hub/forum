@@ -40,6 +40,7 @@ Route::post('threads/{thread}/replies', 'RepliesController@store')->middleware('
 Route::post('channels/{channel}/threads', 'ThreadsController@store')->middleware('auth');
 // Route::post('channels/{channel}/{thread}/replies', 'RepliesController@store')->middleware('auth');
 Route::patch('user/password', 'UsersController@update')->middleware('auth');
+Route::get('users', 'UsersController@index');
 Route::delete('replies/{reply}', 'RepliesController@destroy')->middleware('can:update,reply');
 Route::patch('replies/{reply}', 'RepliesController@update')->middleware('can:update,reply');
 Route::patch('threads/{thread}', 'ThreadsController@update')->middleware('can:update,thread');
@@ -47,7 +48,7 @@ Route::delete('threads/{thread}', 'ThreadsController@destroy')->middleware('can:
 
 Route::delete('admin/threads/{thread}', 'AdminController@deleteThread')->middleware('admin');
 Route::delete('admin/replies/{reply}', 'AdminController@deleteReply')->middleware('admin');
-
+Route::patch('admin/users/{user}', 'AdminController@banUser');
 
 
 

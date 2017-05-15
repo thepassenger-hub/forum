@@ -21,7 +21,7 @@ use \App\Events\UserDeleted;
 use \App\Listeners\ClearCacheProfile;
 use \App\Listeners\ClearCacheReply;
 use \App\Listeners\ClearCacheThread;
-use \App\Listeners\CreateProfile;
+use \App\Listeners\UserCreatedListener;
 use \App\Listeners\DeleteProfile;
 use \App\Listeners\ThreadDeletedListener;
 
@@ -66,10 +66,10 @@ class ListenersTest extends TestCase
 
     public function testUserCreatedEventTriggersCorrectListener()
     {
-        $listener = \Mockery::mock('CreateProfile');
+        $listener = \Mockery::mock('UserCreatedListener');
         $listener->shouldReceive('handle')->once();
         
-        $this->app->instance(CreateProfile::class, $listener);
+        $this->app->instance(UserCreatedListener::class, $listener);
         
         event(new UserCreated(\App\User::first()));
     }
@@ -82,6 +82,17 @@ class ListenersTest extends TestCase
         
         event(new UserCreated($user));
         $this->assertNotNull($user->profile);
+        
+    }
+
+    public function testUserCreatedEventCreatesTheStatus()
+    {
+        $user = \Mockery::mock(\App\User::class);
+        $user->shouldReceive('getAttribute')->with('id')->once()->andReturn(1000);
+        $user->shouldReceive('getAttribute')->with('status')->once()->andReturn(\Mockery::mock(\App\Status::class));
+        
+        event(new UserCreated($user));
+        $this->assertNotNull($user->status);
     }
     public function testUserDeletedEventTriggersCorrectListener()
     {

@@ -1,6 +1,4 @@
-import Reply from './Reply';
-
-class Thread {
+class User {
     constructor(data){
         for (let field in data) {
             this[field] = data[field];
@@ -8,4 +6,4 @@ class Thread {
     }
 };
 
-export default Thread;
+export default User;

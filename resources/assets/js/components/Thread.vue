@@ -40,7 +40,7 @@
                     Remove
                 </button>
             </div>
-            <confirmation-modal v-if="confirmRemove" @delete="removeThread(thread.slug); confirmRemove = false" 
+            <confirmation-modal v-if="confirmRemove" @confirm="removeThread(thread.slug); confirmRemove = false" 
                 @close="confirmRemove = false">
                 <p class="control">
                     Are you sure you want to remove this thread?
@@ -59,7 +59,7 @@
                 </a>
                 
             </div>
-            <confirmation-modal v-if="confirm" @delete="deleteThread(thread.slug); confirm = false" 
+            <confirmation-modal v-if="confirm" @confirm="deleteThread(thread.slug); confirm = false" 
                 @close="confirm = false">
                 <p class="control">
                     Are you sure you want to delete your thread?

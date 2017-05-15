@@ -5,8 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+use App\User;
+
 class UsersController extends Controller
 {
+
+    public function index()
+    {
+        return User::where('isAdmin', 0)->with('status')->get();
+    }
 
     /**
      * Update the specified resource in storage.

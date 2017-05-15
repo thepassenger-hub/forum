@@ -7,6 +7,21 @@ let routes = [
         name: 'home'
     },
     {
+        path: '/admin/users',
+        component: require('./views/admin/Users'),
+        name: 'admin-users'
+    },
+    {
+        path: '/admin/threads',
+        component: require('./views/admin/Threads'),
+        name: 'admin-threads'
+    },
+    {
+        path: '/admin/replies',
+        component: require('./views/admin/Replies'),
+        name: 'admin-replies'
+    },
+    {
         path: '/reset-password/:token',
         component: require('./views/ResetPassword')
     },

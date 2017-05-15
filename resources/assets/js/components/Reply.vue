@@ -10,7 +10,7 @@
                 <slot name="username"></slot>
                 <span class="created-at">{{reply.createdAt | fromNow}}</span>
                 <slot name="body" v-if="!edit"></slot>
-                <confirmation-modal v-if="confirmRemove" @delete="$emit('remove', reply.id); confirmRemove = false" 
+                <confirmation-modal v-if="confirmRemove" @confirm="$emit('remove', reply.id); confirmRemove = false" 
                     @close="confirmRemove = false">
                     <p class="control">
                         Are you sure you want to remove this reply?
@@ -53,7 +53,7 @@
                     <i class="fa fa-trash-o"></i>
                 </span>
             </a>
-            <confirmation-modal v-if="confirm" @delete="$emit('delete', reply.id); confirm = false" 
+            <confirmation-modal v-if="confirm" @confirm="$emit('delete', reply.id); confirm = false" 
                 @close="confirm = false"></confirmation-modal>
         </div>
     </article>

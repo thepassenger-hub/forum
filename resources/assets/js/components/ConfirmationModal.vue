@@ -22,7 +22,7 @@
                     <div class="modal-footer">
                         <div class="field is-grouped">
                             <p class="control">
-                                <button class="button is-danger" @click="$emit('delete')">Yes</button>
+                                <button class="button is-danger" @click="$emit('confirm')">Yes</button>
                             </p>
                             <p class="control" id="close-modal-button">
                                 <button class="button" @click="$emit('close')">No</button>

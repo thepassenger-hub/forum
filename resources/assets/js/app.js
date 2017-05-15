@@ -15,6 +15,16 @@ Vue.filter('fromNow', function(date){
     return moment(date).fromNow();
 });
 
+Vue.filter('bannedFor', function(date){
+    let days = -moment().diff(date, 'days');
+    if (days > 1000) return 'forever';
+    return days > 1 ? 'for ' + days + ' more days.' : 'for ' + days+ ' more day.';
+});
+
+Vue.filter('capitalize', function(elem){
+    return elem.charAt(0).toUpperCase() + elem.slice(1);
+});
+
 const app = new Vue({
     el: '#app',
     router,
