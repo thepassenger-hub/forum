@@ -82,8 +82,8 @@ class AdminFunctionalTest extends DuskTestCase
         $user = User::where('isAdmin', 0)->first();
         $this->browse(function(Browser $browser) use ($user){
             $browser->clickLink('Admin Area')
-                    ->waitFor('.user');
-            $browser->assertSeeIn('.tabs .is-active', 'Users')
+                    ->waitFor('.user')
+                    ->assertSeeIn('.tabs .is-active', 'Users')
                     ->assertSee($user->username)
                     ->assertSeeIn('.status', 'Active')                    
                     ->assertSeeIn('.suspend-wrapper', 'Ban')
@@ -130,7 +130,33 @@ class AdminFunctionalTest extends DuskTestCase
                     ->type('#filter-input', $this->user->username)
                     ->assertSeeIn('.user', $this->user->username)
                     ->assertMissing(User::where('username', '!=', $this->user->username)->inRandomOrder()->first()->username);
-                    
+        });
+    }
+
+    public function testAdminCanDeleteThreadsFromAdminPage()
+    {
+        $this->browse(function(Browser $browser){
+            $browser->clickLink('Admin Area')
+                    ->waitFor('.user')
+                    ->waitFor('.tabs li:nth-of-type(2)')
+                    ->click('.tabs li:nth-of-type(2)')
+                    ->waitFor('.thread')
+                    ->assertSeeIn('.tabs .is-active', 'Threads')
+                    ->assertVisible('.thread .title')
+                    ->assertVisible('.thread .created-by')
+                    ->assertVisible('button.is-danger');
+            $firstTitle = $browser->text('.thread .title');
+            $browser->press('Delete')
+                    ->whenAvailable('.modal-container', function ($modal){
+                        $modal->assertSee("Are you sure you want to delete this thread?")
+                        ->press('Yes');
+                    })
+                    ->pause(1000)
+                    ->waitFor('.thread');
+            $this->assertNotEquals($firstTitle, $browser->text('.thread .title'));
+            $browser->assertVisible('#filter')
+                    ->type('#filter-input', 'php')
+                    ->assertSeeIn('.thread .title', 'Learn PHP in 3 steps.');
         });
     }
 }

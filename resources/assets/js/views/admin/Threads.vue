@@ -9,30 +9,73 @@
                 <router-link  tag="li" :to="{ name: 'admin-replies' }"><a>Replies</a></router-link>
             </ul>
         </div>
-        
+        <div class="columns">
+            <div class="column is-9">
+                <thread v-for="thread in threadsToShow" :thread="thread" :key="thread.title" @delete="deleteThread"></thread>
+            </div>
+            <div class="column is-3" id="filter">
+                <input type="text" id="filter-input" class="input" placeholder="Filter by title" v-model="filterKey">
+            </div>
+        </div>
+        <div id="messages">
+            <transition name="fade">
+                <error v-if="errorMessage" :errorMessage="errorMessage" @close="errorMessage = false"></error>
+            </transition>
+        </div>
     </div>
 </template>
 
 <script>
-    import User from '../../models/User';
+    import Thread from '../../models/Thread';
+    import showNotificationsMixin from '../../mixins/showNotificationsMixin'
+
     export default {
         data() {
             return {
-                users: []
+                threads: [],
+                filterKey: '',
+                errorMessage: ''
             }
         },
+        mixins: [showNotificationsMixin],
         created() {
             this.$root.path.update(this.$route.path);
-            this.getUsers();
+            this.getThreads();
         },
         methods: {
-            getUsers() {
-                axios.get('users')
+            getThreads() {
+                axios.get('threads')
                     .then(response => {
-                        response.data.forEach(user => this.users.push(new User(user)));
+                        response.data.forEach(thread => this.threads.push(new Thread(thread)));
                     })
                     .catch(error => console.log(error.response.data))
+            },
+            deleteThread(threadSlug) {
+                axios.delete('admin/threads/'+threadSlug)
+                    .then(response => {
+                        this.threads = [];
+                        this.getThreads();
+                    })
+                    .catch(error => {
+                        let out = '';
+                        Object.keys(error.response.data).forEach(field => out += error.response.data[field] +'\n' );
+                        this.showError(out);
+                        this.$scrollTo('#messages', {'offset': -30});
+                    })
             }
+        },
+        computed: {
+            threadsToShow(){
+                let toShow = [];
+                this.threads.forEach(thread => {
+                    if (thread.title.toLowerCase().match(this.filterKey)) toShow.push(thread);
+                });
+                return toShow;
+            }
+        },
+        components: {
+            'thread': require('../../components/admin/Thread'),
+            'error': require('../../components/Error')
         }
     }
 </script>

@@ -84,14 +84,14 @@
             usersToShow() {
                 let toShow = [];
                 this.users.forEach(user => {
-                    if (user.username.match(this.filterKey)) toShow.push(user);
+                    if (user.username.toLowerCase().match(this.filterKey)) toShow.push(user);
 
                 });
                 return toShow;
             }
         },
         components: {
-            'user': require('../../components/User'),
+            'user': require('../../components/admin/User'),
             'error': require('../../components/Error.vue')
         }
     }

@@ -72,7 +72,7 @@
             }
         },
         components: {
-            'confirmationModal': require('./ConfirmationModal')
+            'confirmationModal': require('../ConfirmationModal')
         }
     }
 </script>

@@ -21490,91 +21490,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 169 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['user'],
-    data: function data() {
-        return {
-            days: '',
-            action: '',
-            confirmationMessage: '',
-            confirmation: false
-        };
-    },
-
-    methods: {
-        askConfirmationSuspend: function askConfirmationSuspend() {
-            this.action = 'suspend';
-            this.confirmationMessage = 'Are you sure you want to suspend ' + this.user.username + ' for ' + this.days + ' days?';
-            this.confirmation = true;
-        },
-        askConfirmationEnable: function askConfirmationEnable() {
-            this.action = 'enable';
-            this.confirmationMessage = 'Are you sure you want to enable ' + this.user.username + '\'s account?';
-            this.confirmation = true;
-        },
-        resetData: function resetData() {
-            this.action = null;
-            this.confirmation = false;
-            this.days = '';
-            this.confirmationMessage = '';
-        }
-    },
-    components: {
-        'confirmationModal': __webpack_require__(12)
-    }
-});
-
-/***/ }),
+/* 169 */,
 /* 170 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -22435,7 +22351,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_User__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Thread__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_showNotificationsMixin__ = __webpack_require__(3);
 //
 //
 //
@@ -22451,31 +22368,79 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            users: []
+            threads: [],
+            filterKey: '',
+            errorMessage: ''
         };
     },
+
+    mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_showNotificationsMixin__["a" /* default */]],
     created: function created() {
         this.$root.path.update(this.$route.path);
-        this.getUsers();
+        this.getThreads();
     },
 
     methods: {
-        getUsers: function getUsers() {
+        getThreads: function getThreads() {
             var _this = this;
 
-            axios.get('users').then(function (response) {
-                response.data.forEach(function (user) {
-                    return _this.users.push(new __WEBPACK_IMPORTED_MODULE_0__models_User__["a" /* default */](user));
+            axios.get('threads').then(function (response) {
+                response.data.forEach(function (thread) {
+                    return _this.threads.push(new __WEBPACK_IMPORTED_MODULE_0__models_Thread__["a" /* default */](thread));
                 });
             }).catch(function (error) {
                 return console.log(error.response.data);
             });
+        },
+        deleteThread: function deleteThread(threadSlug) {
+            var _this2 = this;
+
+            axios.delete('admin/threads/' + threadSlug).then(function (response) {
+                _this2.threads = [];
+                _this2.getThreads();
+            }).catch(function (error) {
+                var out = '';
+                Object.keys(error.response.data).forEach(function (field) {
+                    return out += error.response.data[field] + '\n';
+                });
+                _this2.showError(out);
+                _this2.$scrollTo('#messages', { 'offset': -30 });
+            });
         }
+    },
+    computed: {
+        threadsToShow: function threadsToShow() {
+            var _this3 = this;
+
+            var toShow = [];
+            this.threads.forEach(function (thread) {
+                if (thread.title.toLowerCase().match(_this3.filterKey)) toShow.push(thread);
+            });
+            return toShow;
+        }
+    },
+    components: {
+        'thread': __webpack_require__(233),
+        'error': __webpack_require__(4)
     }
 });
 
@@ -22584,13 +22549,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var toShow = [];
             this.users.forEach(function (user) {
-                if (user.username.match(_this4.filterKey)) toShow.push(user);
+                if (user.username.toLowerCase().match(_this4.filterKey)) toShow.push(user);
             });
             return toShow;
         }
     },
     components: {
-        'user': __webpack_require__(193),
+        'user': __webpack_require__(230),
         'error': __webpack_require__(4)
     }
 });
@@ -24651,40 +24616,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 193 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(169),
-  /* template */
-  __webpack_require__(211),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/giulio/Desktop/Projects/laravel/forum/resources/assets/js/components/User.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] User.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-5ff2e094", Component.options)
-  } else {
-    hotAPI.reload("data-v-5ff2e094", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
+/* 193 */,
 /* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25961,97 +25893,7 @@ if (false) {
 }
 
 /***/ }),
-/* 211 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "user columns"
-  }, [_c('article', {
-    staticClass: "media column is-6"
-  }, [_c('div', {
-    staticClass: "media-content"
-  }, [_c('div', {
-    staticClass: "content"
-  }, [_c('p', {
-    staticClass: "username is-4 thread-title"
-  }, [_vm._v(_vm._s(_vm.user.username))]), _vm._v(" "), _c('p', {
-    staticClass: "joined-at"
-  }, [_vm._v(_vm._s(_vm._f("fromNow")(_vm.user.created_at)))]), _vm._v(" "), _c('p', {
-    staticClass: "status"
-  }, [_vm._v(_vm._s(_vm._f("capitalize")(_vm.user.status.status)) + " \n                    "), (_vm.user.status.status === 'banned') ? _c('span', [_vm._v(_vm._s(_vm._f("bannedFor")(_vm.user.status.until)))]) : _vm._e()])])])]), _vm._v(" "), _c('div', {
-    staticClass: "suspend-wrapper column is-6 columns"
-  }, [_c('div', {
-    staticClass: "column is-3"
-  }, [(_vm.user.status.status === 'active') ? _c('button', {
-    staticClass: "user-admin-ban button is-danger",
-    on: {
-      "click": function($event) {
-        _vm.days = 6000;
-        _vm.askConfirmationSuspend()
-      }
-    }
-  }, [_vm._v("\n                Ban\n            ")]) : _c('button', {
-    staticClass: "user-admin-enable button is-success",
-    on: {
-      "click": _vm.askConfirmationEnable
-    }
-  }, [_vm._v("\n                Enable\n            ")])]), _vm._v(" "), _c('div', {
-    staticClass: "column is-9"
-  }, [_c('div', {
-    staticClass: "field has-addons"
-  }, [_c('p', {
-    staticClass: "control"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.days),
-      expression: "days"
-    }],
-    staticClass: "input suspension-time-input",
-    attrs: {
-      "type": "number",
-      "placeholder": "How many days?"
-    },
-    domProps: {
-      "value": (_vm.days)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.days = $event.target.value
-      },
-      "blur": function($event) {
-        _vm.$forceUpdate()
-      }
-    }
-  })]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('button', {
-    staticClass: "user-admin-suspend button is-warning",
-    on: {
-      "click": _vm.askConfirmationSuspend
-    }
-  }, [_vm._v("\n                        Suspend\n                    ")])])])])]), _vm._v(" "), (_vm.confirmation) ? _c('confirmation-modal', {
-    on: {
-      "confirm": function($event) {
-        _vm.$emit(_vm.action, _vm.user.username, _vm.days);
-        _vm.resetData();
-      },
-      "close": _vm.resetData
-    }
-  }, [_vm._v("\n        " + _vm._s(_vm.confirmationMessage) + "\n    ")]) : _vm._e()], 1)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-5ff2e094", module.exports)
-  }
-}
-
-/***/ }),
+/* 211 */,
 /* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26922,7 +26764,65 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         name: 'admin-replies'
       }
     }
-  }, [_c('a', [_vm._v("Replies")])])], 1)])])
+  }, [_c('a', [_vm._v("Replies")])])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "columns"
+  }, [_c('div', {
+    staticClass: "column is-9"
+  }, _vm._l((_vm.threadsToShow), function(thread) {
+    return _c('thread', {
+      key: thread.title,
+      attrs: {
+        "thread": thread
+      },
+      on: {
+        "delete": _vm.deleteThread
+      }
+    })
+  })), _vm._v(" "), _c('div', {
+    staticClass: "column is-3",
+    attrs: {
+      "id": "filter"
+    }
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.filterKey),
+      expression: "filterKey"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "text",
+      "id": "filter-input",
+      "placeholder": "Filter by title"
+    },
+    domProps: {
+      "value": (_vm.filterKey)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.filterKey = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    attrs: {
+      "id": "messages"
+    }
+  }, [_c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [(_vm.errorMessage) ? _c('error', {
+    attrs: {
+      "errorMessage": _vm.errorMessage
+    },
+    on: {
+      "close": function($event) {
+        _vm.errorMessage = false
+      }
+    }
+  }) : _vm._e()], 1)], 1)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -36552,6 +36452,376 @@ module.exports = function(module) {
 __webpack_require__(140);
 module.exports = __webpack_require__(141);
 
+
+/***/ }),
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['user'],
+    data: function data() {
+        return {
+            days: '',
+            action: '',
+            confirmationMessage: '',
+            confirmation: false
+        };
+    },
+
+    methods: {
+        askConfirmationSuspend: function askConfirmationSuspend() {
+            this.action = 'suspend';
+            this.confirmationMessage = 'Are you sure you want to suspend ' + this.user.username + ' for ' + this.days + ' days?';
+            this.confirmation = true;
+        },
+        askConfirmationEnable: function askConfirmationEnable() {
+            this.action = 'enable';
+            this.confirmationMessage = 'Are you sure you want to enable ' + this.user.username + '\'s account?';
+            this.confirmation = true;
+        },
+        resetData: function resetData() {
+            this.action = null;
+            this.confirmation = false;
+            this.days = '';
+            this.confirmationMessage = '';
+        }
+    },
+    components: {
+        'confirmationModal': __webpack_require__(12)
+    }
+});
+
+/***/ }),
+/* 230 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(229),
+  /* template */
+  __webpack_require__(231),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/giulio/Desktop/Projects/laravel/forum/resources/assets/js/components/admin/User.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] User.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5829d694", Component.options)
+  } else {
+    hotAPI.reload("data-v-5829d694", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 231 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "user columns"
+  }, [_c('article', {
+    staticClass: "media column is-6"
+  }, [_c('div', {
+    staticClass: "media-content"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('p', {
+    staticClass: "username is-4 thread-title"
+  }, [_vm._v(_vm._s(_vm.user.username))]), _vm._v(" "), _c('p', {
+    staticClass: "joined-at"
+  }, [_vm._v(_vm._s(_vm._f("fromNow")(_vm.user.created_at)))]), _vm._v(" "), _c('p', {
+    staticClass: "status"
+  }, [_vm._v(_vm._s(_vm._f("capitalize")(_vm.user.status.status)) + " \n                    "), (_vm.user.status.status === 'banned') ? _c('span', [_vm._v(_vm._s(_vm._f("bannedFor")(_vm.user.status.until)))]) : _vm._e()])])])]), _vm._v(" "), _c('div', {
+    staticClass: "suspend-wrapper column is-6 columns"
+  }, [_c('div', {
+    staticClass: "column is-3"
+  }, [(_vm.user.status.status === 'active') ? _c('button', {
+    staticClass: "user-admin-ban button is-danger",
+    on: {
+      "click": function($event) {
+        _vm.days = 6000;
+        _vm.askConfirmationSuspend()
+      }
+    }
+  }, [_vm._v("\n                Ban\n            ")]) : _c('button', {
+    staticClass: "user-admin-enable button is-success",
+    on: {
+      "click": _vm.askConfirmationEnable
+    }
+  }, [_vm._v("\n                Enable\n            ")])]), _vm._v(" "), _c('div', {
+    staticClass: "column is-9"
+  }, [_c('div', {
+    staticClass: "field has-addons"
+  }, [_c('p', {
+    staticClass: "control"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.days),
+      expression: "days"
+    }],
+    staticClass: "input suspension-time-input",
+    attrs: {
+      "type": "number",
+      "placeholder": "How many days?"
+    },
+    domProps: {
+      "value": (_vm.days)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.days = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
+    }
+  })]), _vm._v(" "), _c('p', {
+    staticClass: "control"
+  }, [_c('button', {
+    staticClass: "user-admin-suspend button is-warning",
+    on: {
+      "click": _vm.askConfirmationSuspend
+    }
+  }, [_vm._v("\n                        Suspend\n                    ")])])])])]), _vm._v(" "), (_vm.confirmation) ? _c('confirmation-modal', {
+    on: {
+      "confirm": function($event) {
+        _vm.$emit(_vm.action, _vm.user.username, _vm.days);
+        _vm.resetData();
+      },
+      "close": _vm.resetData
+    }
+  }, [_vm._v("\n        " + _vm._s(_vm.confirmationMessage) + "\n    ")]) : _vm._e()], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-5829d694", module.exports)
+  }
+}
+
+/***/ }),
+/* 232 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+    props: ['thread'],
+    data: function data() {
+        return {
+            confirm: false
+        };
+    },
+
+    methods: {
+        markdown: function markdown(text) {
+            return marked(text, { sanitize: true });
+        },
+        goToThread: function goToThread() {
+            this.$router.push({ path: '/' + this.thread.channel.slug + '/' + this.thread.slug });
+        },
+        askConfirmationDelete: function askConfirmationDelete() {
+            this.confirmationMessage = 'Are you sure you want to delete this thread?';
+            this.confirm = true;
+        }
+    },
+    computed: {
+        truncate: function truncate() {
+            if (this.thread.body.length <= 200) return this.thread.body;
+            return this.thread.body.substring(0, 200) + '...';
+        }
+    },
+    components: {
+        'confirmationModal': __webpack_require__(12)
+    }
+});
+
+/***/ }),
+/* 233 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(232),
+  /* template */
+  __webpack_require__(234),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/giulio/Desktop/Projects/laravel/forum/resources/assets/js/components/admin/Thread.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Thread.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-e307cdda", Component.options)
+  } else {
+    hotAPI.reload("data-v-e307cdda", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 234 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "thread columns"
+  }, [_c('article', {
+    staticClass: "media column is-10"
+  }, [_c('div', {
+    staticClass: "media-content"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('p', {
+    staticClass: "title is-4 thread-title",
+    on: {
+      "click": _vm.goToThread
+    }
+  }, [_c('a', [_vm._v(_vm._s(_vm.thread.title))])]), _vm._v(" "), _c('span', {
+    staticClass: "created-at"
+  }, [_vm._v(_vm._s(_vm._f("fromNow")(_vm.thread.updated_at)))]), _vm._v("\n                by\n                "), _c('strong', {
+    staticClass: "created-by"
+  }, [_c('router-link', {
+    attrs: {
+      "to": '/@' + _vm.thread.creator.username
+    }
+  }, [_vm._v(_vm._s(_vm.thread.creator.username))])], 1), _vm._v(" "), _c('p', {
+    staticClass: "thread-body",
+    domProps: {
+      "innerHTML": _vm._s(_vm.markdown(_vm.truncate))
+    }
+  })])]), _vm._v(" "), (_vm.confirm) ? _c('confirmation-modal', {
+    on: {
+      "confirm": function($event) {
+        _vm.$emit('delete', _vm.thread.slug);
+        _vm.confirm = false
+      },
+      "close": function($event) {
+        _vm.confirm = false
+      }
+    }
+  }, [_vm._v("\n            " + _vm._s(_vm.confirmationMessage) + "\n        ")]) : _vm._e()], 1), _vm._v(" "), _c('div', {
+    staticClass: "column is-2"
+  }, [_c('button', {
+    staticClass: "thread-admin-delete button is-danger",
+    on: {
+      "click": _vm.askConfirmationDelete
+    }
+  }, [_vm._v("\n            Delete\n        ")])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-e307cdda", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
