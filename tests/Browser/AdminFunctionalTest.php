@@ -79,6 +79,15 @@ class AdminFunctionalTest extends DuskTestCase
                     ->assertSeeIn('.suspend-wrapper', 'Ban')
                     ->assertSeeIn('.suspend-wrapper', 'Suspend')
                     ->assertVisible('.suspend-wrapper input')
+                    ->type('.suspension-time-input', '0')    
+                    ->press('Suspend')
+                    ->whenAvailable('.modal-container', function ($modal) use($user) {
+                        $modal->assertSee("Are you sure you want to suspend {$user->username} for 0 days?")
+                        ->press('Yes');
+                    })
+                    ->waitFor('.notification.is-danger')
+                    ->assertSeeIn('.notification.is-danger', 'The days must be at least 1.')   
+                    ->clear(".suspension-time-input")             
                     ->type('.suspension-time-input', '7')
                     ->press('Suspend')
                     ->whenAvailable('.modal-container', function ($modal) use($user) {
@@ -86,13 +95,13 @@ class AdminFunctionalTest extends DuskTestCase
                         ->press('Yes');
                     })
                     ->waitFor('.user')
-                    ->assertSeeIn('.status', 'Banned for 7 more days.')
+                    ->assertSeeIn('.status', 'Banned for 6 more days.')
                     ->press('Enable')
-                    ->whenAvailable('.modal-container', function ($modal) {
-                        $modal->assertSee('Are you sure you want to enable this account?')
+                    ->whenAvailable('.modal-container', function ($modal) use($user) {
+                        $modal->assertSee("Are you sure you want to enable {$user->username}'s account?")
                         ->press('Yes');
                     })
-                    ->waitFor('.users')
+                    ->waitFor('.user')
                     ->assertSeeIn('.status', 'Active')
                     ->press('Ban')
                     ->whenAvailable('.modal-container', function ($modal) {

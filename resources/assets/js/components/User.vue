@@ -14,26 +14,31 @@
         </article>
         <div class="suspend-wrapper columns">
             <div class="column is-3">
-                <button class="user-admin-ban button is-danger">
+                <button class="user-admin-ban button is-danger" v-if="user.status.status === 'active'">
                     Ban
+                </button>
+                <button class="user-admin-enable button is-success" @click="askConfirmationEnable" v-else>
+                    Enable
                 </button>
             </div>
             <div class="column is-9">
                 <div class="field has-addons">
-                <p class="control">
-                    <input v-model="days" class="input suspension-time-input"
-                     type="number" placeholder="How many days?">
-                </p>
-                <p class="control">
-                    <button class="user-admin-suspend button is-warning" @click="$emit('suspend', days)">
-                        Suspend
-                    </button>
-                </p>
+                    <p class="control">
+                        <input v-model="days" class="input suspension-time-input"
+                        type="number" placeholder="How many days?">
+                    </p>
+                    <p class="control">
+                        <button class="user-admin-suspend button is-warning" @click="askConfirmationSuspend">
+                            Suspend
+                        </button>
+                    </p>
+                </div>
             </div>
-            </div>
-            
-            
         </div>
+        <confirmation-modal v-if="confirmation" @confirm="$emit(action, user.username, days); resetData();
+        " @close="resetData">
+            {{confirmationMessage}}
+        </confirmation-modal>
     </div>
 </template>
 
@@ -42,8 +47,32 @@
         props: ['user'],
         data() {
             return {
-                days: ''
+                days: '',
+                action: '',
+                confirmationMessage: '',
+                confirmation: false,
             }
+        },
+        methods: {
+            askConfirmationSuspend() {
+                this.action = 'suspend';
+                this.confirmationMessage = 'Are you sure you want to suspend ' + this.user.username + ' for ' + this.days + ' days?';
+                this.confirmation = true;
+            },
+            askConfirmationEnable() {
+                this.action = 'enable';
+                this.confirmationMessage = 'Are you sure you want to enable ' + this.user.username + '\'s account?';
+                this.confirmation = true;
+            },
+            resetData(){
+                this.action = null;
+                this.confirmation = false;
+                this.days = '';
+                this.confirmationMessage = '';
+            }
+        },
+        components: {
+            'confirmationModal': require('./ConfirmationModal')
         }
     }
 </script>

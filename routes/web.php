@@ -48,7 +48,8 @@ Route::delete('threads/{thread}', 'ThreadsController@destroy')->middleware('can:
 
 Route::delete('admin/threads/{thread}', 'AdminController@deleteThread')->middleware('admin');
 Route::delete('admin/replies/{reply}', 'AdminController@deleteReply')->middleware('admin');
-Route::patch('admin/users/{user}', 'AdminController@banUser');
+Route::patch('admin/users/{user}/ban', 'AdminController@banUser');
+Route::patch('admin/users/{user}/enable', 'AdminController@enableUser');
 
 
 

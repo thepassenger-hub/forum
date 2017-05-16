@@ -65,12 +65,23 @@ class AdminControllerTest extends TestCase
     public function testAdminCanSuspendUser()
     {
         $user = User::where('isAdmin', 0)->inRandomOrder()->first();
-        $response = $this->actingAs($this->admin)->patch("/admin/users/{$user->username}", [
+        $response = $this->actingAs($this->admin)->patch("/admin/users/{$user->username}/ban", [
             'days' => '10'
         ]);
         $response->assertStatus(200);
         $status = $user->status;
         $this->assertEquals($status->status, 'banned');
         $this->assertEquals(\Carbon\Carbon::parse($status->until)->toDateString(), \Carbon\Carbon::now()->addDays(10)->toDateString());
+    }
+
+    public function testAdminCanEnableUsersAccount()
+    {
+        $user = User::where('isAdmin', 0)->inRandomOrder()->first();
+        $user->banFor(10);
+        $response = $this->actingAs($this->admin)->patch("/admin/users/{$user->username}/enable");
+        $response->assertStatus(200);
+        $status = $user->status;
+        $this->assertEquals($status->status, 'active');
+        $this->assertNull($status->until);
     }
 }

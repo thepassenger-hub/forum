@@ -63,4 +63,20 @@ class User extends Authenticatable
         $this->password = bcrypt($password);
         return $this->save();
     }
+
+    public function banFor($days)
+    {
+        $this->status()->update([
+            'status' => 'banned',
+            'until' => \Carbon\Carbon::now()->addDays($days)
+        ]);
+    }
+
+    public function enable()
+    {
+        $this->status()->update([
+            'status' => 'active',
+            'until' => null
+        ]);
+    }
 }

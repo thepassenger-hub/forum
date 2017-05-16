@@ -10,11 +10,10 @@
             </ul>
         </div>
         <div class="column is-9">
-            <user v-for="user in users" :user="user" :key="user.username" @suspend="askConfirmation(user.username, $event)"></user>
+            <user v-for="user in users" :user="user" :key="user.username" 
+                @suspend="suspend" @enable="enable"></user>
         </div>
-        <confirmation-modal v-if="confirmation" @confirm="suspend(username, days)" @close="resetData">
-            {{confirmationMessage}}
-        </confirmation-modal>
+        
         <div id="messages">
             <transition name="fade">
                 <error v-if="errorMessage" :errorMessage="errorMessage" @close="errorMessage = false"></error>
@@ -30,10 +29,6 @@
         data() {
             return {
                 users: [],
-                confirmationMessage: '',
-                username: null,
-                days: null,
-                confirmation: false,
                 errorMessage: false
             }
         },
@@ -50,38 +45,39 @@
                     })
                     .catch(error => console.log(error.response.data))
             },
-            askConfirmation(username, days) {
-                this.confirmationMessage = 'Are you sure you want to suspend ' + username + ' for ' + days + ' days?';
-                this.username = username;
-                this.days = days;
-                this.confirmation = true;
-            },
             suspend(user, days) {
-                axios.patch('/admin/users/'+user, {
+                axios.patch('/admin/users/'+user+'/ban', {
                     days: days
                 })
                     .then(response => {
-                        this.resetData();
-                        this.user = [];
-                        this.getUser()
+                        this.users = [];
+                        this.getUsers();
                     })
                     .catch(error => {
-                        this.errorMessage = error.response.data;
-                        this.resetData();
+                        let out = '';
+                        Object.keys(error.response.data).forEach(field => out += error.response.data[field] +'\n' );
+                        this.showError(out);
                         this.$scrollTo('#messages', {'offset': -30});
+                        
                     });
             },
-            resetData(){
-                this.confirmation = false;
-                this.day = null,
-                this.username = null,
-                this.confirmationMessage = ''
+            enable(user) {
+                axios.patch('/admin/users/'+user+'/enable')
+                    .then(response => {
+                        this.users = [];
+                        this.getUsers();
+                    })
+                    .catch(error => {
+                        let out = '';
+                        Object.keys(error.response.data).forEach(field => out += error.response.data[field] +'\n' );
+                        this.showError(out);
+                        this.$scrollTo('#messages', {'offset': -30});
+                    });
             }
         },
         components: {
             'user': require('../../components/User'),
-            'confirmationModal': require('../../components/ConfirmationModal'),
-            'error': require('../../components/Error.vue'),
+            'error': require('../../components/Error.vue')
         }
     }
 </script>

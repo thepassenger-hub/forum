@@ -20,7 +20,7 @@ class AdminController extends Controller
     public function deleteReply(Reply $reply)
     {
         $reply->delete();
-        return response('The thread has been deleted', 200);        
+        return response('The reply has been deleted', 200);        
     }
 
     public function banUser(Request $request, User $user)
@@ -30,9 +30,16 @@ class AdminController extends Controller
             'days' => 'required|numeric|min:1|max:10000'
         ]);
 
-        $user->status()->update(['status' => 'banned', 'until' => Carbon::now()->addDays(request('days'))]);
+        $user->banFor(request('days'));
 
-        return response("User {$user->username} has been banned for {request('days')}.", 200);
+        return response("User {$user->username} has been banned.", 200);
+    }
 
+    public function enableUser(User $user)
+    {
+
+        $user->enable();
+
+        return response("{$user->username}'s account has been enabled.", 200);
     }
 }
