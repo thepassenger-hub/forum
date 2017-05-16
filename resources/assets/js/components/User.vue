@@ -14,7 +14,7 @@
         </article>
         <div class="suspend-wrapper columns">
             <div class="column is-3">
-                <button class="user-admin-ban button is-danger" v-if="user.status.status === 'active'">
+                <button class="user-admin-ban button is-danger" v-if="user.status.status === 'active'" @click="days=6000; askConfirmationSuspend()">
                     Ban
                 </button>
                 <button class="user-admin-enable button is-success" @click="askConfirmationEnable" v-else>

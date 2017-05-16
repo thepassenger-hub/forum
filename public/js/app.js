@@ -19831,7 +19831,7 @@ Vue.filter('fromNow', function (date) {
 
 Vue.filter('bannedFor', function (date) {
     var days = -moment().diff(date, 'days');
-    if (days > 1000) return 'forever';
+    if (days > 1000) return 'forever.';
     return days > 1 ? 'for ' + days + ' more days.' : 'for ' + days + ' more day.';
 });
 
@@ -25968,7 +25968,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "column is-3"
   }, [(_vm.user.status.status === 'active') ? _c('button', {
-    staticClass: "user-admin-ban button is-danger"
+    staticClass: "user-admin-ban button is-danger",
+    on: {
+      "click": function($event) {
+        _vm.days = 6000;
+        _vm.askConfirmationSuspend()
+      }
+    }
   }, [_vm._v("\n                Ban\n            ")]) : _c('button', {
     staticClass: "user-admin-enable button is-success",
     on: {

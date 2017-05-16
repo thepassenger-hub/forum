@@ -27,7 +27,7 @@ class AdminController extends Controller
     {
 
         $this->validate($request, [
-            'days' => 'required|numeric|min:1|max:10000'
+            'days' => 'required|numeric|min:1|max:6000'
         ]);
 
         $user->banFor(request('days'));

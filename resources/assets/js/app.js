@@ -17,7 +17,7 @@ Vue.filter('fromNow', function(date){
 
 Vue.filter('bannedFor', function(date){
     let days = -moment().diff(date, 'days');
-    if (days > 1000) return 'forever';
+    if (days > 1000) return 'forever.';
     return days > 1 ? 'for ' + days + ' more days.' : 'for ' + days+ ' more day.';
 });
 
