@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\Profile;
 
-class DeleteProfile
+class UserDeletedListener
 {
     /**
      * Create the event listener.
@@ -29,5 +29,6 @@ class DeleteProfile
     public function handle(UserDeleted $event)
     {
         $event->user->profile()->delete();
+        $event->user->status()->delete();
     }
 }

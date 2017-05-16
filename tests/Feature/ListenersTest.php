@@ -22,7 +22,7 @@ use \App\Listeners\ClearCacheProfile;
 use \App\Listeners\ClearCacheReply;
 use \App\Listeners\ClearCacheThread;
 use \App\Listeners\UserCreatedListener;
-use \App\Listeners\DeleteProfile;
+use \App\Listeners\UserDeletedListener;
 use \App\Listeners\ThreadDeletedListener;
 
 
@@ -96,10 +96,10 @@ class ListenersTest extends TestCase
     }
     public function testUserDeletedEventTriggersCorrectListener()
     {
-        $listener = \Mockery::mock('DeleteProfile');
+        $listener = \Mockery::mock('UserDeletedListener');
         $listener->shouldReceive('handle')->once();
         
-        $this->app->instance(DeleteProfile::class, $listener);
+        $this->app->instance(UserDeletedListener::class, $listener);
         
         event(new UserDeleted(\App\User::inRandomOrder()->first()));
     }
@@ -110,6 +110,14 @@ class ListenersTest extends TestCase
 
         event(new UserDeleted($user));
         $this->assertNull($user->profile);
+    }
+
+    public function testUserDeletedAlsoDeletesItsStatus()
+    {
+        $user = \App\User::inRandomOrder()->first();
+
+        event(new UserDeleted($user));
+        $this->assertNull($user->status);
     }
 
     public function testThreadDeletedTriggersCorrectListener()

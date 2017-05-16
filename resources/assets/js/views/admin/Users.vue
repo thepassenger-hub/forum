@@ -3,17 +3,21 @@
         <div class="tabs is-centered is-boxed">
             <ul>
                 <router-link tag="li" class="is-active" :to="{ name: 'admin-users' }">
-                    <a class="is-active">Users</a>
+                    <a>Users</a>
                 </router-link>
                 <router-link  tag="li" :to="{ name: 'admin-threads' }"><a>Threads</a></router-link>
                 <router-link  tag="li" :to="{ name: 'admin-replies' }"><a>Replies</a></router-link>
             </ul>
         </div>
-        <div class="column is-9">
-            <user v-for="user in users" :user="user" :key="user.username" 
-                @suspend="suspend" @enable="enable"></user>
+        <div class="columns">
+            <div class="column is-9">
+                <user v-for="user in usersToShow" :user="user" :key="user.username" 
+                    @suspend="suspend" @enable="enable"></user>
+            </div>
+            <div class="column is-3" id="filter">
+                <input type="text" id="filter-input" class="input" placeholder="Filter by username" v-model="filterKey">
+            </div>
         </div>
-        
         <div id="messages">
             <transition name="fade">
                 <error v-if="errorMessage" :errorMessage="errorMessage" @close="errorMessage = false"></error>
@@ -29,7 +33,8 @@
         data() {
             return {
                 users: [],
-                errorMessage: false
+                errorMessage: false,
+                filterKey: ''
             }
         },
         mixins: [showNotificationsMixin],
@@ -73,6 +78,16 @@
                         this.showError(out);
                         this.$scrollTo('#messages', {'offset': -30});
                     });
+            }
+        },
+        computed: {
+            usersToShow() {
+                let toShow = [];
+                this.users.forEach(user => {
+                    if (user.username.match(this.filterKey)) toShow.push(user);
+
+                });
+                return toShow;
             }
         },
         components: {

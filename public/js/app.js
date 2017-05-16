@@ -22511,6 +22511,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -22518,7 +22522,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             users: [],
-            errorMessage: false
+            errorMessage: false,
+            filterKey: ''
         };
     },
 
@@ -22571,6 +22576,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this3.showError(out);
                 _this3.$scrollTo('#messages', { 'offset': -30 });
             });
+        }
+    },
+    computed: {
+        usersToShow: function usersToShow() {
+            var _this4 = this;
+
+            var toShow = [];
+            this.users.forEach(function (user) {
+                if (user.username.match(_this4.filterKey)) toShow.push(user);
+            });
+            return toShow;
         }
     },
     components: {
@@ -25964,7 +25980,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v(_vm._s(_vm._f("fromNow")(_vm.user.created_at)))]), _vm._v(" "), _c('p', {
     staticClass: "status"
   }, [_vm._v(_vm._s(_vm._f("capitalize")(_vm.user.status.status)) + " \n                    "), (_vm.user.status.status === 'banned') ? _c('span', [_vm._v(_vm._s(_vm._f("bannedFor")(_vm.user.status.until)))]) : _vm._e()])])])]), _vm._v(" "), _c('div', {
-    staticClass: "suspend-wrapper columns"
+    staticClass: "suspend-wrapper column is-6 columns"
   }, [_c('div', {
     staticClass: "column is-3"
   }, [(_vm.user.status.status === 'active') ? _c('button', {
@@ -26045,16 +26061,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "tabs is-centered is-boxed"
   }, [_c('ul', [_c('router-link', {
-    staticClass: "is-active",
     attrs: {
       "tag": "li",
       "to": {
         name: 'admin-users'
       }
     }
-  }, [_c('a', {
-    staticClass: "is-active"
-  }, [_vm._v("Users")])]), _vm._v(" "), _c('router-link', {
+  }, [_c('a', [_vm._v("Users")])]), _vm._v(" "), _c('router-link', {
     attrs: {
       "tag": "li",
       "to": {
@@ -26095,9 +26108,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         name: 'admin-users'
       }
     }
-  }, [_c('a', {
-    staticClass: "is-active"
-  }, [_vm._v("Users")])]), _vm._v(" "), _c('router-link', {
+  }, [_c('a', [_vm._v("Users")])]), _vm._v(" "), _c('router-link', {
     attrs: {
       "tag": "li",
       "to": {
@@ -26112,8 +26123,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_c('a', [_vm._v("Replies")])])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "columns"
+  }, [_c('div', {
     staticClass: "column is-9"
-  }, _vm._l((_vm.users), function(user) {
+  }, _vm._l((_vm.usersToShow), function(user) {
     return _c('user', {
       key: user.username,
       attrs: {
@@ -26125,6 +26138,33 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     })
   })), _vm._v(" "), _c('div', {
+    staticClass: "column is-3",
+    attrs: {
+      "id": "filter"
+    }
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.filterKey),
+      expression: "filterKey"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "text",
+      "id": "filter-input",
+      "placeholder": "Filter by username"
+    },
+    domProps: {
+      "value": (_vm.filterKey)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.filterKey = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
     attrs: {
       "id": "messages"
     }
@@ -26862,16 +26902,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "tabs is-centered is-boxed"
   }, [_c('ul', [_c('router-link', {
-    staticClass: "is-active",
     attrs: {
       "tag": "li",
       "to": {
         name: 'admin-users'
       }
     }
-  }, [_c('a', {
-    staticClass: "is-active"
-  }, [_vm._v("Users")])]), _vm._v(" "), _c('router-link', {
+  }, [_c('a', [_vm._v("Users")])]), _vm._v(" "), _c('router-link', {
     attrs: {
       "tag": "li",
       "to": {

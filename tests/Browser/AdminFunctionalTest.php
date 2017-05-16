@@ -12,13 +12,15 @@ class AdminFunctionalTest extends DuskTestCase
 {
 
     protected $admin;
+    protected $user;
+    
 
     public function setUp()
     {
         
         parent::setUp();
         $this->admin = User::first();
-        
+        $this->user = factory(User::class)->create(['username' => 'Dusk.user']);
          $this->browse(function (Browser $browser) {
             $browser->maximize()
                     ->loginAs($this->admin->id)
@@ -26,6 +28,14 @@ class AdminFunctionalTest extends DuskTestCase
                     ->waitFor('.thread');
          });
     }
+
+    public function tearDown()
+    {
+        $this->user->delete();
+        parent::tearDown();
+        
+    }
+
     /**
      * A Dusk test example.
      *
@@ -115,7 +125,12 @@ class AdminFunctionalTest extends DuskTestCase
                     ->whenAvailable('.modal-container', function ($modal) use($user) {
                         $modal->assertSee("Are you sure you want to enable {$user->username}'s account?")
                         ->press('Yes');
-                    });
+                    })
+                    ->assertVisible('#filter')
+                    ->type('#filter-input', $this->user->username)
+                    ->assertSeeIn('.user', $this->user->username)
+                    ->assertMissing(User::where('username', '!=', $this->user->username)->inRandomOrder()->first()->username);
+                    
         });
     }
 }

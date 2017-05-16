@@ -161,7 +161,10 @@ li.is-active a {
   margin-right: 5px;
 }
 
-
+/****** Admin Page ********/
+#filter-input {
+  width: 100%;
+}
 /****** Transitions *******/
 .fade-enter-active, .fade-leave-active {
   transition: transform .5s ease;

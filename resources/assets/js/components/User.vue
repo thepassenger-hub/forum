@@ -12,7 +12,7 @@
                 </div>
             </div>
         </article>
-        <div class="suspend-wrapper columns">
+        <div class="suspend-wrapper column is-6 columns">
             <div class="column is-3">
                 <button class="user-admin-ban button is-danger" v-if="user.status.status === 'active'" @click="days=6000; askConfirmationSuspend()">
                     Ban

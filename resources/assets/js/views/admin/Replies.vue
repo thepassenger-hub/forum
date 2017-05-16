@@ -2,8 +2,8 @@
     <div class="column is-9">
         <div class="tabs is-centered is-boxed">
             <ul>
-                <router-link tag="li" class="is-active" :to="{ name: 'admin-users' }">
-                    <a class="is-active">Users</a>
+                <router-link tag="li" :to="{ name: 'admin-users' }">
+                    <a>Users</a>
                 </router-link>
                 <router-link  tag="li" :to="{ name: 'admin-threads' }"><a>Threads</a></router-link>
                 <router-link  tag="li" :to="{ name: 'admin-replies' }"><a>Replies</a></router-link>
