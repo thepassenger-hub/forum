@@ -167,13 +167,11 @@ class GuestFunctionalTest extends DuskTestCase
                     ->assertMissing('.pagination .is-disabled');
                     
             $this->assertNotEquals($thread5, $thread8);
-            $browser->clickLink('11')  
-                    ->assertSeeIn('.pagination-link.is-current', '11')
+            $browser->click('.pagination li:last-of-type')  
                     ->assertSeeIn('.pagination .is-disabled', 'Next');
             $thread11 = $browser->text('.thread-title');                           
             $this->assertNotEquals($thread8, $thread11);
             $browser->clickLink('Previous')  
-                    ->assertSeeIn('.pagination-link.is-current', '10')
                     ->assertMissing('.pagination .is-disabled');
             $this->assertNotEquals($thread11, $browser->text('.thread-title'));
          });

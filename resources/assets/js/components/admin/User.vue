@@ -1,6 +1,6 @@
 <template>
     <div class="user columns">
-        <article class="media column is-6">
+        <article class="media column is-4">
             <div class="media-content">
                 <div class="content">
                     <p class="username is-4 thread-title">{{user.username}}</p>
@@ -12,7 +12,7 @@
                 </div>
             </div>
         </article>
-        <div class="suspend-wrapper column is-6 columns">
+        <div class="suspend-wrapper column is-8 columns">
             <div class="column is-3">
                 <button class="user-admin-ban button is-danger" v-if="user.status.status === 'active'" @click="days=6000; askConfirmationSuspend()">
                     Ban

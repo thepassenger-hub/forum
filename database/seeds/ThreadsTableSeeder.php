@@ -15,14 +15,17 @@ class ThreadsTableSeeder extends Seeder
     public function run()
     {
         $title = 'Learn PHP in 3 steps.';
-        Thread::create([
+        $thread = Thread::create([
             'title' => $title,
             'slug' => str_slug($title, '-'),
             'body' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'user_id' => User::first()->id,
             'channel_id' => Channel::first()->id
         ]);
-
+        $thread->addReply([
+                    'body' => 'Testing replies',
+                    'user_id' => 1
+                ]);
         factory(Thread::class, 100)->create();
 
     }

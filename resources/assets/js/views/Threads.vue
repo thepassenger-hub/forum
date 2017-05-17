@@ -4,7 +4,7 @@
             @pageClicked="currentPage = $event; this.VueScrollTo.scrollTo('.column.is-9');" >
         </paginate>
         <h3 class="title is-3" v-if="threads.length">{{threads[0].channel.name}}</h3>
-        <thread v-for="thread in threads.slice(0+10*(currentPage-1), 10*currentPage)" :key="thread.id" @clicked="goToThread(thread)" :thread="thread">
+        <thread v-for="thread in threads.slice(0+perPage*(currentPage-1), perPage*currentPage)" :key="thread.id" @clicked="goToThread(thread)" :thread="thread">
             <a>{{thread.title}}</a>
             <router-link slot="channel" :to="thread.channel.slug" class="channel-link">{{thread.channel.name}}</router-link>
             <p slot="body">{{thread.body | truncate(200)}}</p>

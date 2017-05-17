@@ -42,13 +42,8 @@ class Thread extends Model
 
     public function addReply($body)
     {
-        try {
-            $this->replies()->create($body);
-            $this->update(['last_reply' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')]);
-        }
-        catch (Exception $e) {
-
-        }
+        $this->replies()->create($body);
+        $this->update(['last_reply' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')]);
     }
 
     /**

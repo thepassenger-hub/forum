@@ -11,7 +11,10 @@
         </div>
         <div class="columns">
             <div class="column is-9">
-                <thread v-for="thread in threadsToShow" :thread="thread" :key="thread.title" @delete="deleteThread"></thread>
+                <paginate v-if="threadsToShow.length > perPage" :current="currentPage" :perPage="perPage" :posts="threadsToShow"
+                    @pageClicked="currentPage = $event; this.VueScrollTo.scrollTo('.column.is-9');" >
+                </paginate>
+                <thread v-for="thread in threadsToShow.slice(0+perPage*(currentPage-1), perPage*currentPage)" :thread="thread" :key="thread.title" @delete="deleteThread"></thread>
             </div>
             <div class="column is-3" id="filter">
                 <input type="text" id="filter-input" class="input" placeholder="Filter by title" v-model="filterKey">
@@ -34,6 +37,8 @@
             return {
                 threads: [],
                 filterKey: '',
+                currentPage: 1,
+                perPage: 20,
                 errorMessage: ''
             }
         },
@@ -68,12 +73,13 @@
             threadsToShow(){
                 let toShow = [];
                 this.threads.forEach(thread => {
-                    if (thread.title.toLowerCase().match(this.filterKey)) toShow.push(thread);
+                    if (thread.title.toLowerCase().match(this.filterKey.toLowerCase())) toShow.push(thread);
                 });
                 return toShow;
             }
         },
         components: {
+            'paginate': require('../../components/Paginate.vue'),
             'thread': require('../../components/admin/Thread'),
             'error': require('../../components/Error')
         }

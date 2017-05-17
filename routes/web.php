@@ -31,14 +31,13 @@ Route::get('threads', 'ThreadsController@index')->middleware('cache:threads');
 Route::get('channels/{channel}/threads', 'ThreadsController@index')->middleware('cache:threads');
 Route::get('channels/{channel}/{thread}', 'ThreadsController@show')->middleware('cache:threadWithReplies');
 Route::get('profile/{user}', 'ProfileController@show')->middleware('cache:profile');
-// Route::get('replies/{user}', 'RepliesController@index');
+Route::get('replies', 'RepliesController@index');
 Route::get('test', 'ThreadsController@test');
 Route::patch('profile', 'ProfileController@update')->middleware('auth');
 Route::post('profile/avatar', 'ProfileController@uploadAvatar')->middleware('auth');
 
 Route::post('threads/{thread}/replies', 'RepliesController@store')->middleware('auth');
 Route::post('channels/{channel}/threads', 'ThreadsController@store')->middleware('auth');
-// Route::post('channels/{channel}/{thread}/replies', 'RepliesController@store')->middleware('auth');
 Route::patch('user/password', 'UsersController@update')->middleware('auth');
 Route::get('users', 'UsersController@index');
 Route::delete('replies/{reply}', 'RepliesController@destroy')->middleware('can:update,reply');

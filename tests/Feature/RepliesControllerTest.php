@@ -32,6 +32,13 @@ class RepliesControllerTest extends TestCase
         
     }
 
+    public function testIndexMethodReturnsAllReplies()
+    {
+        $response = $this->get('replies');
+        $response->assertStatus(200);
+        $this->assertEquals(Reply::with('creator')->latest()->get()->toJson(), $response->getContent());
+
+    }
     public function testStoreMethodCreatesReplyModel()
     {
         $this->actingAs($this->user)->post("threads/{$this->thread->slug}/replies",[

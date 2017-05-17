@@ -3,7 +3,7 @@
         <thread :thread="thread" :key="thread.id">{{thread.title}} 
             <p slot="body" class="thread-body" v-html="markdown(thread.body)"></p>
         </thread>
-        <reply v-if="thread.replies" v-for="reply in thread.replies.slice(0+10*(currentPage-1), 10*currentPage)"
+        <reply v-if="thread.replies" v-for="reply in thread.replies.slice(0+perPage*(currentPage-1), perPage*currentPage)"
             :reply="reply" :key="reply.id" @delete="deleteReply" @remove="removeReply" @edit="editReply">
             <p class="reply-creator" slot="username">
                 <router-link :to="'/@'+reply.creator.username">{{reply.creator.username}}</router-link>

@@ -20,7 +20,7 @@ class ForgotPasswordTest extends TestCase
     public function testPostToForgotPasswordActuallySendsEmail()
     {
         \Notification::fake();
-        $user = factory(\App\User::class)->create();
+        $user = \App\User::inRandomOrder()->first();
 
         $response = $this->post('password/email', ['email' => $user->email])
             ->assertStatus(200);

@@ -14,9 +14,9 @@ class RepliesController extends Controller
      * Create a new RepliesController instance.
      */
 
-    public function index(User $user)
+    public function index()
     {
-        return $user->replies()->with('thread')->latest()->get();
+        return Reply::with('creator')->latest()->get();
     }
 
     public function store(Thread $thread)
@@ -27,7 +27,6 @@ class RepliesController extends Controller
             $thread->addReply([
                     'body' => request('body'),
                     'user_id' => auth()->id(),
-                    'thread_id' => $thread->id
                 ]);
         } catch (Exception $e) {
             return response( $e, 500);
