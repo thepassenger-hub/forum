@@ -19855,7 +19855,6 @@ var app = new Vue({
         var _this = this;
 
         this.checkIfLogged().then(function (response) {
-            // this.username = response ? response.username : false;
             _this.user = response ? response : false;
         }).catch(function (error) {
             return console.log(error);
@@ -22504,6 +22503,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.getReplies();
     },
 
+    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+        next(function (vm) {
+            vm.$root.user.isAdmin ? next() : next('/');
+        });
+    },
     methods: {
         getReplies: function getReplies() {
             var _this = this;
@@ -22604,6 +22608,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_showNotificationsMixin__["a" /* default */]],
+    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+        next(function (vm) {
+            vm.$root.user.isAdmin ? next() : next('/');
+        });
+    },
     created: function created() {
         this.$root.path.update(this.$route.path);
         this.getThreads();
@@ -22704,6 +22713,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_showNotificationsMixin__["a" /* default */]],
+    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+        next(function (vm) {
+            vm.$root.user.isAdmin ? next() : next('/');
+        });
+    },
     created: function created() {
         this.$root.path.update(this.$route.path);
         this.getUsers();

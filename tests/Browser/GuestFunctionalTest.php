@@ -248,8 +248,6 @@ class GuestFunctionalTest extends DuskTestCase
 
     public function testUserCanClickResetPasswordLinkAndCompileForm()
     {
-        
-
         $this->browse(function(Browser $browser){
             $browser->visit('/#/reset-password/a88305cc7786ab38948416226b327acafa3474a18d1db6e31b6eb7dcb45a616e')
                     ->pause(200)
@@ -267,6 +265,29 @@ class GuestFunctionalTest extends DuskTestCase
                     })
                     ->pause(500)
                     ->assertSee('Forum Title');
+        });
+    }
+
+    public function testGuestUserCantVisitAdminArea()
+    {
+        $this->browse(function(Browser $browser){
+            $browser->visit('/')
+                    ->waitFor('.thread')
+                    ->assertDontSee('Admin Area')
+                    ->visit('/#/admin/users')
+                    ->pause(200)
+                    ->assertMissing('.user')
+                    ->assertSeeIn('.breadcrumb .is-active', 'Home')                    
+                    ->visit('/#/admin/threads')
+                    ->pause(200)
+                    ->assertMissing('button.is-danger')
+                    ->assertDontSee('Delete')
+                    ->assertSeeIn('.breadcrumb .is-active', 'Home')
+                    ->visit('/#/admin/replies')
+                    ->pause(200)
+                    ->assertMissing('.replies')
+                    ->assertDontSee('Delete')
+                    ->assertSeeIn('.breadcrumb .is-active', 'Home');
         });
     }
 }

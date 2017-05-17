@@ -32,7 +32,7 @@
         </p>
         <p>@{{username}}</p>
       </router-link>
-      <router-link class="nav-item" :to="{name: 'admin-users'}">
+      <router-link v-if="user.isAdmin" class="nav-item" :to="{name: 'admin-users'}">
         <p>Admin Area</p>
       </router-link>
       <a v-if="username" class="nav-item" @click="logout">

@@ -47,6 +47,11 @@
             this.$root.path.update(this.$route.path);
             this.getReplies();
         },
+        beforeRouteEnter: (to, from, next) => {
+            next(vm => {
+                vm.$root.user.isAdmin ? next() : next('/');
+            });
+        },
         methods: {
             getReplies() {
                 axios.get('replies')

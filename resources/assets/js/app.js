@@ -39,7 +39,6 @@ const app = new Vue({
     created(){
         this.checkIfLogged()
             .then(response => {
-                    // this.username = response ? response.username : false;
                     this.user = response ? response : false;
                 })                    
             .catch(error => console.log(error));

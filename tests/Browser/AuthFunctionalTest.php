@@ -25,7 +25,8 @@ class AuthFunctionalTest extends DuskTestCase
     public function testUserCanCreateNewThreadModifyItAndDeleteIt()
     {
         $this->browse(function (Browser $browser) {
-            $browser->assertVisible('#new-thread-button')
+            $browser->assertDontSee('Admin Area')
+                    ->assertVisible('#new-thread-button')
                     ->clickLink('Create new Thread')
                     ->pause(200)
                     ->assertSeeIn('.breadcrumb .is-active', 'new-thread')
@@ -119,5 +120,28 @@ class AuthFunctionalTest extends DuskTestCase
                     ->press('Save changes')
                     ->waitFor('.view-profile');
          });
+    }
+
+    public function testAuthUserCantVisitAdminArea()
+    {
+        $this->browse(function(Browser $browser){
+            $browser->visit('/')
+                    ->waitFor('.thread')
+                    ->assertDontSee('Admin Area')
+                    ->visit('/#/admin/users')
+                    ->pause(200)
+                    ->assertMissing('.user')
+                    ->assertSeeIn('.breadcrumb .is-active', 'Home')                    
+                    ->visit('/#/admin/threads')
+                    ->pause(200)
+                    ->assertMissing('button.is-danger')
+                    ->assertDontSee('Delete')
+                    ->assertSeeIn('.breadcrumb .is-active', 'Home')
+                    ->visit('/#/admin/replies')
+                    ->pause(200)
+                    ->assertMissing('.replies')
+                    ->assertDontSee('Delete')
+                    ->assertSeeIn('.breadcrumb .is-active', 'Home');
+        });
     }
 }

@@ -43,6 +43,11 @@
             }
         },
         mixins: [showNotificationsMixin],
+        beforeRouteEnter: (to, from, next) => {
+            next(vm => {
+                vm.$root.user.isAdmin ? next() : next('/');
+            });
+        },
         created() {
             this.$root.path.update(this.$route.path);
             this.getThreads();

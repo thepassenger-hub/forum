@@ -36,11 +36,6 @@ class AdminFunctionalTest extends DuskTestCase
         
     }
 
-    /**
-     * A Dusk test example.
-     *
-     * @return void
-     */
     public function testAdminCanDeleteAThread()
     {
         $this->browse(function (Browser $browser) {
