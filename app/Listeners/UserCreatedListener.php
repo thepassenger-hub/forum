@@ -37,5 +37,7 @@ class UserCreatedListener
             'user_id' => $event->user_id,
             'status' => 'active'
         ]);
+
+        \Cache::tags('users')->forget('users');
     }
 }

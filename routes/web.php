@@ -39,7 +39,7 @@ Route::post('profile/avatar', 'ProfileController@uploadAvatar')->middleware('aut
 Route::post('threads/{thread}/replies', 'RepliesController@store')->middleware('auth');
 Route::post('channels/{channel}/threads', 'ThreadsController@store')->middleware('auth');
 Route::patch('user/password', 'UsersController@update')->middleware('auth');
-Route::get('users', 'UsersController@index');
+Route::get('users', 'UsersController@index')->middleware('cache:users');
 Route::delete('replies/{reply}', 'RepliesController@destroy')->middleware('can:update,reply');
 Route::patch('replies/{reply}', 'RepliesController@update')->middleware('can:update,reply');
 Route::patch('threads/{thread}', 'ThreadsController@update')->middleware('can:update,thread');

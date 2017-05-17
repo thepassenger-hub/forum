@@ -57,4 +57,20 @@ class CacheTest extends TestCase
             -> once();
         event(new ProfileUpdated($profile));
     }
+
+    public function testUserCreatedFlushesUsersCache()
+    {
+        $obj = \Mockery::mock('\Illuminate\Cache\TaggedCache');
+        $obj -> shouldReceive('forget')
+            ->once()
+            ->with('users')
+            ->andReturn(true);
+
+        \Cache::shouldReceive('tags')
+            ->once()
+            ->with('users')
+            ->andReturn($obj);
+
+        $user = factory(\App\User::class)->create();
+    }
 }
