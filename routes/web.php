@@ -36,13 +36,13 @@ Route::get('test', 'ThreadsController@test');
 Route::patch('profile', 'ProfileController@update')->middleware('auth');
 Route::post('profile/avatar', 'ProfileController@uploadAvatar')->middleware('auth');
 
-Route::post('threads/{thread}/replies', 'RepliesController@store')->middleware('auth');
-Route::post('channels/{channel}/threads', 'ThreadsController@store')->middleware('auth');
+Route::post('threads/{thread}/replies', 'RepliesController@store')->middleware('auth')->middleware('active');
+Route::post('channels/{channel}/threads', 'ThreadsController@store')->middleware('auth')->middleware('active');
 Route::patch('user/password', 'UsersController@update')->middleware('auth');
 Route::get('users', 'UsersController@index')->middleware('cache:users');
 Route::delete('replies/{reply}', 'RepliesController@destroy')->middleware('can:update,reply');
-Route::patch('replies/{reply}', 'RepliesController@update')->middleware('can:update,reply');
-Route::patch('threads/{thread}', 'ThreadsController@update')->middleware('can:update,thread');
+Route::patch('replies/{reply}', 'RepliesController@update')->middleware('can:update,reply')->middleware('active');
+Route::patch('threads/{thread}', 'ThreadsController@update')->middleware('can:update,thread')->middleware('active');
 Route::delete('threads/{thread}', 'ThreadsController@destroy')->middleware('can:update,thread');
 
 Route::delete('admin/threads/{thread}', 'AdminController@deleteThread')->middleware('admin');

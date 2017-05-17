@@ -48,6 +48,18 @@ class RepliesControllerTest extends TestCase
         $this->assertInstanceOf(Reply::class, $this->thread->replies()->where('body', 'My new reply')->first());
     }
 
+    public function testBannedUserCantStoreThread()
+    {
+        $user = User::has('threads')->inRandomOrder()->first();
+        $thread = $user->threads()->inRandomOrder()->first();
+        $user->banFor(10); 
+        $response = $this->actingAs($user)->post("threads/{$thread->slug}/replies", [
+            'body' => 'My new reply'
+        ]) -> assertStatus(403);
+
+        $this->assertEmpty(Reply::where('body', 'My new reply')->get());
+    }
+
     public function testUpdateMethodCorrectlyUpdatesModel()
     {
         $this->actingAs($this->user)->patch("replies/{$this->reply->id}", [
@@ -56,6 +68,18 @@ class RepliesControllerTest extends TestCase
 
         $this->assertEquals(Reply::find($this->reply->id)->body, 'My new body.');
     }
+
+    public function testBannedUserCantUpdateReplies()
+    {
+        $user = User::has('replies')->inRandomOrder()->first();
+        $reply = $user->replies()->inRandomOrder()->first();
+        $user->banFor(10); 
+        $response = $this->actingAs($user)->patch("replies/{$reply->id}", [
+            'body' => 'My new body.'
+        ])->assertStatus(403);
+
+        $this->assertNotEquals(Reply::find($reply->id)->body, 'My new body.');
+    }   
 
     public function testDestroyMethodCorrectlyDeletsModel()
     {

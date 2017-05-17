@@ -79,4 +79,9 @@ class User extends Authenticatable
             'until' => null
         ]);
     }
+
+    public function isActive()
+    {
+        return $this->status->status === 'active';
+    }
 }

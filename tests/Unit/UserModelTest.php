@@ -47,6 +47,13 @@ class UserModelTest extends TestCase
         $newStatus = $this->user->status()->first();
         $this->assertEquals('active', $newStatus->status);
         $this->assertNull($newStatus->until);
-        
+    }
+
+    public function testUserCanCheckIfActive()
+    {
+
+        $this->assertTrue($this->user->isActive());
+        $this->user->banFor(2);
+        $this->assertFalse($this->user->fresh()->isActive());
     }
 }

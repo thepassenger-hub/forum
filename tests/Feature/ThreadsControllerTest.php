@@ -159,6 +159,18 @@ class ThreadsControllerTest extends TestCase
         $this->assertInstanceOf(Thread::class, Thread::where('slug', str_slug('My new title 1'))->first());
     }
 
+    public function testBannedUserCantStoreThread()
+    {
+       $user = User::inRandomOrder()->first();
+       $user->banFor(10); 
+       $response = $this->actingAs($user)->post("channels/{$this->channel->slug}/threads", [
+            'title' => 'My new title',
+            'body' => 'My body at least 10 chars long'
+        ]) -> assertStatus(403);
+
+        $this->assertEmpty(Thread::where('title', 'My new title')->get());
+    }
+
     public function testUpdateMethodDoesUpdateTheModel()
     {
         // User who isn't owner of thread can't update it.
@@ -183,6 +195,18 @@ class ThreadsControllerTest extends TestCase
         $this->assertEquals(Thread::find($thread->id)->body, 'My new body long enough');
 
     }
+
+    public function testBannedUserCantUpdateThread()
+    {
+        $user = User::has('threads')->inRandomOrder()->first();
+        $user->banFor(10); 
+        $thread = Thread::inRandomOrder()->where('user_id', '=', $user->id)->first();
+        $response = $this->actingAs($user)->patch("threads/{$thread->slug}", [
+                'body' => 'My new body long enough'
+            ])->assertStatus(403);
+
+        $this->assertNotEquals(Thread::find($thread->id)->body, 'My new body long enough');
+    }   
 
     public function testDestroyMethodDeletesModel()
     {
