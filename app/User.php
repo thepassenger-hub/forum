@@ -70,6 +70,8 @@ class User extends Authenticatable
             'status' => 'banned',
             'until' => \Carbon\Carbon::now()->addDays($days)
         ]);
+
+        cache()->tags('users')->forget('users');
     }
 
     public function enable()
@@ -78,6 +80,9 @@ class User extends Authenticatable
             'status' => 'active',
             'until' => null
         ]);
+
+        cache()->tags('users')->forget('users');
+        
     }
 
     public function isActive()

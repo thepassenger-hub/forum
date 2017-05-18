@@ -65,7 +65,12 @@
       <li>
         <router-link v-if="username" class="nav-item" :to="'/@'+username">
           <p>@{{username}}</p>
-      </router-link>
+        </router-link>
+      </li>
+      <li>
+        <router-link v-if="user.isAdmin" class="nav-item" :to="{name: 'admin-users'}">
+          <p>Admin Area</p>
+        </router-link>
       </li>
       <li>
         <a v-if="username" class="nav-item" @click="logout">

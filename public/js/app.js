@@ -21685,7 +21685,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     computed: {
         statusClass: function statusClass() {
-            return this.user.status.status === 'active' ? 'is-active' : 'is-banned';
+            return this.user.status.status === 'active' ? 'user-is-active' : 'user-is-banned';
         }
     },
     components: {

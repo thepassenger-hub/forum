@@ -153,6 +153,12 @@ li.is-active a {
   padding-right: 50px;
 }
 
+.thread-admin,
+.reply-admin {
+  top: 50px;
+  position: relative;
+}
+
 .pagination:last-of-type {
   margin-top: 20px;
 }
@@ -166,12 +172,12 @@ li.is-active a {
   width: 100%;
 }
 
-.is-active {
+.user-is-active {
   color: $success;
   font-weight: bold;
 }
 
-.is-banned {
+.user-is-banned {
   color: $danger;
   font-weight: bold;
   
@@ -300,8 +306,7 @@ li.is-active a {
     justify-content: center;
   }
 
-  #mobile-nav > div > ul li:nth-of-type(2) a,
-  #mobile-nav > div > ul li:nth-of-type(3) a {
+  #mobile-nav > div > ul li a {
     justify-content: flex-end;
   }
 

@@ -31,7 +31,7 @@ Route::get('threads', 'ThreadsController@index')->middleware('cache:threads');
 Route::get('channels/{channel}/threads', 'ThreadsController@index')->middleware('cache:threads');
 Route::get('channels/{channel}/{thread}', 'ThreadsController@show')->middleware('cache:threadWithReplies');
 Route::get('profile/{user}', 'ProfileController@show')->middleware('cache:profile');
-Route::get('replies', 'RepliesController@index');
+Route::get('replies', 'RepliesController@index')->middleware('cache:replies');
 Route::get('test', 'ThreadsController@test');
 Route::patch('profile', 'ProfileController@update')->middleware('auth');
 Route::post('profile/avatar', 'ProfileController@uploadAvatar')->middleware('auth');

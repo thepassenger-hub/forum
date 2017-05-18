@@ -12,6 +12,7 @@ use \App\Events\ReplyCreated;
 use \App\Events\ThreadCreated;
 use \App\Events\ProfileUpdated;
 
+use \App\User;
 
 class CacheTest extends TestCase
 {
@@ -26,10 +27,10 @@ class CacheTest extends TestCase
     {
         $obj = \Mockery::mock('\Illuminate\Cache\TaggedCache');
         $obj->shouldReceive('forget')->twice();
-        $obj->shouldReceive('flush')->once();
+        $obj->shouldReceive('flush')->twice();
         
         \Cache::shouldReceive('tags')
-            ->times(3)
+            ->times(4)
             ->andReturn($obj);
         event(new ReplyCreated(factory(\App\Reply::class)->make()));
     }
@@ -52,7 +53,7 @@ class CacheTest extends TestCase
     public function testClearCacheProfileTriggersCacheMethods()
     {
         $profile = \Mockery::mock('\App\Profile');
-        $profile -> shouldReceive('user') -> once() -> andReturn(factory(\App\User::class)->make());
+        $profile -> shouldReceive('user') -> once() -> andReturn(factory(User::class)->make());
         \Cache::shouldReceive('forget')
             -> once();
         event(new ProfileUpdated($profile));
@@ -71,6 +72,24 @@ class CacheTest extends TestCase
             ->with('users')
             ->andReturn($obj);
 
-        $user = factory(\App\User::class)->create();
+        $user = factory(User::class)->create();
+    }
+
+    public function testBanningAndEnablingUserBustesCache()
+    {
+        $obj = \Mockery::mock('\Illuminate\Cache\TaggedCache');
+        $obj -> shouldReceive('forget')
+            ->twice()
+            ->with('users')
+            ->andReturn(true);
+
+        \Cache::shouldReceive('tags')
+            ->twice()
+            ->with('users')
+            ->andReturn($obj);
+
+        $user = User::inRandomOrder()->first();
+        $user->banForDays(10);
+        $user->enable();
     }
 }

@@ -22,7 +22,7 @@ class CacheGetOrPut
                 ->header('Content-Type', 'application/json');
 
         $response = $next($request);
-        Cache::tags($tag)->forever($key, $next($request)->getContent());
-        return $next($request);
+        Cache::tags($tag)->forever($key, $response->getContent());
+        return $response;
     }
 }

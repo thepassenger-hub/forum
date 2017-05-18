@@ -31,6 +31,8 @@ class ClearCacheReply
         Cache::tags('threadWithReplies')->forget(
             'channels/' . $event->reply->thread()->first()->channel()->first()->slug . '/' . $event->reply->thread()->first()->slug);
         Cache::tags('threads')->flush();
+        Cache::tags('replies')->flush();
+        
         
     }
 }
