@@ -22,10 +22,7 @@ class ThreadsTableSeeder extends Seeder
             'user_id' => User::first()->id,
             'channel_id' => Channel::first()->id
         ]);
-        $thread->addReply([
-                    'body' => 'Testing replies',
-                    'user_id' => 1
-                ]);
+        
         factory(Thread::class, 100)->create();
 
     }

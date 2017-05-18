@@ -22,7 +22,7 @@ Vue.filter('bannedFor', function(date){
 });
 
 Vue.filter('capitalize', function(elem){
-    return elem.charAt(0).toUpperCase() + elem.slice(1);
+    return elem.toUpperCase();
 });
 
 const app = new Vue({

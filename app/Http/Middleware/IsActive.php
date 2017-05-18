@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use \Carbon\Carbon;
+
 use Closure;
 
 class IsActive
@@ -15,6 +17,12 @@ class IsActive
      */
     public function handle($request, Closure $next)
     {
-        return auth()->user()->isActive() ? $next($request) : response('You are banned.', 403);
+        if (! auth()->user()->isActive()) {
+            $days = Carbon::now()->diffInDays(Carbon::parse(auth()->user()->status->until));
+            $template = $days > 1 ? "more days." : "more day.";
+            $message = "You are banned for {$days} {$template}";
+            return response(['error' => $message], 403);
+        }
+        return  $next($request);
     }
 }

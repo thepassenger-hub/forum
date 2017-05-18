@@ -162,7 +162,7 @@ class ThreadsControllerTest extends TestCase
     public function testBannedUserCantStoreThread()
     {
        $user = User::inRandomOrder()->first();
-       $user->banFor(10); 
+       $user->banForDays(10); 
        $response = $this->actingAs($user)->post("channels/{$this->channel->slug}/threads", [
             'title' => 'My new title',
             'body' => 'My body at least 10 chars long'
@@ -199,7 +199,7 @@ class ThreadsControllerTest extends TestCase
     public function testBannedUserCantUpdateThread()
     {
         $user = User::has('threads')->inRandomOrder()->first();
-        $user->banFor(10); 
+        $user->banForDays(10); 
         $thread = Thread::inRandomOrder()->where('user_id', '=', $user->id)->first();
         $response = $this->actingAs($user)->patch("threads/{$thread->slug}", [
                 'body' => 'My new body long enough'

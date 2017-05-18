@@ -52,7 +52,7 @@ class RepliesControllerTest extends TestCase
     {
         $user = User::has('threads')->inRandomOrder()->first();
         $thread = $user->threads()->inRandomOrder()->first();
-        $user->banFor(10); 
+        $user->banForDays(10); 
         $response = $this->actingAs($user)->post("threads/{$thread->slug}/replies", [
             'body' => 'My new reply'
         ]) -> assertStatus(403);
@@ -73,7 +73,7 @@ class RepliesControllerTest extends TestCase
     {
         $user = User::has('replies')->inRandomOrder()->first();
         $reply = $user->replies()->inRandomOrder()->first();
-        $user->banFor(10); 
+        $user->banForDays(10); 
         $response = $this->actingAs($user)->patch("replies/{$reply->id}", [
             'body' => 'My new body.'
         ])->assertStatus(403);

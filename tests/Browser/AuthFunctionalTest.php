@@ -18,7 +18,8 @@ class AuthFunctionalTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->maximize()
                     ->loginAs($this->user->id)
-                    ->visit('/');
+                    ->visit('/')
+                    ->waitFor('.thread');
         });
     }
 
@@ -143,5 +144,41 @@ class AuthFunctionalTest extends DuskTestCase
                     ->assertDontSee('Delete')
                     ->assertSeeIn('.breadcrumb .is-active', 'Home');
         });
+    }
+
+    public function testBannedUserCantCreateThread()
+    {   
+         $this->browse(function (Browser $browser) {
+            $browser->assertVisible('#new-thread-button')
+                    ->clickLink('Create new Thread')
+                    ->pause(200)
+                    ->assertSeeIn('.breadcrumb .is-active', 'new-thread')
+                    ->type('title', 'Thread with laravel Dusk')
+                    ->select('channel', 'php')
+                    ->type('body', 'Lorem ipsum dolor sit amet');
+            $this->user->banForDays(10);
+            $browser->press('Submit')
+                    ->waitFor('.notification.is-danger')
+                    ->pause(200)
+                    ->assertSeeIn('.notification.is-danger', 'You are banned for 10 more days.');
+        });
+
+        $this->user->enable();
+    }
+
+    public function testBannedUserCantReply()
+    {   
+         $this->browse(function (Browser $browser) {
+            $browser->click('.thread-title')
+                    ->waitFor('.replies')
+                    ->type('body', 'Adding reply with laravel Dusk');
+            $this->user->banForDays(10);
+            $browser->press('Submit')
+                    ->waitFor('.notification.is-danger')
+                    ->pause(200)
+                    ->assertSeeIn('.notification.is-danger', 'You are banned for 10 more days.');
+        });
+
+        $this->user->enable();
     }
 }

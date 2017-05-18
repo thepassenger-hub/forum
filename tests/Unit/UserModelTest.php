@@ -29,8 +29,8 @@ class UserModelTest extends TestCase
     public function testUserCanBanForXDays()
     {
         $status = $this->user->status;
-        $this->user->banFor(10);
-        $newStatus = $this->user->status()->first();
+        $this->user->banForDays(10);
+        $newStatus = $this->user->fresh()->status;
         $this->assertNotEquals($status->status, $newStatus->status);
         $this->assertEquals('banned', $newStatus->status);
         $this->assertEquals(
@@ -41,7 +41,7 @@ class UserModelTest extends TestCase
 
     public function testUserCanEnableItsAccount()
     {
-        $this->user->banFor(10);
+        $this->user->banForDays(10);
         $this->assertEquals('banned', $this->user->status()->first()->status);
         $this->user->enable();
         $newStatus = $this->user->status()->first();
@@ -53,7 +53,7 @@ class UserModelTest extends TestCase
     {
 
         $this->assertTrue($this->user->isActive());
-        $this->user->banFor(2);
+        $this->user->banForDays(2);
         $this->assertFalse($this->user->fresh()->isActive());
     }
 }

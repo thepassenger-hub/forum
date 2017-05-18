@@ -9,7 +9,7 @@
                 <router-link  tag="li" :to="{ name: 'admin-replies' }"><a>Replies</a></router-link>
             </ul>
         </div>
-        <div class="columns">
+        <div class="columns admin-main">
             <div class="column is-9">
                 <paginate v-if="threadsToShow.length > perPage" :current="currentPage" :perPage="perPage" :posts="threadsToShow"
                     @pageClicked="currentPage = $event; this.VueScrollTo.scrollTo('.column.is-9');" >

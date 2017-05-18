@@ -87,7 +87,7 @@ class AdminControllerTest extends TestCase
     public function testAuthUserCantEnableUser()
     {
         $user = User::inRandomOrder()->first();
-        $user->banFor(10);
+        $user->banForDays(10);
         $response = $this->actingAs(User::where('isAdmin', 0)->inRandomOrder()->first())
             ->patch("/admin/users/{$user->username}/enable")
             ->assertStatus(403);
@@ -96,7 +96,7 @@ class AdminControllerTest extends TestCase
     public function testAdminCanEnableUsersAccount()
     {
         $user = User::where('isAdmin', 0)->inRandomOrder()->first();
-        $user->banFor(10);
+        $user->banForDays(10);
         $response = $this->actingAs($this->admin)->patch("/admin/users/{$user->username}/enable");
         $response->assertStatus(200);
         $status = $user->status;

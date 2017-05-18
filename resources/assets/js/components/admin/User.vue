@@ -3,9 +3,9 @@
         <article class="media column is-4">
             <div class="media-content">
                 <div class="content">
-                    <p class="username is-4 thread-title">{{user.username}}</p>
+                    <p class="username is-4">{{user.username}}</p>
                     <p class="joined-at">{{user.created_at | fromNow}}</p>
-                    <p class="status">{{user.status.status | capitalize}} 
+                    <p class="status" :class="statusClass">{{user.status.status | capitalize}} 
                         <span v-if="user.status.status === 'banned'">{{user.status.until | bannedFor}}</span>
                     </p>
                     
@@ -39,6 +39,7 @@
         " @close="resetData">
             {{confirmationMessage}}
         </confirmation-modal>
+        <hr>
     </div>
 </template>
 
@@ -69,6 +70,11 @@
                 this.confirmation = false;
                 this.days = '';
                 this.confirmationMessage = '';
+            }
+        },
+        computed: {
+            statusClass() {
+                return this.user.status.status === 'active' ? 'is-active' : 'is-banned';
             }
         },
         components: {

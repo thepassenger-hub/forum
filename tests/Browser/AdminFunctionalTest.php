@@ -80,7 +80,7 @@ class AdminFunctionalTest extends DuskTestCase
                     ->waitFor('.user')
                     ->assertSeeIn('.tabs .is-active', 'Users')
                     ->assertSee($user->username)
-                    ->assertSeeIn('.status', 'Active')                    
+                    ->assertSeeIn('.status', 'ACTIVE')                    
                     ->assertSeeIn('.suspend-wrapper', 'Ban')
                     ->assertSeeIn('.suspend-wrapper', 'Suspend')
                     ->assertVisible('.suspend-wrapper input')
@@ -101,21 +101,21 @@ class AdminFunctionalTest extends DuskTestCase
                     })
                     ->pause(200)
                     ->waitFor('.user')
-                    ->assertSeeIn('.status', 'Banned for 6 more days.')
+                    ->assertSeeIn('.status', 'BANNED for 6 more days.')
                     ->press('Enable')
                     ->whenAvailable('.modal-container', function ($modal) use($user) {
                         $modal->assertSee("Are you sure you want to enable {$user->username}'s account?")
                         ->press('Yes');
                     })
                     ->waitFor('.user')
-                    ->assertSeeIn('.status', 'Active')
+                    ->assertSeeIn('.status', 'ACTIVE')
                     ->press('Ban')
                     ->whenAvailable('.modal-container', function ($modal) use($user) {
                         $modal->assertSee("Are you sure you want to suspend {$user->username} for 6000 days?")
                         ->press('Yes');
                     })
                     ->waitFor('.user')
-                    ->assertSeeIn('.status', 'Banned forever.')
+                    ->assertSeeIn('.status', 'BANNED forever.')
                     ->assertSee('Enable')
                     ->press('Enable')
                     ->whenAvailable('.modal-container', function ($modal) use($user) {

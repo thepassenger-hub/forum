@@ -30,7 +30,7 @@ class AdminController extends Controller
             'days' => 'required|numeric|min:1|max:6000'
         ]);
 
-        $user->banFor(request('days'));
+        $user->banForDays(request('days'));
 
         return response("User {$user->username} has been banned.", 200);
     }

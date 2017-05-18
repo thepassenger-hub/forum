@@ -64,7 +64,7 @@ class User extends Authenticatable
         return $this->save();
     }
 
-    public function banFor($days)
+    public function banForDays($days)
     {
         $this->status()->update([
             'status' => 'banned',

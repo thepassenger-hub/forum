@@ -19,6 +19,8 @@
                 Delete
             </button>
         </div>
+
+        <hr>
     </div>
 
 

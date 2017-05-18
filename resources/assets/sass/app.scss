@@ -165,6 +165,21 @@ li.is-active a {
 #filter-input {
   width: 100%;
 }
+
+.is-active {
+  color: $success;
+  font-weight: bold;
+}
+
+.is-banned {
+  color: $danger;
+  font-weight: bold;
+  
+}
+
+.username {
+  font-weight: bold;
+}
 /****** Transitions *******/
 .fade-enter-active, .fade-leave-active {
   transition: transform .5s ease;
@@ -363,6 +378,35 @@ li.is-active a {
     right: 12px;
   }
  
+  /******** Admin Page ******/
+  .admin-main {
+    position: relative;
+  }
+
+  .admin-main > .column.is-9 {
+    position: relative;
+    top: 100px;
+    margin-bottom: 100px;
+  }
+  #filter {
+    position: absolute;
+    top: 25px;
+    width: 100%;
+  }
+  #filter input {
+    max-width: 400px; 
+    margin-left: auto; 
+    margin-right: auto; 
+    display: block; 
+  }
+  .admin-main .user:last-of-type hr,
+  .admin-main .replies:last-of-type hr {
+    display: none;
+  }
+
+  .admin-main .thread:last-of-type {
+    border-bottom: none;
+  }
   
 }
 

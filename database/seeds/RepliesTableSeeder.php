@@ -12,6 +12,15 @@ class RepliesTableSeeder extends Seeder
      */
     public function run()
     {
+        \App\Thread::first()->addReply([
+            'body' => 'Testing replies',
+            'user_id' => 1
+        ]);
+
         factory(Reply::class, 2000)->create();
+
+        \App\Thread::first()->update(
+            ['last_reply' => \Carbon\Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s')]
+        );
     }
 }
