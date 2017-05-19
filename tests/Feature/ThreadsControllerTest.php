@@ -80,6 +80,15 @@ class ThreadsControllerTest extends TestCase
         $this->assertEquals($threads->toJson(), $response->getContent());
     }
 
+    public function testIndexMethodCanFilterByUnasweredThreads()
+    {
+        $response = $this->get("/threads?unanswered=1");
+        $threads = Thread::with('creator.profile', 'channel')->withCount('replies')
+                         ->orderBy('last_reply', 'desc')->whereDoesntHave('replies')->get();
+        
+        $this->assertEquals($threads->toJson(), $response->getContent());
+    }
+
     public function testIndexMethodCanFilterThreadsWhereIReplied()
     {
         $user = User::inRandomOrder()->first();

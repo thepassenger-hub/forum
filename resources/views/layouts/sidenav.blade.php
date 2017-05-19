@@ -28,6 +28,13 @@
                 </span>My Partecipation
             </a>
         </router-link>
+        <router-link tag="li" :to="{ path: '/threads', query: { unanswered: 1 }}" exact>
+            <a>
+                <span class="icon is-small filter-icons">
+                    <i class="fa fa-circle-o"></i>
+                </span>Unanswered Threads
+            </a>
+        </router-link>
         <router-link tag="li" :to="{ path: '/threads', query: { trending: 1 }}" exact>
             <a>
                 <span class="icon is-small filter-icons">

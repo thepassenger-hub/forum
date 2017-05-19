@@ -9,7 +9,7 @@ class ThreadFilters extends Filters
      *
      * @var array
      */
-    protected $filters = ['by', 'popular', 'trending', 'contributed_to', 'search'];
+    protected $filters = ['by', 'popular', 'trending', 'contributed_to', 'unanswered', 'search'];
     /**
      * Filter the query by a given username.
      *
@@ -61,13 +61,23 @@ class ThreadFilters extends Filters
     }
 
     /**
-    * Filter the quest to show threads that contain all words entered
+     * Filter the query to show only unanswered threads.
+     *
+     * @return Builder
+     **/
+    public function unanswered()
+    {
+        return  $this->builder
+                ->whereDoesntHave('replies');
+    }
+
+    /**
+    * Filter the query to show threads that contain all words entered
     * in the search bar inside the title OR the body OR its replies body.
     *
     * @param string $terms
     * @return Builder
     */
-
     public function search($terms)
     {
         $terms = explode(' ', $terms);

@@ -105,6 +105,7 @@ class GuestFunctionalTest extends DuskTestCase
 
     public function testFiltersAreFilteringThreads()
     {
+        $thread = factory(\App\Thread::class)->create();
         $this->browse(function(Browser $browser){
             $browser->visit('/')->waitFor('.thread')
                     ->assertDontSeeIn('aside', 'My Threads')
@@ -122,12 +123,19 @@ class GuestFunctionalTest extends DuskTestCase
             $repliesAfter = $browser->text('.reply-count');
             $this->assertGreaterThanOrEqual($repliesBefore, $repliesAfter);
 
+            $browser->clickLink('Unanswered Threads')
+                    ->pause(500)            
+                    ->assertSeeIn('aside .is-active', 'Unanswered Threads');
+            $this->assertEquals('0', $browser->text('.reply-count'));
+
             $browser->clickLink('All Threads')
                     ->pause(500)            
                     ->assertSeeIn('aside .is-active', 'All Threads');
             $repliesAfter = $browser->text('.reply-count');
             $this->assertEquals($repliesBefore, $repliesAfter);
         });
+
+        $thread->delete();
     }
 
     public function testChannelsLinkFilterCorrectly()

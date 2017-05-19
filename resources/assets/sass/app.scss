@@ -153,12 +153,6 @@ li.is-active a {
   padding-right: 50px;
 }
 
-.thread-admin,
-.reply-admin {
-  top: 50px;
-  position: relative;
-}
-
 .pagination:last-of-type {
   margin-top: 20px;
 }
@@ -276,7 +270,7 @@ li.is-active a {
 }
 
  .reply-modifiers,
-  .thread-modifiers {
+ .thread-modifiers {
     position: absolute;
     right: 0;
   }
@@ -428,6 +422,12 @@ li.is-active a {
     position: absolute;
     right: 0;
     top: 14px;
+  }
+  .thread-admin,
+  .reply-admin {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
   }
   
 }

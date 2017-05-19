@@ -176,7 +176,7 @@ class AuthFunctionalTest extends DuskTestCase
             $browser->press('Submit')
                     ->waitFor('.notification.is-danger')
                     ->pause(200)
-                    ->assertSeeIn('.notification.is-danger', 'You are banned for 10 more days.');
+                    ->assertSeeIn('.notification.is-danger', 'You are banned for 9 more days.');
         });
 
         $this->user->enable();
