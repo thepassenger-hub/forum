@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use DB;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,8 +25,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->call(function () {
+            DB::table('statuses')
+                ->where('status', 'banned')
+                ->where('until', '<=' , \Carbon\Carbon::now()->format('Y-m-d H:i:s'))
+                ->update(['status' => 'active', 'until' => null]);
+        })->twiceDaily(1, 13)->evenInMaintenanceMode();
     }
 
     /**
