@@ -115,6 +115,7 @@
                 this.form = new Form(this.form.originalData);
             },
 
+            // See live rapresentation of the new avatar before submitting.
             newAvatar(event) {
                 let files = event.target.files;
                 if (files.length) this.avatar = files[0];

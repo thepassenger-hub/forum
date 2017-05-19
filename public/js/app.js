@@ -21078,6 +21078,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         resetFields: function resetFields() {
             this.form = new __WEBPACK_IMPORTED_MODULE_0__models_Form__["a" /* default */](this.form.originalData);
         },
+
+
+        // See live rapresentation of the new avatar before submitting.
         newAvatar: function newAvatar(event) {
             var files = event.target.files;
             if (files.length) this.avatar = files[0];
