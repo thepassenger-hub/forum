@@ -10,11 +10,7 @@ use App\Notifications\ResetPasswordNotification;
 
 class ForgotPasswordTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+
     use DatabaseTransactions;
 
     public function testPostToForgotPasswordActuallySendsEmail()

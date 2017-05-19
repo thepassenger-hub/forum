@@ -409,7 +409,7 @@ li.is-active a {
   
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   nav .nav-left {
     width: 60%;
     position: relative;
@@ -422,6 +422,10 @@ li.is-active a {
     position: absolute;
     right: 0;
     top: 14px;
+    min-width: 50%;
+  }
+  #search-bar .control:first-of-type{
+    width: 100%;
   }
   .thread-admin,
   .reply-admin {

@@ -101,7 +101,15 @@
         methods: {
             removeThread(threadSlug){
                 axios.delete('/admin/threads/' + threadSlug)
-                    .then(this.$router.push({ name: 'home'}))
+                    .then(response => {
+                        if (this.$route.name === 'home') {
+                            this.$parent.threads = [];
+                            this.$parent.getLatestThreads();
+                        } else {
+                            this.$router.push({ name: 'home'});
+                        };
+                    })
+
                     .catch(error => {
                         this.showError(error);
                     });

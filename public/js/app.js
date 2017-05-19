@@ -21445,7 +21445,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         removeThread: function removeThread(threadSlug) {
             var _this = this;
 
-            axios.delete('/admin/threads/' + threadSlug).then(this.$router.push({ name: 'home' })).catch(function (error) {
+            axios.delete('/admin/threads/' + threadSlug).then(function (response) {
+                if (_this.$route.name === 'home') {
+                    _this.$parent.threads = [];
+                    _this.$parent.getLatestThreads();
+                } else {
+                    _this.$router.push({ name: 'home' });
+                };
+            }).catch(function (error) {
                 _this.showError(error);
             });
         },

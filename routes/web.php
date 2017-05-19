@@ -39,10 +39,10 @@ Route::delete('threads/{thread}', 'ThreadsController@destroy')->middleware('can:
 
 // Admin area Routes.
 Route::group(['middleware' => 'admin'], function () {
-    Route::delete('admin/threads/{thread}', 'AdminController@deleteThread')->middleware('admin');
-    Route::delete('admin/replies/{reply}', 'AdminController@deleteReply')->middleware('admin');
-    Route::patch('admin/users/{user}/ban', 'AdminController@banUser')->middleware('admin');
-    Route::patch('admin/users/{user}/enable', 'AdminController@enableUser')->middleware('admin');
+    Route::delete('admin/threads/{thread}', 'AdminController@deleteThread');
+    Route::delete('admin/replies/{reply}', 'AdminController@deleteReply');
+    Route::patch('admin/users/{user}/ban', 'AdminController@banUser');
+    Route::patch('admin/users/{user}/enable', 'AdminController@enableUser');
 });
 
 
