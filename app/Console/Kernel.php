@@ -25,6 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        // Check if the user ban expired. If it expired enable the user's account.
         $schedule->call(function () {
             DB::table('statuses')
                 ->where('status', 'banned')

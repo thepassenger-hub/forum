@@ -6,6 +6,9 @@ use \Carbon\Carbon;
 
 use Closure;
 
+/**
+ * This middleware check if the user is not banned and therefore can post threads and replies.
+ */
 class IsActive
 {
     /**

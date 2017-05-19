@@ -10,9 +10,6 @@ use \App\Reply;
 
 class RepliesController extends Controller
 {
-    /**
-     * Create a new RepliesController instance.
-     */
 
     public function index()
     {
@@ -23,14 +20,10 @@ class RepliesController extends Controller
     {
         $this->validate(request(), ['body' => 'required|min:1']);
 
-        try {
-            $thread->addReply([
-                    'body' => request('body'),
-                    'user_id' => auth()->id(),
-                ]);
-        } catch (Exception $e) {
-            return response( $e, 500);
-        }
+        $thread->addReply([
+            'body' => request('body'),
+            'user_id' => auth()->id(),
+        ]);
     }
 
     public function destroy(Reply $reply)

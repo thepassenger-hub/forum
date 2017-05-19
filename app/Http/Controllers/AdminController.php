@@ -25,21 +25,17 @@ class AdminController extends Controller
 
     public function banUser(Request $request, User $user)
     {
-
         $this->validate($request, [
             'days' => 'required|numeric|min:1|max:6000'
         ]);
 
         $user->banForDays(request('days'));
-
         return response("User {$user->username} has been banned.", 200);
     }
 
     public function enableUser(User $user)
     {
-
         $user->enable();
-
         return response("{$user->username}'s account has been enabled.", 200);
     }
 }

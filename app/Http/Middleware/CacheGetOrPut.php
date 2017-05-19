@@ -5,6 +5,10 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * Check if the request path is inside the cache. If it is the cache key is return to avoid expensive db queries.
+ * If it isn't in the cache the request response json content is stored in cache for future calls.
+ */
 class CacheGetOrPut
 {
     /**

@@ -10,22 +10,14 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
 
 Route::get('/', function () {
     return view('layouts.master');
 })->name('home');
-
-Auth::routes();
 Route::get('/sessionStatus', function() {
-        return ['user' => Auth::user() ? Auth::user()->load('profile') : null];
-    });
-
-Route::get('/home', 'HomeController@index');
-// \Event::listen('Illuminate\Database\Events\QueryExecuted', function ($query) {
-//     // var_dump($query->sql);
-//     // var_dump($query->bindings);
-//     var_dump('TIME: ' . $query->time);
-// });
+    return ['user' => Auth::user() ? Auth::user()->load('profile') : null];
+});
 Route::get('channels', 'ChannelsController@index')->middleware('cache:channels');
 Route::get('threads', 'ThreadsController@index')->middleware('cache:threads');
 Route::get('channels/{channel}/threads', 'ThreadsController@index')->middleware('cache:threads');
@@ -45,10 +37,13 @@ Route::patch('replies/{reply}', 'RepliesController@update')->middleware('can:upd
 Route::patch('threads/{thread}', 'ThreadsController@update')->middleware('can:update,thread', 'active');
 Route::delete('threads/{thread}', 'ThreadsController@destroy')->middleware('can:update,thread');
 
-Route::delete('admin/threads/{thread}', 'AdminController@deleteThread')->middleware('admin');
-Route::delete('admin/replies/{reply}', 'AdminController@deleteReply')->middleware('admin');
-Route::patch('admin/users/{user}/ban', 'AdminController@banUser')->middleware('admin');
-Route::patch('admin/users/{user}/enable', 'AdminController@enableUser')->middleware('admin');
+// Admin area Routes.
+Route::group(['middleware' => 'admin'], function () {
+    Route::delete('admin/threads/{thread}', 'AdminController@deleteThread')->middleware('admin');
+    Route::delete('admin/replies/{reply}', 'AdminController@deleteReply')->middleware('admin');
+    Route::patch('admin/users/{user}/ban', 'AdminController@banUser')->middleware('admin');
+    Route::patch('admin/users/{user}/enable', 'AdminController@enableUser')->middleware('admin');
+});
 
 
 

@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 use \App\Events\ProfileUpdated;
-
 use \App\Profile;
 use \App\User;
 
@@ -35,6 +34,10 @@ class ProfileController extends Controller
             ])->first();                 
     }
     
+    /**
+     * Store the user uploaded avatarr in the public storage folder.
+     *
+     **/
     public function uploadAvatar()
     {
         $this->validate(request(), [

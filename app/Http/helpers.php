@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Create a conversation slug.
+ * Create a slug from the thread's title.
  *
  * @param  string $title
  * @return string

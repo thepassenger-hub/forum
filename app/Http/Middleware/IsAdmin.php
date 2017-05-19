@@ -4,6 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 
+/**
+ * Check if the user is an admin to restrict some routes.
+ */
 class IsAdmin
 {
     /**

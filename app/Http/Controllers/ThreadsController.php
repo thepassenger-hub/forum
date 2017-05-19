@@ -28,19 +28,17 @@ class ThreadsController extends Controller
                 'title' => 'required|max:50|min:2',
                 'body' => 'required|min:10'
             ]);
-        try {
-            $thread = $channel->addThread([
-                'title' => request('title'),
-                'slug' => makeSlugFromTitle(request('title')),
-                'body' => request('body'),
-                'user_id' => auth()->id(),
-                'channel_id' => $channel->id,
-                'last_reply' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')
-            ]);
-            return response($thread->slug, 200);
-        } catch (Exception $e) {
-            return response( $e, 500);
-        }
+
+        $thread = $channel->addThread([
+            'title' => request('title'),
+            'slug' => makeSlugFromTitle(request('title')),
+            'body' => request('body'),
+            'user_id' => auth()->id(),
+            'channel_id' => $channel->id,
+            'last_reply' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')
+        ]);
+
+        return response($thread->slug, 200);
     }
 
     /**
@@ -62,12 +60,6 @@ class ThreadsController extends Controller
         return $threads->get();
     }
 
-    public function test(Channel $channel, ThreadFilters $filters)
-    {
-        // return $this->getThreads($channel, $filters);
-        return response('OK', 200);
-    }
-
     public function update(Thread $thread)
     {
         $this->validate(request(), ['body' => 'required|min:10']);
@@ -79,6 +71,6 @@ class ThreadsController extends Controller
     public function destroy(Thread $thread)
     {
         $thread->delete();
-        return response('Your reply has been deleted', 200);
+        return response('Your thread has been deleted', 200);
     }
 }
