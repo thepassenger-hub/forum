@@ -26,6 +26,6 @@ class ClearCacheProfile
      */
     public function handle($event)
     {
-        cache()->forget('profile_' . $event->username);
+        cache()->tags('profile')->forget('profile/' . $event->username);
     }
 }

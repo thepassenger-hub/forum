@@ -27,7 +27,6 @@
     import Form from '../models/Form';
     import isLoggedMixin from '../mixins/IsLoggedMixin';
 
-
     export default {
         props: ['thread'],
         data(){

@@ -54,8 +54,15 @@ class CacheTest extends TestCase
     {
         $profile = \Mockery::mock('\App\Profile');
         $profile -> shouldReceive('user') -> once() -> andReturn(factory(User::class)->make());
-        \Cache::shouldReceive('forget')
-            -> once();
+
+        $obj = \Mockery::mock('\Illuminate\Cache\TaggedCache');
+        $obj -> shouldReceive('forget')
+            ->once();
+
+        \Cache::shouldReceive('tags')
+            ->once()
+            ->andReturn($obj);
+            
         event(new ProfileUpdated($profile));
     }
 
