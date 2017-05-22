@@ -103,6 +103,13 @@ li.is-active a {
   color: $primary;
 }
 
+.thread-admin,
+.reply-admin {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 10px;
+}
+
 /****** View Profile Page *******/
 .container.view-profile {
   font-size: 14px;
@@ -282,11 +289,17 @@ li.is-active a {
     margin-left: 0;
   }
   #mobile-nav {
+    min-height: 3.25rem;
+    height: auto !important;
     position: absolute;
     width: 100%;
     max-width: 400px;
     right: 0;
   }
+  #mobile-nav div {
+    width: 100%;
+  }
+
   #mobile-nav .nav-menu {
     display: block;
     box-shadow: none;
@@ -424,6 +437,7 @@ li.is-active a {
   nav .nav-left > a {
     position: absolute;
     left: 0;
+    max-height: 100%;
   }
   #search-bar {
     position: absolute;
@@ -432,12 +446,5 @@ li.is-active a {
   }
   #search-bar .control:first-of-type{
     width: 100%;
-  }
-  .thread-admin,
-  .reply-admin {
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-right: 10px;
-  }
-  
+  }  
 }
