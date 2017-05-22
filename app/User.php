@@ -11,6 +11,7 @@ use \App\Thread;
 use \App\Reply;
 use \App\Profile;
 use \App\Status;
+use App\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable
 {
@@ -132,5 +133,16 @@ class User extends Authenticatable
     public function isActive()
     {
         return $this->status->status === 'active';
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }
