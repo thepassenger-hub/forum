@@ -38,6 +38,9 @@
         <hr>
         <div v-if="profile.user">
             <div class="columns" v-for="(replies, day) in repliesByMonth">
+                <div class="column is-2">
+                    {{day}}
+                </div>
                 <div class="column is-10">
                     <div v-for="reply in replies">
                         <p v-if="reply.thread" class="color-text-lightest mb-1">
@@ -53,9 +56,7 @@
                         <hr>    
                     </div>
                 </div>
-                <div class="column is-2">
-                    {{day}}
-                </div>
+                
             </div>
         </div>
     </div>
