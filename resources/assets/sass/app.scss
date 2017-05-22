@@ -413,15 +413,21 @@ li.is-active a {
   nav .nav-left {
     width: 60%;
     position: relative;
+    flex-direction: column;
+    justify-content: center;
   }
 
   nav .nav-right {
     max-width: 40%;
   }
+
+  nav .nav-left > a {
+    position: absolute;
+    left: 0;
+  }
   #search-bar {
     position: absolute;
     right: 0;
-    top: 14px;
     min-width: 50%;
   }
   #search-bar .control:first-of-type{
