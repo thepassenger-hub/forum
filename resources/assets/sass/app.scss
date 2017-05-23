@@ -1,5 +1,13 @@
 @import 'node_modules/bulma/bulma.sass';
 
+.nav-left img {
+  max-width: 150px !important;
+}
+
+.nav-left > a {
+  max-width: 150px !important;
+}
+
 .nav-left .nav-item img {
   max-height: 3rem;
 }
@@ -437,12 +445,14 @@ li.is-active a {
   nav .nav-left > a {
     position: absolute;
     left: 0;
+    top: 0;
     max-height: 100%;
   }
   #search-bar {
     position: absolute;
     right: 0;
     min-width: 50%;
+    top: 0;
   }
   #search-bar .control:first-of-type{
     width: 100%;
