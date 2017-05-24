@@ -1,9 +1,5 @@
 @import 'node_modules/bulma/bulma.sass';
 
-.nav {
-  height: auto !important;
-}
-
 .nav-left img {
   max-width: 150px !important;
 }
@@ -48,10 +44,6 @@ ul.breadcrumb li a:hover{
 #nav-avatar img {
   border-radius: 64px;
   max-height: 100% !important;
-}
-
-#profile-name-input {
-  max-width: 20%;
 }
 
 #add-new-avatar-wrapper {
@@ -383,12 +375,6 @@ li.is-active a {
     margin-right: auto;
     display: block;
   }
-
-  /***** Profile page ******/
-  #profile-name-input {
-    max-width: auto;
-    max-width: initial;
-  }
   
   /***** New Thread ********/
   .control .select, select {
@@ -439,6 +425,10 @@ li.is-active a {
 }
 
 @media (min-width: 769px) {
+  nav {
+    height: 80px;
+  }
+
   nav .nav-left {
     width: 60%;
     position: relative;
@@ -463,4 +453,8 @@ li.is-active a {
   #search-bar .control:first-of-type{
     width: 100%;
   }  
+
+  #profile-name-input {
+    max-width: 20%;
+  }
 }
