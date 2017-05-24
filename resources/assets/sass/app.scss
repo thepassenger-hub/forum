@@ -300,6 +300,9 @@ li.is-active a {
     margin-right: 0;
     margin-left: 0;
   }
+  .column, .field, .field.is-grouped > .control {
+    flex-basis: auto !important;    
+  }
   #mobile-nav {
     min-height: 3.25rem;
     height: auto !important;
@@ -338,6 +341,16 @@ li.is-active a {
     width: 100%;
   }
 
+  // .pagination-previous {
+  //   width: calc(50%)
+  // }
+  .pagination > a {
+    flex: 1 1 30%;
+  }
+
+  .pagination-list {
+    flex-grow: 1;
+  }
   .pagination-link {
     min-width: 0.9em;
   }
