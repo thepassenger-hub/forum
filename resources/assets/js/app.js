@@ -6,10 +6,12 @@ import getChannelsMixin from './mixins/GetChannelsMixin';
 
 import Path from './models/Path';
 
+// Filters
+
 Vue.filter('truncate', function (text, value) {
     if (text.length <= value) return text;
     return text.substring(0, value) + '...';
-})
+});
 
 Vue.filter('fromNow', function(date){
     return moment(date).fromNow();
@@ -25,6 +27,7 @@ Vue.filter('capitalize', function(elem){
     return elem.toUpperCase();
 });
 
+// App
 const app = new Vue({
     el: '#app',
     router,
@@ -66,5 +69,4 @@ const app = new Vue({
             return this.user ? this.user.username : false;
         }
     }
-
 });

@@ -23018,6 +23018,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+// Filters
+
 Vue.filter('truncate', function (text, value) {
     if (text.length <= value) return text;
     return text.substring(0, value) + '...';
@@ -23037,6 +23039,7 @@ Vue.filter('capitalize', function (elem) {
     return elem.toUpperCase();
 });
 
+// App
 var app = new Vue({
     el: '#app',
     router: __WEBPACK_IMPORTED_MODULE_1__routes__["a" /* default */],
@@ -23083,7 +23086,6 @@ var app = new Vue({
             return this.user ? this.user.username : false;
         }
     }
-
 });
 
 /***/ }),
@@ -26087,6 +26089,7 @@ Vue.use(VueScrollTo);
 window.marked = __webpack_require__(484);
 
 window.moment = __webpack_require__(1);
+
 moment.updateLocale('en', {
   relativeTime: {
     m: "1 minute",
@@ -26274,11 +26277,14 @@ var Path = function () {
         _classCallCheck(this, Path);
 
         this.subpath = '';
-        // this.prettyName = this.prettify(uri);
-        // this.subpaths = this.setSubPaths(uri);
-        // this.prettySubNames = this.prettifySubNames(this.subpaths);
         this.breadcrumbs = this.setBreadcrumbs(this.subpath);
     }
+
+    /**
+     * Update the current path and add a new field at the breadcrumb.
+     * @param {string} newSubPath
+     */
+
 
     _createClass(Path, [{
         key: 'update',
@@ -26286,6 +26292,13 @@ var Path = function () {
             this.subpath = newSubPath;
             this.breadcrumbs = this.setBreadcrumbs(this.subpath);
         }
+
+        /**
+         * Set the sub paths from an array.
+         * @param {array} subpaths
+         * @return {array}
+         */
+
     }, {
         key: 'setSubPaths',
         value: function setSubPaths(subpaths) {
@@ -26302,6 +26315,12 @@ var Path = function () {
             });
             return out;
         }
+
+        /**
+         * Prettify the sub routes names.
+         * @param {array} subnames
+         */
+
     }, {
         key: 'prettifySubNames',
         value: function prettifySubNames(subnames) {
@@ -26313,6 +26332,13 @@ var Path = function () {
 
             return out;
         }
+
+        /**
+         * Set the breadcrumb from an uri.
+         * @param {string} uri
+         * @return {array} Array of objects containing name and path of the route.
+         */
+
     }, {
         key: 'setBreadcrumbs',
         value: function setBreadcrumbs(uri) {
@@ -26368,6 +26394,13 @@ var ThreadWithReplies = function (_Thread) {
         _this.replies = _this.createReplies(data.replies);
         return _this;
     }
+
+    /**
+     * Create replies objects from an array.
+     * @param {array} replies
+     * @return {array} Array of Reply Objects.
+     */
+
 
     _createClass(ThreadWithReplies, [{
         key: 'createReplies',

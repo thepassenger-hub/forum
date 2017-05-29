@@ -1,18 +1,23 @@
-
 class Path {
     constructor(){
         this.subpath = '';
-        // this.prettyName = this.prettify(uri);
-        // this.subpaths = this.setSubPaths(uri);
-        // this.prettySubNames = this.prettifySubNames(this.subpaths);
         this.breadcrumbs = this.setBreadcrumbs(this.subpath);
     }
 
+    /**
+     * Update the current path and add a new field at the breadcrumb.
+     * @param {string} newSubPath
+     */
     update(newSubPath) {
         this.subpath = newSubPath;
         this.breadcrumbs = this.setBreadcrumbs(this.subpath);
     }
     
+    /**
+     * Set the sub paths from an array.
+     * @param {array} subpaths
+     * @return {array}
+     */
     setSubPaths(subpaths) {
         let subpath = subpaths.slice(-1)[0] === '' ? ['/'] : subpaths;
         let out = [];
@@ -29,6 +34,10 @@ class Path {
         return out;
     }
 
+    /**
+     * Prettify the sub routes names.
+     * @param {array} subnames
+     */
     prettifySubNames(subnames) {
         let out = []
         subnames.forEach(subname => {
@@ -39,6 +48,11 @@ class Path {
         return out;
     }
 
+    /**
+     * Set the breadcrumb from an uri.
+     * @param {string} uri
+     * @return {array} Array of objects containing name and path of the route.
+     */
     setBreadcrumbs(uri){
         let subpaths = uri.split('/');
         if (subpaths.slice(-1)[0] === '') return [{name: 'Home', path: '/'}];

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use \App\Events\ThreadCreated;
 use \App\Channel;
 use \App\Thread;
 use \App\Filters\ThreadFilters;
@@ -11,17 +9,36 @@ use \App\Filters\ThreadFilters;
 class ThreadsController extends Controller
 {
 
-    public function index(Request $request, Channel $channel, ThreadFilters $filters)
+    /**
+     * Display a listing of the resource.
+     *
+     * @param  Channel      $channel
+     * @param ThreadFilters $filters
+     * @return mixed
+     */
+    public function index(Channel $channel, ThreadFilters $filters)
     {
-        return $this->getThreads($request, $channel, $filters);
-
+        return $this->getThreads($channel, $filters);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  integer     $channel
+     * @param  Thread $thread
+     * @return mixed
+     */
     public function show($channel, Thread $thread )
     {   
         return $thread->load('replies.creator.profile', 'creator.profile');
     }
 
+     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  Channel $channel
+     * @return mixed
+     */
     public function store(Channel $channel)
     {
         $this -> validate(request(), [
@@ -46,9 +63,9 @@ class ThreadsController extends Controller
      *
      * @param  Channel  $channel
      * @param  ThreadFilters  $filters
-     * @return  mixed
+     * @return mixed
      */
-    protected function getThreads(Request $request, Channel $channel, ThreadFilters $filters)
+    protected function getThreads(Channel $channel, ThreadFilters $filters)
     {
         $threads = Thread::with('creator.profile', 'channel')->withCount('replies')
                          ->orderBy('last_reply', 'desc')->filter($filters);
@@ -60,6 +77,12 @@ class ThreadsController extends Controller
         return $threads->get();
     }
 
+    /**
+     * Update the given thread.
+     *
+     * @param Thread $thread
+     * @return \Illuminate\Http\Response
+     */
     public function update(Thread $thread)
     {
         $this->validate(request(), ['body' => 'required|min:10']);
@@ -68,6 +91,12 @@ class ThreadsController extends Controller
         return response('Your thread has been updated', 200);
     }
 
+    /**
+     * Delete the given thread.
+     *
+     * @param Thread $thread
+     * @return mixed
+     */
     public function destroy(Thread $thread)
     {
         $thread->delete();

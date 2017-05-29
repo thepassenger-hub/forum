@@ -11,6 +11,7 @@ Vue.use(VueScrollTo)
 window.marked = require('marked');
 
 window.moment = require('moment');
+
 moment.updateLocale('en', {
     relativeTime : {
         m:  "1 minute",

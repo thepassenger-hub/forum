@@ -1,4 +1,3 @@
-
 class Reply {
     constructor(data){
         this.id = data.id;
@@ -7,7 +6,6 @@ class Reply {
         this.updatedAt = data.updated_at;
         this.creator = data.creator;
         this.thread = data.thread;
-        
     }
 }
 

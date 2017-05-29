@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-
-use \App\Events\ProfileUpdated;
 use \App\Profile;
 use \App\User;
 
 class ProfileController extends Controller
 {
 
+    /**
+     * Update the user's profile.
+     **/
     public function update()
     {
         $this->validate(request(), [
@@ -24,7 +23,13 @@ class ProfileController extends Controller
         $profile->update(request(['name', 'bio', 'location']));
     }
 
-    public function show(Request $request, User $user)
+    /**
+     * Show the user's profile.
+     *
+     * @param User $user
+     * @return mixed
+     **/
+    public function show(User $user)
     {
         return $user->profile()->with([
             'user' => function($query){
@@ -36,7 +41,6 @@ class ProfileController extends Controller
     
     /**
      * Store the user uploaded avatarr in the public storage folder.
-     *
      **/
     public function uploadAvatar()
     {

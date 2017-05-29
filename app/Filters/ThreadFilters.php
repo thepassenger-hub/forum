@@ -84,7 +84,7 @@ class ThreadFilters extends Filters
         $builder = $this->builder;
         $builder->whereHas('replies', function($query) use($terms){
             foreach ($terms as $term) {
-                if($term) $query -> where('body', 'like', '%' . $term . '%');
+                if($term) $query -> where('body', 'like', "%{$term}%");
             }
         })
             ->orWhere(function($query) use($terms){
@@ -99,8 +99,4 @@ class ThreadFilters extends Filters
             });
         return $builder;
     }
-
-
-
-    
 }

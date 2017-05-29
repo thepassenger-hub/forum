@@ -1,4 +1,3 @@
-
 class Channel {
     constructor(data){
         this.name = data.name;

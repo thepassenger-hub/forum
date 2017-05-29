@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Http\Request;
 use \App\Channel;
 
 class ChannelsController extends Controller
 {
+     /**
+     * Display a listing of the resource.
+     *
+     * @return mixed
+     */
     public function index()
     {
         return Channel::all();
